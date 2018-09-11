@@ -1,0 +1,194 @@
+<div class="container">
+  <mat-card>
+    <mat-horizontal-stepper [linear]="true" #stepper>
+
+      <ng-template matStepperIcon="edit">
+        <mat-icon>check</mat-icon>
+      </ng-template>
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup" class="form-container">
+          <!-- <ng-template matStepLabel> Dados pessoais </ng-template> -->
+
+          <h3>Dados pessoais</h3>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Nome</mat-label>
+            <input id="campoNome" matInput placeholder="Primeiro nome" required
+                formControlName="campoNome">
+
+            <mat-error *ngIf="firstFormGroup.get('campoNome').hasError('required')">
+              O nome é obrigatório
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Sobrenome</mat-label>
+            <input id="campoSobrenome" matInput placeholder="Seu sobrenome" required
+                formControlName="campoSobrenome">
+
+            <mat-error *ngIf="firstFormGroup.get('campoSobrenome').hasError('required')">
+              O sobrenome é obrigatório
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Número do celular</mat-label>
+            <input id="campoNumeroCelular" matInput placeholder="Seu número de celular" required
+                formControlName="campoNumeroCelular">
+
+            <mat-error *ngIf="firstFormGroup.get('campoNumeroCelular').hasError('required')">
+              O número de celular é obrigatório
+            </mat-error>
+          </mat-form-field>
+
+          <div>
+            <button mat-button matStepperNext [disabled]="firstFormGroup.invalid">CONTINUAR</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup" class="form-container">
+
+          <h3>Seu endereço</h3>
+
+          <!-- <ng-template matStepLabel>Seu endereço</ng-template> -->
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Cidade</mat-label>
+            <mat-select formControlName="campoCidade" id="campoCidade" [(value)]="cidade" required>
+              <mat-option *ngFor="let cidade of cidades" [value]="cidade.nome">
+                {{cidade.nome}}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="secondFormGroup.get('campoCidade').hasError('required')">
+              A cidade é obrigatória
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Logradouro</mat-label>
+            <input id="campoLogradouro" matInput placeholder="Rua, avenida, etc" required
+                formControlName="campoLogradouro">
+
+            <mat-error *ngIf="secondFormGroup.get('campoLogradouro').hasError('required')">
+              O logradouro é obrigatório
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Bairro</mat-label>
+            <input id="campoBairro" matInput placeholder="Seu bairro" required
+                formControlName="campoBairro">
+
+            <mat-error *ngIf="secondFormGroup.get('campoBairro').hasError('required')">
+              O bairro é obrigatório
+            </mat-error>
+          </mat-form-field>
+
+          <div>
+            <button mat-button matStepperPrevious>VOLTAR</button>
+            <button mat-button matStepperNext [disabled]="secondFormGroup.invalid">CONTINUAR</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="thirdFormGroup">
+        <form [formGroup]="thirdFormGroup" class="form-container">
+          <!-- <ng-template matStepLabel>Dados acadêmicos</ng-template> -->
+          <h3>Dados acadêmicos</h3>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Instituição de ensino</mat-label>
+            <mat-select formControlName="campoInstituicaoEnsino" id="campoInstituicaoEnsino"
+                [(value)]="InstituicaoEnsino" required>
+              <mat-option *ngFor="let instituicaoEnsino of instituicoesEnsino"
+                  [value]="instituicaoEnsino.nome">
+                {{instituicaoEnsino.nome}}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="thirdFormGroup.get('campoInstituicaoEnsino').hasError('required')">
+              A instituição de ensino é obrigatória
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Curso</mat-label>
+            <mat-select formControlName="campoCurso" id="campoCurso"
+                [(value)]="curso" required>
+              <mat-option *ngFor="let curso of cursos"
+                  [value]="curso.nome">
+                {{curso.nome}}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="thirdFormGroup.get('campoCurso').hasError('required')">
+              O curso é obrigatório
+            </mat-error>
+          </mat-form-field>
+
+          <mat-card class="espacamento-card" style="width: 86%; margin: auto;">
+            <mat-card-header>
+              <mat-card-title style="text-align: center;"> Comprovante de matrícula </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content style="text-align: center;">
+                <button mat-raised-button color="accent">
+                  ADICIONAR
+                </button>
+            </mat-card-content>
+            <div style="text-align: center; font-size: 11px">
+              <span>Nenhum comprovante foi adicionado</span>
+            </div>
+          </mat-card>
+
+          <div class="spacer-field">
+            <button mat-button matStepperPrevious>VOLTAR</button>
+            <button mat-button matStepperNext [disabled]="thirdFormGroup.invalid">CONTINUAR</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="fourthFormGroup">
+        <form [formGroup]="fourthFormGroup" class="form-container">
+
+          <h3>Defina sua senha</h3>
+
+          <!-- <ng-template matStepLabel>Defina sua senha</ng-template> -->
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Nova senha</mat-label>
+            <input matInput placeholder="Digite uma nova senha" type="password" required
+                formControlName="campoNovaSenha">
+
+            <mat-error *ngIf="fourthFormGroup.get('campoNovaSenha').hasError('required')">
+              A nova senha deve ser informada
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Confirmação da senha</mat-label>
+            <input matInput placeholder="Digite a senha novamente" required type="password"
+                formControlName="campoConfirmacaoSenha">
+
+            <mat-error *ngIf="fourthFormGroup.get('campoConfirmacaoSenha').hasError('required')">
+              A senha deve ser informada novamente
+            </mat-error>
+          </mat-form-field>
+
+          <div>
+            <button mat-button matStepperPrevious>VOLTAR</button>
+            <button mat-raised-button [disabled]="fourthFormGroup.invalid || isSenhasDiferentes()"
+                (click)="salvar()">
+              CONCLUIR
+            </button>
+          </div>
+        </form>
+      </mat-step>
+
+    </mat-horizontal-stepper>
+
+  </mat-card>
+</div>

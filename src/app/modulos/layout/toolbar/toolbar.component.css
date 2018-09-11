@@ -1,0 +1,74 @@
+.container-layout {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* .mat-drawer-container {
+  position: unset;
+  z-index: 1;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  display: block;
+  overflow: hidden;
+} */
+
+@media (max-width: 700px) {
+  .mat-drawer-container {
+    position: unset;
+    z-index: 1;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 700px) {
+  .mat-drawer-container {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    overflow: hidden;
+  }
+}
+
+.is-mobile .toolbar {
+  position: fixed;
+  /*z-index: 2;*/
+}
+
+h1.page-name {
+  margin-left: 8px;
+}
+
+.sidenav-container {
+  flex: 1;
+}
+
+.is-mobile .sidenav-container {
+  flex: 1 0 auto;
+}
+
+#sidebar{
+  border-right: solid 1px #EEEEEE;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.spacer-icon {
+  padding: 0 14px;
+}
+
+#div-label-bem-vindo {
+  text-align: center;
+  margin: 0px 10px 15px 10px;
+}

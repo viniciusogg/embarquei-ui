@@ -1,0 +1,22 @@
+.container {
+  display: block;
+  padding: 10px;
+}
+
+.div-filtro {
+  max-height: 50px;
+  padding: 20px 10px 0;
+}
+
+.botao-busca-avancada {
+  float: right;
+  margin: 10px 10px 10px 0px;
+}
+
+.espacamento-card{
+  margin: 10px 0px;
+}
+
+#titulo-dialog{
+  text-align: center;
+}

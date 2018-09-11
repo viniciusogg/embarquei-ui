@@ -1,0 +1,22 @@
+<mat-tab-group mat-stretch-tabs
+    [color]="mobileQuery.matches ? 'accent' : 'primary'"
+    [backgroundColor]="mobileQuery.matches ? 'primary' : ''">
+  <mat-tab label="First">
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">done_all</mat-icon>
+      <span *ngIf="!mobileQuery.matches">Confirme sua presença</span>
+    </ng-template>
+    <div class="container">
+      <mat-card>
+
+      </mat-card>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Second">
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">list</mat-icon>
+      <span *ngIf="!mobileQuery.matches">Presenças confirmadas</span>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

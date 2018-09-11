@@ -1,0 +1,73 @@
+<div class="container">
+
+  <mat-card>
+
+    <h1> Estudantes </h1>
+
+    <!--<div class="div-filtro">
+      <mat-form-field style="width: 40%" floatLabel="always" *ngIf="false">
+        <mat-label>Filtrar</mat-label>
+        <input matInput placeholder="Faça uma busca"
+            (keyup)="aplicarFiltro($event.target.value)">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>-->
+
+    <div> <!-- style="margin: 15px 0px" -->
+
+      <table mat-table [dataSource]="dataSourceEstudantes"
+          matSort #tabelaRef #sort="matSort" style="width: 100%;">
+
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.nome + ' ' + element.sobrenome}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="celular">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Celular </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.numeroCelular}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="instituicaoEnsino">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Instituição de ensino </th>
+          <td mat-cell *matCellDef="let element">
+            IFPB - Monteiro
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+          <td mat-cell *matCellDef="let element">
+            Aguardando análise
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let element">
+            <button [id]="element.id" mat-icon-button>
+              <mat-icon>visibility</mat-icon>
+            </button>
+
+            <button [id]="element.numeroCelular" mat-icon-button> <!-- *ngIf="element.statusAgendamento !== 'CANCELADO'" -->
+              <mat-icon>block</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <div style="text-align: center; margin-top: 10px;"
+          *ngIf="dataSourceEstudantes.data.length === 0">
+        <span>Não existem dados para exibição</span>
+      </div>
+
+    </div>
+  </mat-card>
+</div>

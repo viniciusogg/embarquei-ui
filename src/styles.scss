@@ -1,0 +1,43 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~@angular/material/theming';
+//@import "~material-design-icons/iconfont/material-icons.css";
+
+@include mat-core();
+
+$style-primary: mat-palette($mat-red, 500);
+$style-accent:  mat-palette($mat-light-blue, 500);
+$style-warn: mat-palette($mat-red);
+
+$style-theme: mat-light-theme($style-primary, $style-accent, $style-warn);
+
+@include angular-material-theme($style-theme);
+
+.container {
+  display: block;
+  padding: 10px;
+}
+
+.form-container > * {
+  width: 100%;
+}
+
+.snack-bar-error{
+  background: #F44336;
+}
+
+#titulo-dialog{
+  text-align: center;
+}
+
+.espacamento-card{
+  margin: 10px 0;
+}
+
+.titulo-card{
+  font-size: 13px;
+}
+
+.spacer-field {
+  margin-top: 15px;
+}

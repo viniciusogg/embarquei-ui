@@ -1,0 +1,18 @@
+.container-login {
+  max-width: 400px;
+  margin: auto
+}
+
+.form-container-login {
+  display: flex;
+  flex-direction: column;
+  margin: 4% 6%;
+}
+
+.form-container-login > * {
+  width: 100%;
+}
+
+.spacer-field {
+  margin-top: 15px;
+}

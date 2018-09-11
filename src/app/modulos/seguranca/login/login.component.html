@@ -1,0 +1,41 @@
+<div class="container-login">
+  <form [formGroup]="loginForm">
+    <mat-card class="form-container-login">
+
+      <div style="text-align: center">
+        <img src="assets/bus-dark.png" style="width: 150px; height: 150px; border-radius: 100px">
+        <div>
+          <span style="font-size: 24px; letter-spacing: 3px;">EMBARQUEI</span>
+        </div>
+      </div>
+
+      <mat-form-field appearance="outline" class="spacer-field">
+        <mat-label>Número do celular</mat-label>
+        <input id="campoNumeroCelular" matInput placeholder="Digite o DDD e o número"
+            required formControlName="campoNumeroCelular"> <!-- [textMask]="{mask: mascaraMatricula, guide: false}" -->
+
+        <mat-error *ngIf="loginForm.get('campoNumeroCelular').hasError('required')">
+          O número do celular deve ser informado
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="spacer-field">
+        <mat-label>Senha</mat-label>
+        <input id="campoSenha" matInput placeholder="Senha" required type="password"
+            formControlName="campoSenha">
+
+        <mat-error *ngIf="loginForm.get('campoSenha').hasError('required')">
+          A senha deve ser informada
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button type="submit" color="accent" class="spacer-field"
+          [disabled]="!loginForm.valid"
+          (click)="login();">ENTRAR</button> <!-- loginForm.setValue({campoSenha: ''}); -->
+
+      <a mat-button class="spacer-field"> Esqueci minha senha </a>
+
+      <a mat-button class="spacer-field" (click)="novaConta()"> Criar uma conta </a>
+    </mat-card>
+  </form>
+</div>

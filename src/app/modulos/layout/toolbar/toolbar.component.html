@@ -1,0 +1,53 @@
+<div class="container-layout" [class.is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="toolbar" *ngIf="ocultarToolbar()">
+    <mat-toolbar-row *ngIf="ocultarToolbar()">
+      <button id="botaoMenu" mat-icon-button (click)="sidenavRef.toggle()" *ngIf="ocultarMenu()">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <h1 class="page-name"> {{ storageDataService.tituloBarraSuperior }} </h1>
+
+      <span class="spacer"></span>
+<!--
+      <button id="botaoUsuario" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>person</mat-icon>
+      </button> -->
+
+      <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+        <div class="mat-typography" id="div-label-bem-vindo">
+          <span>Bem-vindo(a) usuário(a)</span>
+        </div>
+        <mat-divider></mat-divider>
+        <button id="botaoPerfil" mat-menu-item (click)="redirecionar('/perfil')">
+          <span>Perfil</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <span>Sair</span>
+        </button>
+        <mat-divider></mat-divider>
+      </mat-menu>
+
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container"
+                         [style.marginTop.px]="mobileQuery.matches && ocultarToolbar() ? 56 : 0">
+    <mat-sidenav #sidenavRef [mode]="mobileQuery.matches ? 'over' : 'side'"
+        [fixedInViewport]="mobileQuery.matches" fixedTopGap="Non-fixed" id="sidebar">
+      <div *ngIf="ocultarToolbar()">
+        <mat-nav-list> <!-- *ngIf="authService.temPermissao('ROLE_CADASTRAR_USUARIO')" -->
+          <mat-list-item [id]="opcao.id" *ngFor="let opcao of opcoesMenuLateralAdmin"
+              (click)="redirecionar(opcao.url)">
+            <mat-icon mat-list-icon>{{opcao.icone}}</mat-icon>
+            <a matLine>{{opcao.label}}</a>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <app-conteudo></app-conteudo>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
