@@ -1,41 +1,42 @@
 <div class="container-login">
-  <form [formGroup]="loginForm">
-    <mat-card class="form-container-login">
+  <form [formGroup]="loginForm" autocomplete="off">
+    <mat-card class="form-container-login"
+        style="background-color: #2979FF; padding-top: 0px; box-shadow: unset;">
 
-      <div style="text-align: center">
-        <img src="assets/bus-dark.png" style="width: 150px; height: 150px; border-radius: 100px">
+      <div style="text-align: center; padding-bottom: 25px;">
+        <img src="assets/256px.png" style="width: 150px; height: 150px;">
         <div>
-          <span style="font-size: 24px; letter-spacing: 3px;">EMBARQUEI</span>
+          <span style="font-size: 24px; letter-spacing: 3px; color: white;">EMBARQUEI</span>
         </div>
       </div>
 
-      <mat-form-field appearance="outline" class="spacer-field">
-        <mat-label>Número do celular</mat-label>
-        <input id="campoNumeroCelular" matInput placeholder="Digite o DDD e o número"
-            required formControlName="campoNumeroCelular"> <!-- [textMask]="{mask: mascaraMatricula, guide: false}" -->
+      <mat-form-field id="formFieldNumeroCelular" appearance="outline" class="spacer-field" color="accent">
+        <mat-label id="labelNumeroCelularLogin" style="color:white">Número do celular</mat-label>
+        <input id="campoNumeroCelularLogin" matInput placeholder="Digite o DDD e o número"
+            required formControlName="campoNumeroCelular" style="color:white"> <!-- [textMask]="{mask: mascaraMatricula, guide: false}" -->
 
-        <mat-error *ngIf="loginForm.get('campoNumeroCelular').hasError('required')">
+        <mat-error *ngIf="loginForm.get('campoNumeroCelular').hasError('required')" style="color:white">
           O número do celular deve ser informado
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="spacer-field">
-        <mat-label>Senha</mat-label>
-        <input id="campoSenha" matInput placeholder="Senha" required type="password"
-            formControlName="campoSenha">
+      <mat-form-field id="formFieldSenha" appearance="outline" class="spacer-field" color="accent">
+        <mat-label id="labelSenhaLogin" style="color:white">Senha</mat-label>
+        <input id="campoSenhaLogin" matInput placeholder="Senha" required type="password"
+            formControlName="campoSenha" style="color:white"> <!-- background-color: #2979FF; -->
 
-        <mat-error *ngIf="loginForm.get('campoSenha').hasError('required')">
+        <mat-error *ngIf="loginForm.get('campoSenha').hasError('required')" style="color:white">
           A senha deve ser informada
         </mat-error>
       </mat-form-field>
 
       <button mat-raised-button type="submit" color="accent" class="spacer-field"
-          [disabled]="!loginForm.valid"
+          [disabled]="!loginForm.valid" style="height: 45px; border-radius: 60px;"
           (click)="login();">ENTRAR</button> <!-- loginForm.setValue({campoSenha: ''}); -->
 
-      <a mat-button class="spacer-field"> Esqueci minha senha </a>
+      <a mat-button class="spacer-field" style="color: white;"> Esqueci minha senha </a>
 
-      <a mat-button class="spacer-field" (click)="novaConta()"> Criar uma conta </a>
+      <a mat-button class="spacer-field" (click)="novaConta()" style="color: white;"> Criar uma conta </a>
     </mat-card>
   </form>
 </div>

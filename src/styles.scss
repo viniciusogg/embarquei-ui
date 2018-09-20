@@ -5,8 +5,8 @@
 
 @include mat-core();
 
-$style-primary: mat-palette($mat-red, 500);
-$style-accent:  mat-palette($mat-light-blue, 500);
+$style-primary: mat-palette($mat-blue, A400);
+$style-accent:  mat-palette($mat-yellow, 600);
 $style-warn: mat-palette($mat-red);
 
 $style-theme: mat-light-theme($style-primary, $style-accent, $style-warn);
@@ -26,6 +26,10 @@ $style-theme: mat-light-theme($style-primary, $style-accent, $style-warn);
   background: #F44336;
 }
 
+.mat-snack-bar-container {
+  border-radius: 0px !important;
+}
+
 #titulo-dialog{
   text-align: center;
 }
@@ -41,3 +45,94 @@ $style-theme: mat-light-theme($style-primary, $style-accent, $style-warn);
 .spacer-field {
   margin-top: 15px;
 }
+
+@media (min-width: 700px) {
+  #tabGroupCheckin > .mat-tab-header {
+    position:unset !important;
+    width: 100% !important;
+    z-index: 2 !important;
+  }
+
+  #tabGroupCheckin > div.mat-tab-body-wrapper {
+    margin-top: 0px;
+  }
+}
+
+@media (max-width: 701px) {
+  #tabGroupCheckin > .mat-tab-header {
+    position:fixed !important;
+    width: 100% !important;
+    z-index: 2 !important;
+  }
+
+  #tabGroupCheckin > div.mat-tab-body-wrapper {
+    margin-top: 48px;
+  }
+}
+
+/*------------------------------------------- LOGIN -------------------------------------------*/
+#campoNumeroCelularLogin::placeholder {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+#campoSenhaLogin::placeholder {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+#formFieldSenha > div > div.mat-form-field-flex > div:nth-child(1){
+  color: rgba(255, 255, 255, 0.12);
+}
+
+#formFieldNumeroCelular > div > div.mat-form-field-flex > div:nth-child(1){
+  color: rgba(255, 255, 255, 0.12);
+}
+
+#formFieldNumeroCelular > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-tns-c13-2.ng-star-inserted{
+  color: white;
+}
+
+#formFieldSenha > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-tns-c13-3.ng-star-inserted{
+  color: white;
+}
+
+.mat-form-field-appearance-outline.mat-focused.mat-accent .mat-form-field-outline-thick{
+  color: #fdd835 !important;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
+  color: #f44336 !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+#formFieldNumeroCelular > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-star-inserted{
+  color: white;
+}
+
+#formFieldSenha > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-star-inserted{
+  color: white;
+}
+
+label[aria-owns="campoNumeroCelularLogin"] {
+  color: white !important;
+}
+
+label[aria-owns="campoSenhaLogin"] {
+  color: white !important;
+}
+/*------------------------------------------- LOGIN -------------------------------------------*/
+
+/*--------------------------------------- STEPPER ---------------------------------------*/
+.mat-step-icon .mat-icon {
+  font-size: x-large !important;
+  height: 24px !important;
+  width: 24px !important;
+}
+
+.mat-horizontal-stepper-header-container{
+  display: none !important;
+}
+/*--------------------------------------- STEPPER ---------------------------------------*/
+

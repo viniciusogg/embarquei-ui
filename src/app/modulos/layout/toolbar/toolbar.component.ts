@@ -10,7 +10,7 @@ import { MatSidenav } from '@angular/material';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sidenavRef') public sidenavRef: MatSidenav;
 
@@ -43,6 +43,18 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit()
   {
+    // if (this.router.url !== '/login') { // /login
+    //   if (this.mobileQuery.matches) {
+    //     this.sidenavRef.close();
+    //   }
+    //   else {
+    //     this.sidenavRef.open();
+    //   }
+    // }
+  }
+
+  ngAfterViewInit()
+  {
     if (this.router.url !== '/login') { // /login
       if (this.mobileQuery.matches) {
         this.sidenavRef.close();
@@ -59,11 +71,23 @@ export class ToolbarComponent implements OnInit {
 
   ocultarToolbar() {
     // console.log(!this.router.url.includes('/recuperacao/senha/'));
-    return this.router.url !== '/login';
+    return !this.isTelaLogin();
   }
 
   ocultarMenu() {
-    return this.router.url !== '/cadastro/estudante';
+    return this.router.url !== '/cadastro/estudante' && !this.isTelaLogin();
+  }
+
+  isTelaLogin() {
+    return this.router.url === '/login';
+  }
+
+  alterarBackground() {
+    if (this.isTelaLogin()) {
+      return '#2979FF';
+    }
+
+    return 'unset';
   }
 
   /*logout() {

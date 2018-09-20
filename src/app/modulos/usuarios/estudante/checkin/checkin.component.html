@@ -1,19 +1,61 @@
-<mat-tab-group mat-stretch-tabs
+<mat-tab-group mat-stretch-tabs id="tabGroupCheckin"
     [color]="mobileQuery.matches ? 'accent' : 'primary'"
-    [backgroundColor]="mobileQuery.matches ? 'primary' : ''">
-  <mat-tab label="First">
+    [backgroundColor]="mobileQuery.matches ? 'primary' : 'white'">
+  <mat-tab> <!-- style="margin-top: 56px; position: fixed; width: 100%; z-index: 2;" -->
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon">done_all</mat-icon>
       <span *ngIf="!mobileQuery.matches">Confirme sua presença</span>
     </ng-template>
     <div class="container">
-      <mat-card>
+      <mat-card style="height: 100%">
+        <h3 style="font-weight: 100; font-size: 23px;">Confirmação de presença</h3>
 
+        <div style="margin-top: 35px; padding: 10px;">
+          <span style="font-size: 15px; color: gray;">
+            {{textoAjuda}}
+          </span>
+        </div>
+
+        <div style="text-align: center; margin-top: 80px;" *ngIf="!embarcou">
+          <div style="display: flow-root; height: 31px;">
+            <button mat-icon-button style="float: right;" color="primary" *ngIf="isPresencaConfirmada">
+              <mat-icon>help_outline</mat-icon>
+            </button>
+          </div>
+
+          <button mat-raised-button [color]="corBotao" (click)="confirmarPresenca()"
+              style="height: 50px; width: 160px; border-radius: 50px;
+              font-weight: bold; font-size: 18px;">
+            {{textoBotao}}
+          </button>
+        </div>
+
+        <div style="text-align: center; margin-top: 80px;" *ngIf="embarcou">
+          <span style="font-size: 15px; color: gray;">Volte amanhã para confirmar sua presença novamente.</span>
+        </div>
+
+        <div style="text-align: center; margin-top: 100px;" *ngIf="!isPresencaConfirmada">
+          <div style="display: flow-root; width: 94%; height: 30px;">
+            <button mat-icon-button style="float:right" color="primary">
+              <mat-icon>help_outline</mat-icon>
+            </button>
+          </div>
+          <mat-checkbox color="primary" style="font-size: 14px;">Estou no meu ponto</mat-checkbox>
+        </div>
+
+        <div style="text-align: center; margin-top: 100px;" *ngIf="isPresencaConfirmada && !embarcou">
+          <div style="display: flow-root; height: 20px; width: 62%; margin: auto;">
+            <button mat-icon-button style="float: right;" color="primary">
+              <mat-icon>help_outline</mat-icon>
+            </button>
+          </div>
+          <a mat-button routerLink="." color="primary" style="font-weight: bold;">DESISTIR</a>
+        </div>
       </mat-card>
     </div>
   </mat-tab>
 
-  <mat-tab label="Second">
+  <mat-tab [id]="abaPresencasConfirmadas">
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon">list</mat-icon>
       <span *ngIf="!mobileQuery.matches">Presenças confirmadas</span>

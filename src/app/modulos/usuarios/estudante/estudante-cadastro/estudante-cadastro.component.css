@@ -8,8 +8,7 @@
 } */
 
 
-/* STEPPER */
-
+/* ----------------------------------------- STEPPER ----------------------------------------- */
 @media (max-width: 479px) {
   .mat-horizontal-stepper-header .mat-step-icon, .mat-horizontal-stepper-header .mat-step-icon-not-touched {
     margin-right: 0 !important;
@@ -47,4 +46,13 @@
     margin-top: -32px !important;
     max-width: 32px;
   }
+}
+/* ----------------------------------------- STEPPER ----------------------------------------- */
+
+.div-botoes-navegacao{
+  margin-top: 20px;
+}
+
+.botao-next{
+  float: right;
 }

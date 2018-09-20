@@ -14,6 +14,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EstudanteCadastroComponent } from './estudante-cadastro/estudante-cadastro.component';
@@ -32,7 +34,8 @@ import { CheckinComponent } from './checkin/checkin.component';
     MatFormFieldModule,
     MatSelectModule,
     MatBottomSheetModule,
-    MatTabsModule
+    MatTabsModule,
+    MatCheckboxModule
   ],
   declarations: [DashboardComponent, EstudanteCadastroComponent, CheckinComponent]
 })

@@ -8,15 +8,6 @@
   right: 0;
 }
 
-/* .mat-drawer-container {
-  position: unset;
-  z-index: 1;
-  box-sizing: border-box;
-  -webkit-overflow-scrolling: touch;
-  display: block;
-  overflow: hidden;
-} */
-
 @media (max-width: 700px) {
   .mat-drawer-container {
     position: unset;
@@ -28,10 +19,10 @@
   }
 }
 
-@media (min-width: 700px) {
+@media (min-width: 699px) {
   .mat-drawer-container {
     position: relative;
-    z-index: 1;
+    z-index:unset;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
     display: block;
@@ -41,7 +32,7 @@
 
 .is-mobile .toolbar {
   position: fixed;
-  /*z-index: 2;*/
+  z-index: 2;
 }
 
 h1.page-name {

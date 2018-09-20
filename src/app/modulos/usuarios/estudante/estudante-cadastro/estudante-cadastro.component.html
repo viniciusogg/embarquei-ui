@@ -6,8 +6,7 @@
         <mat-icon>check</mat-icon>
       </ng-template>
       <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup" class="form-container">
-          <!-- <ng-template matStepLabel> Dados pessoais </ng-template> -->
+        <form [formGroup]="firstFormGroup" class="form-container" autocomplete="off">
 
           <h3>Dados pessoais</h3>
 
@@ -41,8 +40,10 @@
             </mat-error>
           </mat-form-field>
 
-          <div>
-            <button mat-button matStepperNext [disabled]="firstFormGroup.invalid">CONTINUAR</button>
+          <div class="div-botoes-navegacao">
+            <button mat-raised-button matStepperNext [disabled]="firstFormGroup.invalid"
+                class="botao-next" color="accent">CONTINUAR</button>
+            <button mat-button type="button" >VOLTAR</button>
           </div>
         </form>
       </mat-step>
@@ -51,8 +52,6 @@
         <form [formGroup]="secondFormGroup" class="form-container">
 
           <h3>Seu endereço</h3>
-
-          <!-- <ng-template matStepLabel>Seu endereço</ng-template> -->
 
           <mat-form-field appearance="outline" class="spacer-field">
             <mat-label>Cidade</mat-label>
@@ -87,16 +86,17 @@
             </mat-error>
           </mat-form-field>
 
-          <div>
+          <div class="div-botoes-navegacao">
+            <button mat-raised-button matStepperNext [disabled]="secondFormGroup.invalid"
+                color="accent" class="botao-next">CONTINUAR</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
-            <button mat-button matStepperNext [disabled]="secondFormGroup.invalid">CONTINUAR</button>
           </div>
         </form>
       </mat-step>
 
       <mat-step [stepControl]="thirdFormGroup">
         <form [formGroup]="thirdFormGroup" class="form-container">
-          <!-- <ng-template matStepLabel>Dados acadêmicos</ng-template> -->
+
           <h3>Dados acadêmicos</h3>
 
           <mat-form-field appearance="outline" class="spacer-field">
@@ -144,9 +144,10 @@
             </div>
           </mat-card>
 
-          <div class="spacer-field">
+          <div class="div-botoes-navegacao">
+            <button mat-raised-button matStepperNext color="accent" class="botao-next"
+                [disabled]="thirdFormGroup.invalid">CONTINUAR</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
-            <button mat-button matStepperNext [disabled]="thirdFormGroup.invalid">CONTINUAR</button>
           </div>
         </form>
       </mat-step>
@@ -156,15 +157,13 @@
 
           <h3>Defina sua senha</h3>
 
-          <!-- <ng-template matStepLabel>Defina sua senha</ng-template> -->
-
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Nova senha</mat-label>
-            <input matInput placeholder="Digite uma nova senha" type="password" required
+            <mat-label>Senha</mat-label>
+            <input matInput placeholder="Digite uma senha" type="password" required
                 formControlName="campoNovaSenha">
 
             <mat-error *ngIf="fourthFormGroup.get('campoNovaSenha').hasError('required')">
-              A nova senha deve ser informada
+              A senha deve ser informada
             </mat-error>
           </mat-form-field>
 
@@ -178,12 +177,10 @@
             </mat-error>
           </mat-form-field>
 
-          <div>
+          <div class="div-botoes-navegacao">
+              <button mat-raised-button color="accent" [disabled]="fourthFormGroup.invalid || isSenhasDiferentes()"
+                  (click)="salvar()" class="botao-next">CONCLUIR</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
-            <button mat-raised-button [disabled]="fourthFormGroup.invalid || isSenhasDiferentes()"
-                (click)="salvar()">
-              CONCLUIR
-            </button>
           </div>
         </form>
       </mat-step>
