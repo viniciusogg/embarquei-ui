@@ -1,6 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 
 import { StorageDataService } from './../../../../storage-data.service';
 
@@ -22,7 +24,7 @@ export class CheckinComponent implements OnInit {
   embarcou = false;
   corBotao = 'accent';
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dialog: MatDialog,
       private storageDataService: StorageDataService, private snackBar: MatSnackBar)
   {
     this.mobileQuery = media.matchMedia('(max-width: 700px)');
@@ -58,4 +60,33 @@ export class CheckinComponent implements OnInit {
 
     this.snackBar.open('Boa viagem!', 'DESFAZER', { duration: 3500});
   }
+
+  abrirAjudaEstouNoPonto()
+  {
+    this.dialog.open(AjudaEstouNoPontoDialogComponent, {
+      height: '95%', width: '99%'//,
+      // data: {
+      //   isAudiencia: this.isAudiencia,
+      //   tabelaRef: tabelaRef,
+      // }
+    });
+  }
+}
+
+@Component({
+  selector: 'app-ajuda-estou-no-ponto-dialog',
+  templateUrl: 'ajudaDialogs/ajudaEstouNoPonto/ajuda-estou-no-ponto-dialog.component.html',
+  styleUrls: [ 'ajudaDialogs/ajudaEstouNoPonto/ajuda-estou-no-ponto-dialog.component.css']
+})
+export class AjudaEstouNoPontoDialogComponent implements OnInit {
+
+
+  constructor(/*@Inject(MAT_DIALOG_DATA) public data: any*/) {
+
+  }
+
+  ngOnInit() {
+
+  }
+
 }
