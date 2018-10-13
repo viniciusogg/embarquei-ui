@@ -13,6 +13,10 @@ $style-theme: mat-light-theme($style-primary, $style-accent, $style-warn);
 
 @include angular-material-theme($style-theme);
 
+html{
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
 .container {
   display: block;
   padding: 10px;

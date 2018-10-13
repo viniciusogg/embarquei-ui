@@ -19,7 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EstudanteCadastroComponent } from './estudante-cadastro/estudante-cadastro.component';
-import { CheckinComponent } from './checkin/checkin.component';
+import { CheckinComponent, AjudaEstouNoPontoDialogComponent } from './checkin/checkin.component';
 
 @NgModule({
   imports: [
@@ -28,6 +28,7 @@ import { CheckinComponent } from './checkin/checkin.component';
 
     EstudanteRoutingModule,
     ReactiveFormsModule,
+    
     MatStepperModule,
     MatInputModule,
     MatButtonModule,
@@ -37,8 +38,12 @@ import { CheckinComponent } from './checkin/checkin.component';
     MatSelectModule,
     MatBottomSheetModule,
     MatTabsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ],
-  declarations: [DashboardComponent, EstudanteCadastroComponent, CheckinComponent]
+  declarations: [DashboardComponent, EstudanteCadastroComponent, CheckinComponent, AjudaEstouNoPontoDialogComponent],
+  entryComponents: [
+    AjudaEstouNoPontoDialogComponent
+  ],
 })
 export class EstudanteModule { }
