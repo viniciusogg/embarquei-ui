@@ -43,7 +43,7 @@
           <div class="div-botoes-navegacao">
             <button mat-raised-button matStepperNext [disabled]="firstFormGroup.invalid"
                 class="botao-next" color="accent">CONTINUAR</button>
-            <button mat-button type="button" >VOLTAR</button>
+            <a [routerLink]="['/login']" mat-button type="button" >VOLTAR</a>
           </div>
         </form>
       </mat-step>

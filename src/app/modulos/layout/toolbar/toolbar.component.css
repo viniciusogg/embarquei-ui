@@ -8,7 +8,7 @@
   right: 0;
 }
 
-@media (max-width: 700px) {
+/* @media (max-width: 700px) {
   .mat-drawer-container {
     position: unset;
     z-index: 1;
@@ -28,7 +28,7 @@
     display: block;
     overflow: hidden;
   }
-}
+} */
 
 .is-mobile .toolbar {
   position: fixed;

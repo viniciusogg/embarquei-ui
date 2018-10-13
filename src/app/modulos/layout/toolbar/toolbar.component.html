@@ -1,32 +1,46 @@
-<div class="container-layout" [class.is-mobile]="mobileQuery.matches">
-  <mat-toolbar color="primary" class="toolbar" *ngIf="ocultarToolbar()">
-    <mat-toolbar-row *ngIf="ocultarToolbar()">
-      <button id="botaoMenu" mat-icon-button (click)="sidenavRef.toggle()" *ngIf="ocultarMenu()">
-        <mat-icon>menu</mat-icon>
-      </button>
+<mat-drawer-container class="container-layout" hasBackdrop="true">
+  <mat-drawer #drawerRef mode="over">
+    <mat-nav-list>
+      <mat-list-item [id]="opcao.id" *ngFor="let opcao of opcoesMenuLateralAdmin"
+          (click)="redirecionar(opcao.url)">
+        <mat-icon mat-list-icon>{{opcao.icone}}</mat-icon>
+        <a matLine>{{opcao.label}}</a>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-drawer>
 
-      <h1 class="page-name"> {{ storageDataService.tituloBarraSuperior }} </h1>
+  <mat-drawer-content>
+    <div class="container-layout" [class.is-mobile]="mobileQuery.matches">
+      <mat-toolbar color="primary" class="toolbar" *ngIf="ocultarToolbar()">
+        <mat-toolbar-row *ngIf="ocultarToolbar()">
+          <button id="botaoMenu" mat-icon-button (click)="mobileQuery.matches ? drawerRef.toggle() : sidenavRef.toggle()" *ngIf="ocultarMenu()">
+            <mat-icon>menu</mat-icon>
+          </button>
 
-    </mat-toolbar-row>
-  </mat-toolbar>
+          <h1 class="page-name"> {{ storageDataService.tituloBarraSuperior }} </h1>
 
-  <mat-sidenav-container class="sidenav-container"
-      [style.marginTop.px]="mobileQuery.matches && ocultarToolbar() ? 56 : 0"> <!-- && ocultarToolbar() -->
-    <mat-sidenav #sidenavRef [mode]="mobileQuery.matches ? 'over' : 'side'" *ngIf="ocultarMenu()"
-        [fixedInViewport]="mobileQuery.matches" fixedTopGap="Non-fixed" id="sidebar"> <!-- Non-fixed -->
-      <div> <!-- *ngIf="ocultarToolbar()" -->
-        <mat-nav-list> <!-- *ngIf="authService.temPermissao('ROLE_CADASTRAR_USUARIO')" -->
-          <mat-list-item [id]="opcao.id" *ngFor="let opcao of opcoesMenuLateralAdmin"
-              (click)="redirecionar(opcao.url)">
-            <mat-icon mat-list-icon>{{opcao.icone}}</mat-icon>
-            <a matLine>{{opcao.label}}</a>
-          </mat-list-item>
-        </mat-nav-list>
-      </div>
-    </mat-sidenav>
+        </mat-toolbar-row>
+      </mat-toolbar>
 
-    <mat-sidenav-content [ngStyle]="{'background': alterarBackground()}">
-      <app-conteudo></app-conteudo>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</div>
+      <mat-sidenav-container class="sidenav-container"
+          [style.marginTop.px]="mobileQuery.matches && ocultarToolbar() ? 56 : 0"> <!-- && ocultarToolbar() -->
+        <mat-sidenav #sidenavRef [mode]="mobileQuery.matches ? 'over' : 'side'" *ngIf="ocultarMenu()"
+            [fixedInViewport]="mobileQuery.matches" fixedTopGap="Non-fixed" id="sidebar"> <!-- Non-fixed -->
+          <div> <!-- *ngIf="ocultarToolbar()" -->
+            <mat-nav-list> <!-- *ngIf="authService.temPermissao('ROLE_CADASTRAR_USUARIO')" -->
+              <mat-list-item [id]="opcao.id" *ngFor="let opcao of opcoesMenuLateralAdmin"
+                  (click)="redirecionar(opcao.url)">
+                <mat-icon mat-list-icon>{{opcao.icone}}</mat-icon>
+                <a matLine>{{opcao.label}}</a>
+              </mat-list-item>
+            </mat-nav-list>
+          </div>
+        </mat-sidenav>
+
+        <mat-sidenav-content [ngStyle]="{'background': alterarBackground()}">
+          <app-conteudo></app-conteudo>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
