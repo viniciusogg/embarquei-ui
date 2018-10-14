@@ -10,15 +10,17 @@
       <mat-card style="height: 100%">
         <h3 style="font-weight: 100; font-size: 23px;">Confirmação de presença</h3>
 
-        <div style="margin-top: 35px; padding: 10px;">
+        <div style="margin-top: 35px; padding: 10px; min-height: 26px;">
           <span style="font-size: 15px; color: gray;">
             {{textoAjuda}}
           </span>
         </div>
 
-        <div style="text-align: center; margin-top: 80px;" *ngIf="!embarcou">
-          <div style="display: flow-root; height: 31px;">
-            <button mat-icon-button style="float: right;" color="primary" *ngIf="isPresencaConfirmada">
+        <!-- [ngStyle]="{'text-align': 'center', 'margin': estaNoPonto ? '10% 0%' : '18.5% 0% 34.5% 0%'}" -->
+        <div style="text-align: center; margin-top: 50px;" *ngIf="!embarcou">
+          <div style="display: flow-root; height: 31px;" class="accent-dark">
+            <button mat-icon-button style="float: right;" color="accent"
+                (click)="abrirAjuda('botaoEmbarquei')" *ngIf="isPresencaConfirmada">
               <mat-icon>help_outline</mat-icon>
             </button>
           </div>
@@ -30,26 +32,37 @@
           </button>
         </div>
 
+        <div style="text-align: center; margin: 15px 0px; min-height: 65px;" *ngIf="!isPresencaConfirmada">
+          <span style="font-size: 13px; color: gray;" *ngIf="estaNoPonto && !isPresencaConfirmada">
+            Espere o ônibus chegar para confirmar sua presença ou desmarque a
+            opção <strong>Estou no meu ponto</strong> para confirmar agora.
+          </span>
+        </div>
+
+        <!-- 'margin': estaNoPonto ? '2%ou10% 0% 14.2% 0%' : '18.5% 0% 34.5% 0%' -->
         <div style="text-align: center; margin-top: 80px;" *ngIf="embarcou">
           <span style="font-size: 15px; color: gray;">Volte amanhã para confirmar sua presença novamente.</span>
         </div>
 
-        <div style="text-align: center; margin-top: 100px;" *ngIf="!isPresencaConfirmada">
+        <!-- text-align: center; margin-top: 17%ou100px-->
+        <div style="text-align: center; margin-top: 23px;" *ngIf="!isPresencaConfirmada">
           <div style="display: flow-root; width: 94%; height: 30px;">
-            <button mat-icon-button style="float:right" color="primary" (click)="abrirAjudaEstouNoPonto()">
+            <button mat-icon-button style="float:right" color="primary" (click)="abrirAjuda('checkboxEstaNoPonto')">
               <mat-icon>help_outline</mat-icon>
             </button>
           </div>
-          <mat-checkbox color="primary" style="font-size: 14px;">Estou no meu ponto</mat-checkbox>
+          <mat-checkbox [(ngModel)]="estaNoPonto" name="checkEstaNoPonto" color="primary" style="font-size: 13px;">
+            Estou no meu ponto
+          </mat-checkbox>
         </div>
 
-        <div style="text-align: center; margin-top: 100px;" *ngIf="isPresencaConfirmada && !embarcou">
-          <div style="display: flow-root; height: 20px; width: 62%; margin: auto;">
-            <button mat-icon-button style="float: right;" color="primary">
+        <div style="text-align: center; margin-top: 101px;" *ngIf="isPresencaConfirmada && !embarcou">
+          <div style="display: flow-root; height: 20px; width: 62%; margin: auto;" class="accent-dark">
+            <button mat-icon-button style="float: right;" color="accent" (click)="abrirAjuda('desistir')">
               <mat-icon>help_outline</mat-icon>
             </button>
           </div>
-          <a mat-button routerLink="." color="primary" style="font-weight: bold;">DESISTIR</a>
+          <a mat-button (click)="desistir()" color="primary" style="font-weight: bold;">DESISTIR</a>
         </div>
       </mat-card>
     </div>

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container accent-dark">
   <mat-card>
     <mat-horizontal-stepper [linear]="true" #stepper>
 
@@ -40,7 +40,7 @@
             </mat-error>
           </mat-form-field>
 
-          <div class="div-botoes-navegacao">
+          <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext [disabled]="firstFormGroup.invalid"
                 class="botao-next" color="accent">CONTINUAR</button>
             <a [routerLink]="['/login']" mat-button type="button" >VOLTAR</a>

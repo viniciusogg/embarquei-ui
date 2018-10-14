@@ -1,17 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import '~@angular/material/theming';
 //@import "~material-design-icons/iconfont/material-icons.css";
 
 @include mat-core();
 
-$style-primary: mat-palette($mat-blue, A400);
-$style-accent:  mat-palette($mat-yellow, 600);
-$style-warn: mat-palette($mat-red);
+$default-primary: mat-palette($mat-blue, A400);
+$default-accent:  mat-palette($mat-yellow, 600);
+$default-warn: mat-palette($mat-red);
+$default-theme: mat-light-theme($default-primary, $default-accent, $default-warn);
+@include angular-material-theme($default-theme);
 
-$style-theme: mat-light-theme($style-primary, $style-accent, $style-warn);
+$dark-accent:  mat-palette($mat-yellow, 700);
+$accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-warn);
+.accent-dark{
+  @include angular-material-theme($accent-dark-theme);
+}
 
-@include angular-material-theme($style-theme);
+.accent-normal{
+  @include angular-material-theme($default-theme);
+}
 
 html{
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -31,7 +37,7 @@ html{
 }
 
 .mat-snack-bar-container {
-  border-radius: 0px !important;
+  border-radius: 2px 2px 0px 0px !important;
 }
 
 #titulo-dialog{
