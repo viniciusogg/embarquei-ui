@@ -13,9 +13,22 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { TextMaskModule } from 'angular2-text-mask';
+import { EmbarqueiHttp } from './embarquei-http';
+import { AuthService } from './auth.service';
+import { AuthGuard } from './auth.guard';
 
-export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp(new AuthConfig(), http, options);
+import { LogoutService } from './logout.service';
+
+export function authHttpServiceFactory(authService: AuthService, http: Http, options: RequestOptions)
+{
+  const authConfig = new AuthConfig({
+    tokenName: 'embarquei-token',
+    globalHeaders: [
+      {'Content-Type': 'application/json'}
+    ],
+  });
+
+  return new EmbarqueiHttp(authService, authConfig, http, options);
 }
 
 @NgModule({
@@ -39,10 +52,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
-      deps: [Http, RequestOptions]
+      deps: [AuthService, Http, RequestOptions]
     },
-    /*AuthGuard,
-    LogoutService*/
+    AuthGuard,
+    LogoutService
   ],
 
 })

@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MediaMatcher } from '@angular/cdk/layout';
-
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { ConteudoModule } from './../conteudo/conteudo.module';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -14,10 +12,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { MenuComponent } from './toolbar/menu/menu.component';
+
 @NgModule({
   imports: [
     CommonModule,
-    ConteudoModule,
+    RouterModule,
 
     MatSidenavModule,
     MatToolbarModule,
@@ -28,8 +29,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatCardModule,
     MatDividerModule
   ],
-  declarations: [ToolbarComponent],
-  exports: [ToolbarComponent],
+  declarations: [ToolbarComponent, MenuComponent],
+  exports: [ToolbarComponent, MenuComponent],
   providers: [MediaMatcher]
 })
 export class LayoutModule { }

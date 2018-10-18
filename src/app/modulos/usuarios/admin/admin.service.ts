@@ -11,7 +11,7 @@ export class AdminService {
   estudantesUrl: string;
 
   constructor(private http: AuthHttp) {
-    this.estudantesUrl = `${environment.apiUrl}/usuarios`;
+    this.estudantesUrl = `${environment.apiUrl}/estudantes`;
   }
 
   listarEstudantes(): Promise<any> {

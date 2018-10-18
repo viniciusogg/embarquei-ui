@@ -1,9 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MediaMatcher } from '@angular/cdk/layout';
-import { StorageDataService } from './../../../storage-data.service';
 
-import { MatSidenav } from '@angular/material';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { MatSidenav, MatDialog } from '@angular/material';
+
+import { StorageDataService } from './../../../storage-data.service';
+import { LembreteDialogComponent } from './../../usuarios/estudante/checkin/checkin.component';
 
 @Component({
   selector: 'app-toolbar',
@@ -18,15 +20,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 
   private _mobileQueryListener: () => void;
 
-  opcoesMenuLateralAdmin = [
-    {label: 'Estudantes', icone: 'school', url: '/', id: 'botaoEstudantes'},
-    {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
-    {label: 'Condutores', icone: 'people', url: '/', id: 'botaoCondutores'},
-    {label: 'Veículos Estudantis', icone: 'directions_bus', url: '/', id: 'botaoVeículosEstudantis'},
-    {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'}
-  ];
-
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dialog: MatDialog,
       private router: Router, private storageDataService: StorageDataService) {
 
     // se a largura da tela for 700 ou mais, o menu lateral fica fixo e
@@ -65,9 +59,9 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  redirecionar(url: string) {
-    this.router.navigate([url]);
-  }
+  // redirecionar(url: string) {
+  //   this.router.navigate([url]);
+  // }
 
   ocultarToolbar() {
     // console.log(!this.router.url.includes('/recuperacao/senha/'));
@@ -90,12 +84,13 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     return 'unset';
   }
 
-  /*logout() {
-    this.logoutService.logout()
-      .then(() => {
-        this.router.navigate(['/login']);
-        this.storageDataService.usuarioLogado = null;
-      })
-      .catch(erro => this.errorHandlerService.handle(erro));
-  }*/
+  abrirLembreteDialog()
+  {
+    this.dialog.open(LembreteDialogComponent, {
+      height: '90%', width: '99%'//,
+      // data: {
+      //   ajuda: ajuda,
+      // }
+    });
+  }
 }

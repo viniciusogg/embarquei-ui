@@ -5,6 +5,8 @@ export class StorageDataService {
 
   tituloBarraSuperior = 'Embarquei';
 
+  tipoUsuarioLogado: any;
+
   constructor() { }
 
 

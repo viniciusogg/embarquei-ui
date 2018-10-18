@@ -1,0 +1,42 @@
+<h2 mat-dialog-title cdkFocusInitial>SEU HORÁRIO SEMANAL</h2>
+<mat-dialog-content class="mat-typography accent-dark">
+  <p style="margin-bottom: 45px;">
+    Marque os dias da semana que você tem aula. Uma notificação
+    será enviada para você nos dias escolhidos para te lembrar
+    de confirmar sua presença no ônibus.
+  </p>
+
+  <p>
+    <mat-checkbox [(ngModel)]="segunda" name="checkSegunda" color="accent" class="tamanho-fonte-checkbox">
+      SEGUNDA-FEIRA
+    </mat-checkbox>
+  </p>
+
+  <p>
+    <mat-checkbox [(ngModel)]="terca" name="checkTerca" color="accent" class="tamanho-fonte-checkbox">
+      TERÇA-FEIRA
+    </mat-checkbox>
+  </p>
+
+  <p>
+    <mat-checkbox [(ngModel)]="quarta" name="checkQuarta" color="accent" class="tamanho-fonte-checkbox">
+      QUARTA-FEIRA
+    </mat-checkbox>
+  </p>
+
+  <p>
+    <mat-checkbox [(ngModel)]="quinta" name="checkQuinta" color="accent" class="tamanho-fonte-checkbox">
+      QUINTA-FEIRA
+    </mat-checkbox>
+  </p>
+
+  <p>
+    <mat-checkbox [(ngModel)]="sexta" name="checkSexta" color="accent" class="tamanho-fonte-checkbox">
+      SEXTA-FEIRA
+    </mat-checkbox>
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="primary">SALVAR</button> <!-- cdkFocusInitial -->
+</mat-dialog-actions>

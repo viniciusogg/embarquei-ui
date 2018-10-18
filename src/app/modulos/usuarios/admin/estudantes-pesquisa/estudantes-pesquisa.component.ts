@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { AdminService } from './../admin.service';
-import { Usuario } from './../../../core/model';
+import { Estudante } from './../../../core/model';
 
 @Component({
   selector: 'app-estudantes-pesquisa',
@@ -13,8 +13,8 @@ export class EstudantesPesquisaComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sort') sort: MatSort;
 
-  dataSourceEstudantes: MatTableDataSource<Usuario> = new MatTableDataSource();
-  displayedColumns = ['nome', 'celular', 'instituicaoEnsino', 'status', 'acoes']; // 'status',
+  dataSourceEstudantes: MatTableDataSource<Estudante> = new MatTableDataSource();
+  displayedColumns = ['nome', 'celular', 'curso', 'status', 'acoes']; // 'status',
 
   constructor(private adminService: AdminService, private router: Router) { }
 

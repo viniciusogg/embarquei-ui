@@ -2,9 +2,7 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { AuthService } from './../seguranca/auth.service';
-//import { NotAuthenticatedError } from '../seguranca/sasj-http';
+import { NotAuthenticatedError } from './../seguranca/not-authenticated-error';
 
 @Injectable()
 export class ErrorHandlerService {
@@ -17,10 +15,10 @@ export class ErrorHandlerService {
     if (typeof errorResponse === 'string') {
       msg = errorResponse;
     }
-    /*else if (errorResponse instanceof NotAuthenticatedError) {
+    else if (errorResponse instanceof NotAuthenticatedError) {
       msg = 'Sua sessão expirou';
       this.router.navigate(['/login']);
-    }*/
+    }
     else if (errorResponse instanceof Response && errorResponse.status >= 400
         && errorResponse.status <= 499) {
 

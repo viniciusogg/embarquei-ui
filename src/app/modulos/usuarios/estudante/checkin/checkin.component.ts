@@ -7,7 +7,6 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 
 import { StorageDataService } from './../../../../storage-data.service';
 
-
 @Component({
   selector: 'app-checkin',
   templateUrl: './checkin.component.html',
@@ -20,7 +19,9 @@ export class CheckinComponent implements OnInit {
   private _mobileQueryListener: () => void;
 //                                       Sua presença não foi confirmada.
   private textoPresencaoNaoConfirmada = 'Você não confirmou sua presença.';
+  private textoPresencaConfirmada = 'Legal, sua presença foi confirmada :)';
   private textoBotaoConfirmar = 'CONFIRMAR';
+  private textoBotaoEmbarquei = 'EMBARQUEI';
 
   textoAjuda = this.textoPresencaoNaoConfirmada;
   textoBotao = this.textoBotaoConfirmar;
@@ -28,7 +29,6 @@ export class CheckinComponent implements OnInit {
   estaNoPonto = false;
   embarcou = false;
   corBotao = 'accent';
-  // corAjudaBotaoEmbarquei = 'primary';
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dialog: MatDialog,
       private storageDataService: StorageDataService, private snackBar: MatSnackBar)
@@ -50,11 +50,10 @@ export class CheckinComponent implements OnInit {
       this.embarquei();
     }
     else{
-      this.textoAjuda = 'Legal, sua presença foi confirmada :)'
-      this.textoBotao = 'EMBARQUEI';
+      this.textoAjuda = this.textoPresencaConfirmada;
+      this.textoBotao = this.textoBotaoEmbarquei;
       this.isPresencaConfirmada = true;
       this.corBotao = 'primary';
-      // this.corAjudaBotaoEmbarquei = 'accent';
 
       this.snackBar.open('Presenca confirmada!', '', { duration: 3500});
     }
@@ -73,19 +72,26 @@ export class CheckinComponent implements OnInit {
     this.embarcou = true;
     this.textoAjuda = 'Não esqueça do cinto de segurança!';
 
-    this.snackBar.open('Boa viagem!', 'DESFAZER', { duration: 4500});
+    let snackBarRef = this.snackBar.open('Boa viagem!', 'DESFAZER', { duration: 5500});
+
+    snackBarRef.onAction().subscribe(() => {
+      this.embarcou = false;
+      this.textoAjuda = this.textoPresencaConfirmada;
+    });
   }
 
   abrirAjuda(ajuda: string)
   {
+
     this.dialog.open(AjudaDialogComponent, {
-      height: '70%', width: '99%',
+      height: ajuda === 'checkboxEstaNoPonto' ? '70%' : '90%', width: '99%',
       data: {
         ajuda: ajuda,
       }
     });
   }
 }
+
 
 @Component({
   selector: 'app-ajuda-dialog',
@@ -129,11 +135,36 @@ export class AjudaDialogComponent implements OnInit {
     {
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('Se você confirmou sua preseça com antecedencia, ' +
       'você poderá cancelar sua presença apertando a opção <strong>DESISTIR</strong>. Você deve apertar esse botão se: ' +
-      'você perder o horário do ônibus; você não for voltar para o seu município no ônibus; você desistir de ir para a ' +
+      'você perder o horário do ônibus (na ida para a instituição de ensino); você não for voltar para o seu município no ônibus; você desistir de ir para a ' +
       'aula de última hora; etc. É essencial que, em caso de ocorrência de alguma dessas situações descritas, você lembre ' +
-      'de <strong>DESISTIR</strong> da viagem, caso tenha confirmado sua presença, do contrário, seu nome ficará na lista ' +
-      'de presença do ônibus, fazendo com que o motorista espere indeterminadamente por uma pessoa que não utilizou o transporte.');
+      'de <strong>DESISTIR</strong> da viagem, do contrário, seu nome ficará na lista ' +
+      'de presença do ônibus, fazendo com que, na volta para o município, o motorista espere indeterminadamente por uma pessoa que não utilizou o transporte.');
     }
   }
 }
 
+
+@Component({
+  selector: 'app-lembrete-dialog',
+  templateUrl: 'lembrete-dialog/lembrete-dialog.component.html',
+  styleUrls: [ 'lembrete-dialog/lembrete-dialog.component.css']
+})
+export class LembreteDialogComponent implements OnInit {
+
+  segunda = false;
+  terca = false;
+  quarta = false;
+  quinta = false;
+  sexta = false;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any)
+  {
+
+  }
+
+  ngOnInit()
+  {
+
+  }
+
+}

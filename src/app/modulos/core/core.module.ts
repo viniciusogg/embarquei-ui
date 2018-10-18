@@ -11,13 +11,16 @@ import { ErrorHandlerService } from './error-handler.service';
 import { AdminService } from './../usuarios/admin/admin.service';
 import { EstudanteService } from './../usuarios/estudante/estudante.service';
 import { StorageDataService } from './../../storage-data.service';
+import { LogoutService } from './../seguranca/logout.service';
+
+import { NaoAutorizadoComponent } from './nao-autorizado.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
   ],
-  declarations: [],
+  declarations: [NaoAutorizadoComponent],
   exports: [
     MatSnackBarModule
   ],

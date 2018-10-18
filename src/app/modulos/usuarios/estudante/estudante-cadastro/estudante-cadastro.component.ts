@@ -67,8 +67,8 @@ export class EstudanteCadastroComponent implements OnInit {
     estudante.endereco = this.criarEndereco();
     estudante.comprovanteMatricula = this.criarComprovanteMatricula();
     estudante.curso = this.thirdFormGroup.get('campoCurso').value;
-    estudante.HorarioSemanalEstudante = this.criarHorarioSemanalEstudante(estudante);
-    estudante.pontoParada = this.criarPontoParada();
+    estudante.HorariosSemanaisEstudante = this.criarHorarioSemanalEstudante(estudante);
+    estudante.pontosParada = this.criarPontoParada();
 
     return estudante;
   }

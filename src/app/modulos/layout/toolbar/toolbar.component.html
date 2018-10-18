@@ -1,12 +1,6 @@
 <mat-drawer-container class="container-layout" hasBackdrop="true">
   <mat-drawer #drawerRef mode="over">
-    <mat-nav-list>
-      <mat-list-item [id]="opcao.id" *ngFor="let opcao of opcoesMenuLateralAdmin"
-          (click)="redirecionar(opcao.url)">
-        <mat-icon mat-list-icon>{{opcao.icone}}</mat-icon>
-        <a matLine>{{opcao.label}}</a>
-      </mat-list-item>
-    </mat-nav-list>
+    <app-menu></app-menu>
   </mat-drawer>
 
   <mat-drawer-content>
@@ -19,26 +13,23 @@
 
           <h1 class="page-name"> {{ storageDataService.tituloBarraSuperior }} </h1>
 
+          <span style="flex: 1 1 auto;"></span>
+
+          <button mat-icon-button *ngIf="router.url === '/checkin'" (click)="abrirLembreteDialog()">
+            <mat-icon>event_available</mat-icon>
+          </button>
         </mat-toolbar-row>
       </mat-toolbar>
 
       <mat-sidenav-container class="sidenav-container"
           [style.marginTop.px]="mobileQuery.matches && ocultarToolbar() ? 56 : 0"> <!-- && ocultarToolbar() -->
         <mat-sidenav #sidenavRef [mode]="mobileQuery.matches ? 'over' : 'side'" *ngIf="ocultarMenu()"
-            [fixedInViewport]="mobileQuery.matches" fixedTopGap="Non-fixed" id="sidebar"> <!-- Non-fixed -->
-          <div> <!-- *ngIf="ocultarToolbar()" -->
-            <mat-nav-list> <!-- *ngIf="authService.temPermissao('ROLE_CADASTRAR_USUARIO')" -->
-              <mat-list-item [id]="opcao.id" *ngFor="let opcao of opcoesMenuLateralAdmin"
-                  (click)="redirecionar(opcao.url)">
-                <mat-icon mat-list-icon>{{opcao.icone}}</mat-icon>
-                <a matLine>{{opcao.label}}</a>
-              </mat-list-item>
-            </mat-nav-list>
-          </div>
+              [fixedInViewport]="mobileQuery.matches" fixedTopGap="Non-fixed" id="sidebar"> <!-- Non-fixed -->
+            <app-menu></app-menu>
         </mat-sidenav>
 
         <mat-sidenav-content [ngStyle]="{'background': alterarBackground()}">
-          <app-conteudo></app-conteudo>
+          <router-outlet></router-outlet>
         </mat-sidenav-content>
       </mat-sidenav-container>
     </div>

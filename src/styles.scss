@@ -19,9 +19,9 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
   @include angular-material-theme($default-theme);
 }
 
-html{
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
+// html{
+//   font-family: Roboto, "Helvetica Neue", sans-serif;
+// }
 
 .container {
   display: block;

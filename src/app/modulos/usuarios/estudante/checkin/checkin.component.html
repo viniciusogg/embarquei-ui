@@ -1,7 +1,7 @@
 <mat-tab-group mat-stretch-tabs id="tabGroupCheckin"
     [color]="mobileQuery.matches ? 'accent' : 'primary'"
     [backgroundColor]="mobileQuery.matches ? 'primary' : 'white'">
-  <mat-tab> <!-- style="margin-top: 56px; position: fixed; width: 100%; z-index: 2;" -->
+  <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon">done_all</mat-icon>
       <span *ngIf="!mobileQuery.matches">Confirme sua presença</span>
@@ -16,7 +16,6 @@
           </span>
         </div>
 
-        <!-- [ngStyle]="{'text-align': 'center', 'margin': estaNoPonto ? '10% 0%' : '18.5% 0% 34.5% 0%'}" -->
         <div style="text-align: center; margin-top: 50px;" *ngIf="!embarcou">
           <div style="display: flow-root; height: 31px;" class="accent-dark">
             <button mat-icon-button style="float: right;" color="accent"
@@ -39,12 +38,10 @@
           </span>
         </div>
 
-        <!-- 'margin': estaNoPonto ? '2%ou10% 0% 14.2% 0%' : '18.5% 0% 34.5% 0%' -->
         <div style="text-align: center; margin-top: 80px;" *ngIf="embarcou">
           <span style="font-size: 15px; color: gray;">Volte amanhã para confirmar sua presença novamente.</span>
         </div>
 
-        <!-- text-align: center; margin-top: 17%ou100px-->
         <div style="text-align: center; margin-top: 23px;" *ngIf="!isPresencaConfirmada">
           <div style="display: flow-root; width: 94%; height: 30px;">
             <button mat-icon-button style="float:right" color="primary" (click)="abrirAjuda('checkboxEstaNoPonto')">

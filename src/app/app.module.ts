@@ -22,6 +22,7 @@ import { AdminModule } from './modulos/usuarios/admin/admin.module';
     HttpModule,
     BrowserModule,
     BrowserAnimationsModule,
+
     CoreModule,
     LayoutModule,
     SegurancaModule,
