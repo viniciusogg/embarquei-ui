@@ -23,8 +23,8 @@ export class Estudante extends Usuario {
   foto: string;
   pontosParada: Array<PontoParada>;
   comprovanteMatricula: ComprovanteMatricula;
-  curso: Curso;
-  HorariosSemanaisEstudante: Array<HorarioSemanalEstudante>;
+  curso: any;
+  horariosSemanaisEstudante: Array<HorarioSemanalEstudante>;
   endereco: Endereco;
 }
 
@@ -33,10 +33,9 @@ export class HorarioSemanalEstudante {
   diaSemana: DIA_SEMANA;
   estudante: Estudante;
 
-  constructor(diaSemana: DIA_SEMANA, estudante: Estudante)
+  constructor(diaSemana)
   {
     this.diaSemana = diaSemana;
-    this.estudante = estudante;
   }
 }
 
@@ -131,7 +130,7 @@ export class RenovacaoCadastro {
 
 export class Endereco {
   id: string;
-  cidade: Cidade;
+  cidade: any;
   logradouro: string;
   bairro: string;
 }
@@ -142,35 +141,35 @@ export class Cidade {
 }
 
 export enum DIA_SEMANA {
-  SEGUNDA,
-  TERCA,
-  QUARTA,
-  QUINTA,
-  SEXTA
+  SEGUNDA = 'SEGUNDA',
+  TERCA = 'TERCA',
+  QUARTA = 'QUARTA',
+  QUINTA = 'QUINTA',
+  SEXTA = 'SEXTA'
 }
 
 export enum STATUS_COMPROVANTE {
-  EM_ANALISE,
-  APROVADO,
-  RECUSADO
+  EM_ANALISE = 'EM_ANALISE',
+  APROVADO = 'APROVADO',
+  RECUSADO = 'RECUSADO'
 }
 
 export enum TIPO_TRAJETO {
-  IDA,
-  VOLTA
+  IDA = 'IDA',
+  VOLTA = 'VOLTA'
 }
 
 export enum TIPO_VEICULO {
-  ONIBUS,
-  VAN
+  ONIBUS = 'ONIBUS',
+  VAN = 'VAN'
 }
 
 export enum TIPO_NOTIFICACAO {
-  ATRASO_TRANSPORTE,
-  AUSENCIA_TRANSPORTE,
-  RENOVACAO_CADASTRO,
-  MUDANCA_ROTA,
-  MUDANCA_MOTORISTA,
-  MUDANCA_VEICULO,
-  CONFIRMACAO_PRESENCA
+  ATRASO_TRANSPORTE = 'ATRASO_TRANSPORTE',
+  AUSENCIA_TRANSPORTE = 'AUSENCIA_TRANS',
+  RENOVACAO_CADASTRO = 'RENOVACAO_CADASTRO',
+  MUDANCA_ROTA = 'MUDANCA_ROTA',
+  MUDANCA_MOTORISTA = 'MUDANCA_MOTORISTA',
+  MUDANCA_VEICULO = 'MUDANCA_VEICULO',
+  CONFIRMACAO_PRESENCA = 'CONFIRMACAO_PRESENCA'
 }

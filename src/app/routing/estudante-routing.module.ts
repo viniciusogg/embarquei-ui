@@ -1,10 +1,10 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { EstudanteCadastroComponent } from './estudante-cadastro/estudante-cadastro.component';
-import { CheckinComponent } from './checkin/checkin.component';
-import { AuthGuard } from './../../seguranca/auth.guard';
+import { DashboardComponent } from '../modulos/usuarios/estudante/dashboard/dashboard.component';
+import { EstudanteCadastroComponent } from '../modulos/usuarios/estudante/estudante-cadastro/estudante-cadastro.component';
+import { CheckinComponent } from '../modulos/usuarios/estudante/checkin/checkin.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {

@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { EstudanteRoutingModule } from './estudante-routing.module';
+import { EstudanteRoutingModule } from '../../../routing/estudante-routing.module';
 
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatInputModule } from '@angular/material/input';

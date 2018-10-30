@@ -1,11 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
+import { AuthService } from './../../../../services/auth.service';
+import { Component, OnInit, ChangeDetectorRef, Inject, AfterViewInit } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 
-import { StorageDataService } from './../../../../storage-data.service';
+import { StorageDataService } from './../../../../services/storage-data.service';
 
 @Component({
   selector: 'app-checkin',
@@ -31,7 +32,7 @@ export class CheckinComponent implements OnInit {
   corBotao = 'accent';
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dialog: MatDialog,
-      private storageDataService: StorageDataService, private snackBar: MatSnackBar)
+      private storageDataService: StorageDataService, private authServive: AuthService, private snackBar: MatSnackBar)
   {
     this.mobileQuery = media.matchMedia('(max-width: 700px)');
 
@@ -41,7 +42,9 @@ export class CheckinComponent implements OnInit {
     storageDataService.tituloBarraSuperior = 'Check-in';
   }
 
-  ngOnInit() {
+  ngOnInit()
+  {
+
   }
 
   confirmarPresenca()
@@ -82,7 +85,6 @@ export class CheckinComponent implements OnInit {
 
   abrirAjuda(ajuda: string)
   {
-
     this.dialog.open(AjudaDialogComponent, {
       height: ajuda === 'checkboxEstaNoPonto' ? '70%' : '90%', width: '99%',
       data: {

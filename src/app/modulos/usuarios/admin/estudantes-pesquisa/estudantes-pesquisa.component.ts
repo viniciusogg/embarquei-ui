@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
-import { AdminService } from './../admin.service';
+import { AdminService } from './../../../../services/admin.service';
 import { Estudante } from './../../../core/model';
 
 @Component({
@@ -23,6 +23,7 @@ export class EstudantesPesquisaComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.listarEstudantes();
+    console.log('Iniciou tela de estudantes cadastrados');
   }
 
   listarEstudantes() {

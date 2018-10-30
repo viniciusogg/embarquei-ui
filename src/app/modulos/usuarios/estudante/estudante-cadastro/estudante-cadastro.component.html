@@ -86,7 +86,7 @@
             </mat-error>
           </mat-form-field>
 
-          <div class="div-botoes-navegacao">
+          <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext [disabled]="secondFormGroup.invalid"
                 color="accent" class="botao-next">CONTINUAR</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
@@ -104,7 +104,9 @@
             <mat-select formControlName="campoInstituicaoEnsino" id="campoInstituicaoEnsino"
                 [(value)]="InstituicaoEnsino" required>
               <mat-option *ngFor="let instituicaoEnsino of instituicoesEnsino"
-                  [value]="instituicaoEnsino.nome">
+                  [value]="instituicaoEnsino.nome"
+                  (keyup)="alterarCursos(thirdFormGroup.get('campoInstituicaoEnsino').value)"
+                  (click)="alterarCursos(thirdFormGroup.get('campoInstituicaoEnsino').value)">
                 {{instituicaoEnsino.nome}}
               </mat-option>
             </mat-select>
@@ -119,7 +121,7 @@
             <mat-select formControlName="campoCurso" id="campoCurso"
                 [(value)]="curso" required>
               <mat-option *ngFor="let curso of cursos"
-                  [value]="curso.nome">
+                  [value]="curso.id">
                 {{curso.nome}}
               </mat-option>
             </mat-select>
@@ -134,7 +136,7 @@
               <mat-card-title style="text-align: center;"> Comprovante de matrícula </mat-card-title>
             </mat-card-header>
 
-            <mat-card-content style="text-align: center;">
+            <mat-card-content style="text-align: center;" class="accent-normal">
                 <button mat-raised-button color="accent">
                   ADICIONAR
                 </button>
@@ -144,9 +146,9 @@
             </div>
           </mat-card>
 
-          <div class="div-botoes-navegacao">
+          <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext color="accent" class="botao-next"
-                [disabled]="thirdFormGroup.invalid">CONTINUAR</button>
+                [disabled]="thirdFormGroup.invalid" (click)="buscarPontosParada()">CONTINUAR</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
           </div>
         </form>
@@ -155,6 +157,51 @@
       <mat-step [stepControl]="fourthFormGroup">
         <form [formGroup]="fourthFormGroup" class="form-container">
 
+          <h3>Seus pontos de parada</h3>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Onde você espera o transporte?</mat-label>
+            <mat-select formControlName="campoPontoIda" id="campoPontoIda"
+                [(value)]="ponto" required>
+              <mat-option *ngFor="let ponto of pontosParadaIda"
+                  [value]="ponto.id">
+                {{ponto.nome}}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="fourthFormGroup.get('campoPontoIda').hasError('required')">
+              O ponto de espera deve ser informado
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label>Onde você desce?</mat-label>
+            <mat-select formControlName="campoPontoVolta" id="campoPontoVolta"
+                [(value)]="pontoDescida" required>
+              <mat-option *ngFor="let pontoDescida of pontosParadaVolta"
+                  [value]="pontoDescida.id">
+                {{pontoDescida.nome}}
+              </mat-option>
+            </mat-select>
+
+            <mat-hint>Na volta para o seu município</mat-hint>
+
+            <mat-error *ngIf="fourthFormGroup.get('campoPontoVolta').hasError('required')">
+              O ponto de descida deve ser informado
+            </mat-error>
+          </mat-form-field>
+
+          <div class="div-botoes-navegacao accent-normal">
+              <button mat-raised-button color="accent" [disabled]="fourthFormGroup.invalid"
+                  matStepperNext class="botao-next">PROXIMO</button>
+            <button mat-button matStepperPrevious>VOLTAR</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="quintoFormGroup">
+        <form [formGroup]="quintoFormGroup" class="form-container">
+
           <h3>Defina sua senha</h3>
 
           <mat-form-field appearance="outline" class="spacer-field">
@@ -162,7 +209,7 @@
             <input matInput placeholder="Digite uma senha" type="password" required
                 formControlName="campoNovaSenha">
 
-            <mat-error *ngIf="fourthFormGroup.get('campoNovaSenha').hasError('required')">
+            <mat-error *ngIf="quintoFormGroup.get('campoNovaSenha').hasError('required')">
               A senha deve ser informada
             </mat-error>
           </mat-form-field>
@@ -172,13 +219,13 @@
             <input matInput placeholder="Digite a senha novamente" required type="password"
                 formControlName="campoConfirmacaoSenha">
 
-            <mat-error *ngIf="fourthFormGroup.get('campoConfirmacaoSenha').hasError('required')">
+            <mat-error *ngIf="quintoFormGroup.get('campoConfirmacaoSenha').hasError('required')">
               A senha deve ser informada novamente
             </mat-error>
           </mat-form-field>
 
-          <div class="div-botoes-navegacao">
-              <button mat-raised-button color="accent" [disabled]="fourthFormGroup.invalid || isSenhasDiferentes()"
+          <div class="div-botoes-navegacao accent-normal">
+              <button mat-raised-button color="accent" [disabled]="quintoFormGroup.invalid || isSenhasDiferentes()"
                   (click)="salvar()" class="botao-next">CONCLUIR</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
           </div>

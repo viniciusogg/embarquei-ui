@@ -37,6 +37,7 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
 }
 
 .mat-snack-bar-container {
+  min-width: 304px !important;
   border-radius: 2px 2px 0px 0px !important;
 }
 

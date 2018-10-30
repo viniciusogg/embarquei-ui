@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatSidenav, MatDialog } from '@angular/material';
 
-import { StorageDataService } from './../../../storage-data.service';
+import { StorageDataService } from './../../../services/storage-data.service';
 import { LembreteDialogComponent } from './../../usuarios/estudante/checkin/checkin.component';
 
 @Component({
