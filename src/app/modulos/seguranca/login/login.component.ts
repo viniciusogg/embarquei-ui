@@ -32,35 +32,58 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.get('campoNumeroCelular').value,
         this.loginForm.get('campoSenha').value)
       .then()
-      .then(() => {
-        this.authService.getTipoUsuarioById(localStorage.getItem('idUsuarioLogado'))
-          .then(tipoRetornado => {
-            localStorage.setItem('tipoUsuarioLogado', tipoRetornado.tipo);
+      // .then(() => {
+      //   this.authService.getTipoUsuarioById(localStorage.getItem('idUsuarioLogado'))
+      //     .then(tipoRetornado => {
+      //       localStorage.setItem('tipoUsuarioLogado', tipoRetornado.tipo);
 
-            if(localStorage.getItem('tipoUsuarioLogado') === 'est')
-            {
-              this.router.navigate(['/checkin']);
-            }
-            else if (localStorage.getItem('tipoUsuarioLogado') === 'admin'){
-              this.router.navigate(['/estudantes']);
-            }
-          })
-          .catch(erro => {
-            console.log('Primeiro catch: ' + erro);
-            this.errorHandlerService.handle(erro);
-          });
-      })
+      //       if(localStorage.getItem('tipoUsuarioLogado') === 'est')
+      //       {
+      //         this.router.navigate(['/checkin']);
+      //       }
+      //       else if (localStorage.getItem('tipoUsuarioLogado') === 'admin'){
+      //         this.router.navigate(['/estudantes']);
+      //       }
+      //     })
+      //     .catch(erro => {
+      //       console.log('Primeiro catch: ' + erro);
+      //       this.errorHandlerService.handle(erro);
+      //     });
+      // })
       .then(() => {
         // this.authService.armazenarUsuarioLogado();
         this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
           .then(usuario => {
-
+            console.log(usuario);
             this.storageDataService.usuarioLogado = usuario;
             // console.log(this.storageDataService.usuarioLogado);
           })
           .catch(erro => {
             console.log('Segundo catch: ' + erro);
             this.errorHandlerService.handle(erro)
+          });
+      })
+      .then(() => {
+        this.authService.getTipoUsuarioById(localStorage.getItem('idUsuarioLogado'))
+          .then(tipoRetornado => {
+
+            //if(this.storageDataService.usuarioLogado.ativo)
+            //{
+              localStorage.setItem('tipoUsuarioLogado', tipoRetornado.tipo);
+
+              if(localStorage.getItem('tipoUsuarioLogado') === 'est')
+              {
+                this.router.navigate(['/checkin']);
+              }
+              else if (localStorage.getItem('tipoUsuarioLogado') === 'admin'){
+                this.router.navigate(['/estudantes']);
+              }
+            //}
+            //this.router.navigate(['/emAnalise']);
+          })
+          .catch(erro => {
+            console.log('Primeiro catch: ' + erro);
+            this.errorHandlerService.handle(erro);
           });
       })
       .catch(erro => {

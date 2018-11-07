@@ -31,6 +31,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnChanges {
     {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'}
   ];
 
+  opcoesMenuLateralEmAnalise = [];
+
   opcoesMenuLateralEstudante = [
     {label: 'Início', icone: 'home', url: '/inicio', id: 'botaoInicio'},
     {label: 'Check-in', icone: 'check_circle', url: '/checkin', id: 'botaoCheckin'}, // beenhere
@@ -48,7 +50,9 @@ export class MenuComponent implements OnInit, AfterViewInit, OnChanges {
   {}
 
   ngOnInit()
-  {}
+  {
+    //this.armazenarUsuarioNoDataService();
+  }
 
   ngOnChanges(changes: SimpleChanges)
   {
@@ -72,7 +76,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngAfterViewInit()
   {
-    if(localStorage.getItem('embarquei-token') && !this.storageDataService.tipoUsuarioLogado)
+    /*if(localStorage.getItem('embarquei-token') && !this.storageDataService.tipoUsuarioLogado)
     {
       this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
         .then(usuario => {
@@ -81,7 +85,30 @@ export class MenuComponent implements OnInit, AfterViewInit, OnChanges {
           console.log('EXISTE TOKEN MAS USUÁRIO NÃO ESTÁ ARMAZENADO NO SERVICE');
         })
         .catch(erro => this.errorHandlerService.handle(erro));
+    }*/
+    this.armazenarUsuarioNoDataService();
+  }
+
+  private armazenarUsuarioNoDataService()
+  {
+    // console.log(this.storageDataService.tipoUsuarioLogado);
+
+    if(localStorage.getItem('embarquei-token') && this.storageDataService.tipoUsuarioLogado === undefined)
+    {
+      console.log('É nulo');
+      this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
+        .then(usuario => {
+
+          this.storageDataService.usuarioLogado = usuario;
+          //console.log('EXISTE TOKEN MAS USUÁRIO NÃO ESTÁ ARMAZENADO NO SERVICE');
+        })
+        .catch(erro => this.errorHandlerService.handle(erro));
     }
+  }
+
+  isTelaEmAnalise()
+  {
+    return this.router.url === '/emAnalise';
   }
 
   redirecionar(url: string)

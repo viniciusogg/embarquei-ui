@@ -10,6 +10,15 @@
 
           <h3>Dados pessoais</h3>
 
+          <div>
+            <a mat-fab (click)="imageInput.click()">
+              <!-- <span>ADICIONAR FOTO</span> -->
+              <mat-icon>photo_camera</mat-icon>
+              <input #imageInput type="file" (change)="onFileInput($event)"  style="display:none;"
+                  required formControlName="campoFoto">
+            </a>
+          </div>
+
           <mat-form-field appearance="outline" class="spacer-field">
             <mat-label>Nome</mat-label>
             <input id="campoNome" matInput placeholder="Primeiro nome" required
@@ -42,7 +51,7 @@
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext [disabled]="firstFormGroup.invalid"
-                class="botao-next" color="accent">CONTINUAR</button>
+                class="botao-next" color="accent" (click)="salvarImagem()">CONTINUAR</button>
             <a [routerLink]="['/login']" mat-button type="button" >VOLTAR</a>
           </div>
         </form>

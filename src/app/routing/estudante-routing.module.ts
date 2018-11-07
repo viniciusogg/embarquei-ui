@@ -5,6 +5,7 @@ import { DashboardComponent } from '../modulos/usuarios/estudante/dashboard/dash
 import { EstudanteCadastroComponent } from '../modulos/usuarios/estudante/estudante-cadastro/estudante-cadastro.component';
 import { CheckinComponent } from '../modulos/usuarios/estudante/checkin/checkin.component';
 import { AuthGuard } from './auth.guard';
+import { EmAnaliseComponent } from '../modulos/usuarios/estudante/em-analise/em-analise.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,12 @@ const routes: Routes = [
     component: CheckinComponent,
     canActivate: [AuthGuard],
     data: { tiposUsuariosPermitidos: ['est'] }
+  },
+  {
+    path: 'emAnalise',
+    component: EmAnaliseComponent
   }
+
 ];
 
 @NgModule({

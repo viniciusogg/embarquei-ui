@@ -21,6 +21,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EstudanteCadastroComponent } from './estudante-cadastro/estudante-cadastro.component';
 import { CheckinComponent, AjudaDialogComponent, LembreteDialogComponent } from './checkin/checkin.component';
+import { EmAnaliseComponent } from './em-analise/em-analise.component';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { CheckinComponent, AjudaDialogComponent, LembreteDialogComponent } from 
     EstudanteCadastroComponent,
     CheckinComponent,
     AjudaDialogComponent,
-    LembreteDialogComponent
+    LembreteDialogComponent,
+    EmAnaliseComponent
   ],
   entryComponents: [
     AjudaDialogComponent,

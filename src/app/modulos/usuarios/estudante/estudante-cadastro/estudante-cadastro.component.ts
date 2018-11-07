@@ -1,3 +1,5 @@
+import { environment } from './../../../../../environments/environment.prod';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { InstituicaoEnsinoService } from './../../../../services/instituicao-ensino.service';
 import { CidadeService } from './../../../../services/cidade.service';
 import { TrajetoService } from './../../../../services/trajeto.service';
@@ -10,6 +12,7 @@ import { EstudanteService } from './../../../../services/estudante.service';
 import { Estudante, Endereco, ComprovanteMatricula, STATUS_COMPROVANTE, HorarioSemanalEstudante, DIA_SEMANA, PontoParada, Cidade, InstituicaoEnsino, Curso } from './../../../core/model';
 import { StorageDataService } from './../../../../services/storage-data.service';
 import { isDate } from '@angular/common/src/i18n/format_date';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-estudante-cadastro',
@@ -17,6 +20,18 @@ import { isDate } from '@angular/common/src/i18n/format_date';
   styleUrls: ['./estudante-cadastro.component.css']
 })
 export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
+
+  // Chave de acesso: 9259843e2fab63be76733f4a8593aa7f
+  // Segredo: 913f8a2084e9a985
+  // Chave api: 0f1cfba7b36e969278db0fbbc34bd6c6
+
+
+  // "oauth_nonce=".$oauth_nonce."&oauth_timestamp=".$time."&oauth_consumer_key=".FLICKR_API_KEY."&oauth_signature_method=HMAC-SHA1&oauth_version=1.0&oauth_callback=".urlencode(FLICKR_CALLBACK_URL)."&page=1";
+  // $baseurl = urlencode($request_token_url)."&".urlencode($basestring);
+
+
+  urlUploadImg      = 'https://api.flickr.com/services/rest/?method=flickr.auth.oauth.getAccessToken&api_key=9259843e2fab63be76733f4a8593aa7f&format=json&nojsoncallback=1&api_sig=b56aed003251333bb5c2e4f35434c3a3';
+  getFlickrTokenUrl = 'https://api.flickr.com/services/rest/?method=flickr.auth.oauth.getAccessToken&api_key=0f1cfba7b36e969278db0fbbc34bd6c6&format=json&nojsoncallback=1&auth_token=72157703027349004-66c1cf2afb3270d7&api_sig=e8b5f2963f1aac88aedcea63d94cb4ec';
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -27,6 +42,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
   cidade = '';
   instituicaoEnsino = '';
   curso = ''
+  fotoEstudante = null;
 
   public cidades = new Array<any>();
   public instituicoesEnsino = new Array<any>();
@@ -35,12 +51,12 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
   public pontosParadaVolta = new Array<any>();
 
   constructor(private formBuilder: FormBuilder, private router: Router,
-      private instituicaoEnsinoService: InstituicaoEnsinoService,
+      private instituicaoEnsinoService: InstituicaoEnsinoService, private httpClient: HttpClient,
       private trajetoService: TrajetoService, private cidadeService: CidadeService,
       private estudanteService: EstudanteService, private snackBar: MatSnackBar,
       private errorHandlerService: ErrorHandlerService, private storageDataService: StorageDataService)
   {
-    storageDataService.tituloBarraSuperior = 'Crie sua conta';
+    this.storageDataService.tituloBarraSuperior = 'Crie sua conta';
   }
 
   ngOnInit() {
@@ -76,7 +92,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
     estudante.sobrenome = this.firstFormGroup.get('campoSobrenome').value;
     estudante.numeroCelular = this.firstFormGroup.get('campoNumeroCelular').value;
     estudante.senha = this.quintoFormGroup.get('campoConfirmacaoSenha').value;
-    estudante.foto = 'caminho/sistema/de/arquivos/foto.png'
+    estudante.foto = this.fotoEstudante;
     estudante.ativo = false;
 
     estudante.endereco = this.criarEndereco();
@@ -86,6 +102,50 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
     estudante.pontosParada = this.criarPontoParada();
 
     return estudante;
+  }
+
+  salvarImagem()
+  {
+    // dois pontos   (:) -> %3A
+    // barra         (/) -> %2F
+    // igual         (=) -> %3D
+    // 'e' comercial (&) -> %26
+
+    // const timestamp = new Date().getTime() + '';
+
+    // const url_request_token = 'https%3A%2F%2Fwww.flickr.com%2Fservices%2Foauth%2Frequest_token';
+    // const nonce = CryptoJS.MD5(timestamp).toString();
+    // const oauth_timestamp = timestamp;
+    // const consumer_key = '0f1cfba7b36e969278db0fbbc34bd6c6';
+    // const sig_method = 'HMAC-SHA1';
+    // const version = "1.0";
+    // const callback = 'http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2requestTokenFlickr';
+
+    // const signature = '0f1cfba7b36e969278db0fbbc34bd6c6' + '%26';// +FLICKR_API_SECRET;
+
+    // const basestring = 'GET&'+url_request_token+'&oauth_callback%3D'+callback+
+    //     '%26oauth_consumer_key%3D'+consumer_key+'%26oauth_nonce%3D'+nonce+
+    //     '%26oauth_signature_method%3D'+sig_method+
+    //     '%26oauth_timestamp%3D'+oauth_timestamp+'%26oauth_version%3D'+version;
+
+    // const oauth_signature = CryptoJS.HmacSHA1(basestring, signature).toString();
+
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Access-Control-Allow-Headers': 'Content-Type',
+    //     'Content-Type': 'application/json'
+    //     // 'Content-Type': 'application/x-www-form-urlencoded'
+    //   }),
+    //   withCredentials: true
+    // };
+
+    // const body: string = JSON.stringify({'url': `https://www.flickr.com/services/oauth/request_token?oauth_nonce=${nonce}&oauth_timestamp=${oauth_timestamp}&oauth_consumer_key=${consumer_key}&oauth_signature_method=${sig_method}&oauth_version=${version}&oauth_signature=${oauth_signature}&oauth_callback=${callback}`});
+
+    // return this.httpClient.post(`${environment.apiUrl}/requestTokenFlickr`, body, httpOptions)
+    //   .toPromise()
+    //   .then(response => {
+    //     console.log(response);
+    //   });
   }
 
   private criarEndereco(): Endereco
@@ -141,7 +201,8 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
   private createForms()
   {
     this.firstFormGroup = this.formBuilder.group({
-      campoNome: [null, [Validators.required]],
+      campoFoto: [null, Validators.required],
+      campoNome: [null, Validators.required],
       campoSobrenome: [null, Validators.required],
       campoNumeroCelular: [null, Validators.required]
     });
@@ -166,6 +227,12 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
       campoNovaSenha: [null, Validators.required],
       campoConfirmacaoSenha: [null, Validators.required],
     });
+  }
+
+  onFileInput(event)
+  {
+    console.log(event);
+    this.fotoEstudante = event.target.files[0]['name'];
   }
 
   verificarSenhasDiferentes()
