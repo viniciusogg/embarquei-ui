@@ -26,8 +26,6 @@ export class EstudanteService {
       withCredentials: false
     };
 
-    console.log(estudante);
-
     const body = JSON.stringify(estudante);
 
     return this.httpClient.post(this.estudantesUrl, body, httpOptions)
@@ -43,25 +41,16 @@ export class EstudanteService {
       }),
       withCredentials: true
     };
-    // console.log('chamou getById() - EstudanteService');
+
     return this.httpClient.get(`${this.estudantesUrl}/${id}`, httpOptions)
       .toPromise()
       .then(response => {
 
-        // console.log('Estudante por id');
-        // console.log(response);
-
-        // const resultado = {
-        //   estudante: response
-        // };
-
         const estudante = response as Estudante;
 
         return estudante;
-
-        // return resultado;
       })
-      .catch(erro => this.errorHandlerService.handle(erro));
+      .catch(erro => console.log(erro));
   }
 
 }

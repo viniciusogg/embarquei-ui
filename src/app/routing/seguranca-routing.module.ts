@@ -1,10 +1,10 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './../modulos/seguranca/login/login.component'
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent }
+  // { path: 'login', component: LoginComponent }
   // { path: 'recuperacao/senha/:token', component: RedefinicaoSenhaComponent, data: {depth: 4}}
 ];
 

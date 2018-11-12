@@ -13,7 +13,7 @@ import { StorageDataService } from './../../../../services/storage-data.service'
   templateUrl: './checkin.component.html',
   styleUrls: ['./checkin.component.css']
 })
-export class CheckinComponent implements OnInit {
+export class CheckinComponent implements OnInit, AfterViewInit {
 
   mobileQuery: MediaQueryList;
 
@@ -32,19 +32,23 @@ export class CheckinComponent implements OnInit {
   corBotao = 'accent';
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dialog: MatDialog,
-      private storageDataService: StorageDataService, private authServive: AuthService, private snackBar: MatSnackBar)
+      private storageDataService: StorageDataService, private authServive: AuthService,
+      private snackBar: MatSnackBar)
   {
     this.mobileQuery = media.matchMedia('(max-width: 700px)');
 
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+  }
 
-    storageDataService.tituloBarraSuperior = 'Check-in';
+  ngAfterViewInit()
+  {
+    console.log('iniciou checkin');
   }
 
   ngOnInit()
   {
-
+    this.storageDataService.tituloBarraSuperior = 'Check-in';
   }
 
   confirmarPresenca()

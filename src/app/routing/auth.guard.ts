@@ -1,3 +1,5 @@
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { AdminService } from './../services/admin.service';
 import { EstudanteService } from './../services/estudante.service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -11,17 +13,18 @@ import { ErrorHandlerService } from '../modulos/core/error-handler.service';
 export class AuthGuard implements CanActivate
 {
   constructor(private authService: AuthService, private router: Router, private estudanteService: EstudanteService,
-      private errorHandlerService: ErrorHandlerService, private storageDataService: StorageDataService)
+      private errorHandlerService: ErrorHandlerService, private storageDataService: StorageDataService,
+      private adminService: AdminService, private jwtHelperService: JwtHelperService)
   {}
 
   canActivate(next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean
   {
-    if (this.authService.isAccessTokenInvalido())
+    if (this.isAccessTokenInvalido())
     {
       return this.authService.obterNovoAccessToken()
         .then(() => {
-          if (this.authService.isAccessTokenInvalido())
+          if (this.isAccessTokenInvalido())
           {
             this.router.navigate(['/login']);
             this.authService.limparAccessToken();
@@ -44,40 +47,53 @@ export class AuthGuard implements CanActivate
 
   private verificarAcesso(next: ActivatedRouteSnapshot): boolean
   {
-
-   // console.log(this.storageDataService.tipoUsuarioLogado);
-
-    if(localStorage.getItem('embarquei-token') && this.storageDataService.tipoUsuarioLogado === undefined)
+    if(localStorage.getItem('tipoUsuarioLogado') === 'est')
     {
-      this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
-      .then(usuario => {
-        this.storageDataService.usuarioLogado = usuario;
-      })
-      .then(() => {
+      if(!this.storageDataService.usuarioLogado)
+      {
+        this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
+          .then(usuario => {
+            this.storageDataService.usuarioLogado = usuario;
+
+            if (next.data.tiposUsuariosPermitidos && !this.authService.temQualquerPermissao(next.data.tiposUsuariosPermitidos))
+            {
+              this.router.navigate(['/acesso-negado']);
+              return false;
+            }
+            else if (this.storageDataService.usuarioLogado && !this.storageDataService.usuarioLogado.ativo)
+            {
+              this.router.navigate(['/emAnalise']);
+              return false;
+            }
+            return true;
+          })
+          .catch(erro => this.errorHandlerService.handle(erro));
+      }
+      else
+      {
         if (next.data.tiposUsuariosPermitidos && !this.authService.temQualquerPermissao(next.data.tiposUsuariosPermitidos))
         {
           this.router.navigate(['/acesso-negado']);
+          return false;
         }
         else if (this.storageDataService.usuarioLogado && !this.storageDataService.usuarioLogado.ativo)
         {
           this.router.navigate(['/emAnalise']);
+          return false;
         }
-      })
-      .catch(erro => this.errorHandlerService.handle(erro));
+        return true;
+      }
 
-      return false;
     }
-
-    /*if (next.data.tiposUsuariosPermitidos && !this.authService.temQualquerPermissao(next.data.tiposUsuariosPermitidos))
-    {
-      this.router.navigate(['/acesso-negado']);
-      return false;
-    }
-    else if (this.storageDataService.usuarioLogado && !this.storageDataService.usuarioLogado.ativo)
-    {
-      this.router.navigate(['/emAnalise']);
-      return false;
-    }*/
     return true;
+  }
+
+  isAccessTokenInvalido()
+  {
+    const token = localStorage.getItem('embarquei-token');
+
+    const isInvalido = !token || this.jwtHelperService.isTokenExpired(token);
+
+    return isInvalido;
   }
 }

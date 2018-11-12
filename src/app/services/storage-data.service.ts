@@ -12,5 +12,16 @@ export class StorageDataService {
 
   constructor() { }
 
+  getUsuarioLogado()
+  {
+    return this.usuarioLogado;
+  }
+
+  setUsuarioLogado(usuario: Usuario)
+  {
+    this.usuarioLogado = usuario;
+    // console.log('setando usuario logado...');
+    // this.getArrayOpcoes();
+  }
 
 }

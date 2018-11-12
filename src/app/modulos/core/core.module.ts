@@ -18,6 +18,7 @@ import { CidadeService } from './../../services/cidade.service';
 import { TrajetoService } from './../../services/trajeto.service';
 
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
+import { NaoEncontradoComponent } from './nao-encontrado.component';
 import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
@@ -25,7 +26,7 @@ import { CookieService } from 'ngx-cookie-service';
     CommonModule,
     RouterModule,
   ],
-  declarations: [NaoAutorizadoComponent],
+  declarations: [NaoAutorizadoComponent, NaoEncontradoComponent],
   exports: [
     MatSnackBarModule
   ],

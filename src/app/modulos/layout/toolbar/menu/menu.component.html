@@ -18,13 +18,13 @@
   </div>
 
   <mat-nav-list>
-    <mat-list-item [id]="opcao.id" *ngFor="let opcao of (isTelaEmAnalise ? opcoesMenuLateralEmAnalise : (idAdmin ? opcoesMenuLateralAdmin : opcoesMenuLateralEstudante))"
+    <mat-list-item [id]="opcao.id" *ngFor="let opcao of getArrayOpcoes()"
         (click)="redirecionar(opcao.url)">
       <mat-icon mat-list-icon>{{opcao.icone}}</mat-icon>
       <a matLine>{{opcao.label}}</a>
     </mat-list-item>
 
-    <mat-divider *ngIf="!isTelaEmAnalise()"></mat-divider>
+    <mat-divider *ngIf="getArrayOpcoes()?.length > 1"></mat-divider>
 
     <mat-list-item id="botaoSair" (click)="drawerRef.close(); logout();">
       <a matLine>Sair</a>

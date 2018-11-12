@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { InstituicaoEnsinoService } from './../../../../services/instituicao-ensino.service';
 import { CidadeService } from './../../../../services/cidade.service';
 import { TrajetoService } from './../../../../services/trajeto.service';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,26 +12,13 @@ import { EstudanteService } from './../../../../services/estudante.service';
 import { Estudante, Endereco, ComprovanteMatricula, STATUS_COMPROVANTE, HorarioSemanalEstudante, DIA_SEMANA, PontoParada, Cidade, InstituicaoEnsino, Curso } from './../../../core/model';
 import { StorageDataService } from './../../../../services/storage-data.service';
 import { isDate } from '@angular/common/src/i18n/format_date';
-import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-estudante-cadastro',
   templateUrl: './estudante-cadastro.component.html',
   styleUrls: ['./estudante-cadastro.component.css']
 })
-export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
-
-  // Chave de acesso: 9259843e2fab63be76733f4a8593aa7f
-  // Segredo: 913f8a2084e9a985
-  // Chave api: 0f1cfba7b36e969278db0fbbc34bd6c6
-
-
-  // "oauth_nonce=".$oauth_nonce."&oauth_timestamp=".$time."&oauth_consumer_key=".FLICKR_API_KEY."&oauth_signature_method=HMAC-SHA1&oauth_version=1.0&oauth_callback=".urlencode(FLICKR_CALLBACK_URL)."&page=1";
-  // $baseurl = urlencode($request_token_url)."&".urlencode($basestring);
-
-
-  urlUploadImg      = 'https://api.flickr.com/services/rest/?method=flickr.auth.oauth.getAccessToken&api_key=9259843e2fab63be76733f4a8593aa7f&format=json&nojsoncallback=1&api_sig=b56aed003251333bb5c2e4f35434c3a3';
-  getFlickrTokenUrl = 'https://api.flickr.com/services/rest/?method=flickr.auth.oauth.getAccessToken&api_key=0f1cfba7b36e969278db0fbbc34bd6c6&format=json&nojsoncallback=1&auth_token=72157703027349004-66c1cf2afb3270d7&api_sig=e8b5f2963f1aac88aedcea63d94cb4ec';
+export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDestroy {
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -63,6 +50,11 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
     this.createForms();
   }
 
+  ngOnDestroy()
+  {
+    this.storageDataService.tituloBarraSuperior = 'Embarquei';
+  }
+
   ngAfterViewInit()
   {
     this.buscarCidades();
@@ -92,7 +84,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
     estudante.sobrenome = this.firstFormGroup.get('campoSobrenome').value;
     estudante.numeroCelular = this.firstFormGroup.get('campoNumeroCelular').value;
     estudante.senha = this.quintoFormGroup.get('campoConfirmacaoSenha').value;
-    estudante.foto = this.fotoEstudante;
+    estudante.foto = `foto-${this.firstFormGroup.get('campoNumeroCelular').value}.jpg`//this.fotoEstudante;
     estudante.ativo = false;
 
     estudante.endereco = this.criarEndereco();
@@ -165,7 +157,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
   {
     const comprovanteMatricula = new ComprovanteMatricula();
 
-    comprovanteMatricula.arquivo = 'caminho/sistema/de/arquivos/comprovante.pdf';
+    comprovanteMatricula.arquivo = `comprovante-${this.firstFormGroup.get('campoNumeroCelular').value}.pdf`;
     comprovanteMatricula.status = STATUS_COMPROVANTE.EM_ANALISE;
     comprovanteMatricula.dataEnvio = new Date();
     comprovanteMatricula.justificativa = '-';
@@ -201,7 +193,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit {
   private createForms()
   {
     this.firstFormGroup = this.formBuilder.group({
-      campoFoto: [null, Validators.required],
+      // campoFoto: [null, Validators.required],
       campoNome: [null, Validators.required],
       campoSobrenome: [null, Validators.required],
       campoNumeroCelular: [null, Validators.required]

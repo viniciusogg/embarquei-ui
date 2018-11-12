@@ -5,6 +5,7 @@ export abstract class Usuario {
   numeroCelular: string;
   senha: string;
   ativo: boolean;
+  endereco: Endereco;
 }
 
 export abstract class Mensageiro extends Usuario {

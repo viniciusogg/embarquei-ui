@@ -4,12 +4,12 @@ import { EstudantesPesquisaComponent } from '../modulos/usuarios/admin/estudante
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
-  {
-    path: 'estudantes',
-    component: EstudantesPesquisaComponent,
-    canActivate: [AuthGuard],
-    data: { tiposUsuariosPermitidos: ['admin'] }
-   }
+  // {
+  //   path: 'estudantes',
+  //   component: EstudantesPesquisaComponent,
+  //   canActivate: [AuthGuard],
+  //   data: { tiposUsuariosPermitidos: ['admin'] }
+  //  }
   // { path: 'recuperacao/senha/:token', component: RedefinicaoSenhaComponent, data: {depth: 4}}
 ];
 

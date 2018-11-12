@@ -1,3 +1,4 @@
+import { AdminService } from './../../../../services/admin.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageDataService } from './../../../../services/storage-data.service';
 import { AuthService } from './../../../../services/auth.service';
@@ -14,39 +15,14 @@ import { MatSidenav, MatDrawer } from '@angular/material';
   selector: 'app-menu',
   templateUrl: './menu.component.html'
 })
-export class MenuComponent implements OnInit, AfterViewInit, OnChanges {
+export class MenuComponent implements OnInit, AfterViewInit{//, OnChanges {
 
   @Input() drawerRef: MatDrawer;
-  // @Input() isAutenticado: boolean;
-  // @Input() usuario: Usuario;
-  // usuario: Usuario;
-  // idUsuarioLogado;
-
-  opcoesMenuLateralAdmin = [
-    {label: 'Check-in', icone: 'check', url: '/checkin', id: 'botaoCheckin'},
-    {label: 'Estudantes', icone: 'school', url: '/estudantes', id: 'botaoEstudantes'},
-    {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
-    {label: 'Condutores', icone: 'people', url: '/', id: 'botaoCondutores'},
-    {label: 'Veículos Estudantis', icone: 'directions_bus', url: '/', id: 'botaoVeículosEstudantis'},
-    {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'}
-  ];
-
-  opcoesMenuLateralEmAnalise = [];
-
-  opcoesMenuLateralEstudante = [
-    {label: 'Início', icone: 'home', url: '/inicio', id: 'botaoInicio'},
-    {label: 'Check-in', icone: 'check_circle', url: '/checkin', id: 'botaoCheckin'}, // beenhere
-    {label: 'Perfil', icone: 'account_circle', url: '/estudantes', id: 'botaoEstudantes'},
-    {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
-    {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
-    {label: 'Veículos de transporte', icone: 'directions_bus', url: '/', id: 'botaoVeiculos'},
-    {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
-    {label: 'SOS', icone: 'error_outline', url: '/checkin', id: 'botaoCheckin'},
-  ];
 
   constructor(private router: Router, private logoutService: LogoutService, private authService: AuthService,
       private errorHandlerService: ErrorHandlerService, private estudanteService: EstudanteService,
-      private storageDataService: StorageDataService,  private jwtHelperService: JwtHelperService)
+      private storageDataService: StorageDataService,  private jwtHelperService: JwtHelperService,
+      private adminService: AdminService)
   {}
 
   ngOnInit()
@@ -54,62 +30,63 @@ export class MenuComponent implements OnInit, AfterViewInit, OnChanges {
     //this.armazenarUsuarioNoDataService();
   }
 
-  ngOnChanges(changes: SimpleChanges)
-  {
-    // console.log('chamou onChanges - valor ocultarToolbar: ' + this.isVisivel);
-    if(changes['isVisivel'] && this.router.url !== '/login' && this.router.url !== '/'
-        && this.router.url !== '/cadastro/estudante')
-    {
+  // ngOnChanges(changes: SimpleChanges)
+  // {
+  //   console.log('chamou onChanges');
+  //   if(changes['isVisivel'] && this.router.url !== '/login' && this.router.url !== '/'
+  //       && this.router.url !== '/cadastro/estudante')
+  //   {
+  //     console.log('changes1');
+  //   }
 
-    }
-
-    if(changes['isAutenticado'])
-    {
-
-    }
-  }
-
-  isAdmin()
-  {
-    return localStorage.getItem('tipoUsuarioLogado') === 'admin';
-  }
+  //   if(changes['isAutenticado'])
+  //   {
+  //     console.log('changes2');
+  //   }
+  // }
 
   ngAfterViewInit()
   {
-    /*if(localStorage.getItem('embarquei-token') && !this.storageDataService.tipoUsuarioLogado)
-    {
-      this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
-        .then(usuario => {
-
-          this.storageDataService.usuarioLogado = usuario;
-          console.log('EXISTE TOKEN MAS USUÁRIO NÃO ESTÁ ARMAZENADO NO SERVICE');
-        })
-        .catch(erro => this.errorHandlerService.handle(erro));
-    }*/
-    this.armazenarUsuarioNoDataService();
+    // this.armazenarUsuarioNoDataService();
   }
 
-  private armazenarUsuarioNoDataService()
-  {
-    // console.log(this.storageDataService.tipoUsuarioLogado);
+  // getArrayOpcoes()
+  // {
+  //   // if(this.isTelaEmAnalise())
+  //   // {
+  //   //   return this.opcoesMenuLateralEmAnalise;
+  //   // }
+  //   //else
+  //   if(this.isAdmin())
+  //   {
+  //     return this.opcoesMenuLateralAdmin;
+  //   }
+  //   else if(localStorage.getItem('tipoUsuarioLogado') === 'est')
+  //   {
+  //   //   if(!this.storageDataService.usuarioLogado)
+  //   //   {
+  //   //     this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
+  //   //       .then(usuario => {
+  //           if(!this.storageDataService.usuarioLogado.ativo)
+  //           {
+  //             return this.opcoesMenuLateralEmAnalise;
+  //           }
+  //           return this.opcoesMenuLateralEstudante;
+  //   //       })
+  //   //       .catch(erro => this.errorHandlerService.handle(erro));
+  //   //   }
+  //   //   else if(!this.storageDataService.usuarioLogado.ativo)
+  //   //   {
+  //   //     return this.opcoesMenuLateralEmAnalise;
+  //   //   }
+  //   }
+  //   // return this.opcoesMenuLateralEstudante;
+  // }
 
-    if(localStorage.getItem('embarquei-token') && this.storageDataService.tipoUsuarioLogado === undefined)
-    {
-      console.log('É nulo');
-      this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
-        .then(usuario => {
-
-          this.storageDataService.usuarioLogado = usuario;
-          //console.log('EXISTE TOKEN MAS USUÁRIO NÃO ESTÁ ARMAZENADO NO SERVICE');
-        })
-        .catch(erro => this.errorHandlerService.handle(erro));
-    }
-  }
-
-  isTelaEmAnalise()
-  {
-    return this.router.url === '/emAnalise';
-  }
+  // isAdmin()
+  // {
+  //   return localStorage.getItem('tipoUsuarioLogado') === 'admin';
+  // }
 
   redirecionar(url: string)
   {
@@ -135,4 +112,47 @@ export class MenuComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
+  getArrayOpcoes()
+  {
+    if(this.isAdmin())
+    {
+      return this.opcoesMenuLateralAdmin;
+    }
+    else if(localStorage.getItem('tipoUsuarioLogado') === 'est')
+    {
+      if(!this.storageDataService.usuarioLogado.ativo)
+      {
+        return this.opcoesMenuLateralEmAnalise;
+      }
+      return this.opcoesMenuLateralEstudante;
+    }
+  }
+
+  isAdmin()
+  {
+    return localStorage.getItem('tipoUsuarioLogado') === 'admin';
+  }
+
+  opcoesMenuLateralAdmin = [
+    {label: 'Início', icone: 'home', url: '/inicio', id: 'botaoInicio'},
+    {label: 'Estudantes', icone: 'school', url: '/estudantes', id: 'botaoEstudantes'},
+    {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
+    {label: 'Condutores', icone: 'people', url: '/', id: 'botaoCondutores'},
+    {label: 'Veículos Estudantis', icone: 'directions_bus', url: '/', id: 'botaoVeículosEstudantis'},
+    {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
+    {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
+  ];
+
+  opcoesMenuLateralEmAnalise = [];
+
+  opcoesMenuLateralEstudante = [
+    {label: 'Início', icone: 'home', url: '/inicio', id: 'botaoInicio'},
+    {label: 'Check-in', icone: 'check_circle', url: '/checkin', id: 'botaoCheckin'}, // beenhere
+    {label: 'Perfil', icone: 'account_circle', url: '/estudantes', id: 'botaoEstudantes'},
+    {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
+    {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
+    {label: 'Veículos de transporte', icone: 'directions_bus', url: '/', id: 'botaoVeiculos'},
+    {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
+    {label: 'SOS', icone: 'error_outline', url: '/checkin', id: 'botaoCheckin'},
+  ];
 }

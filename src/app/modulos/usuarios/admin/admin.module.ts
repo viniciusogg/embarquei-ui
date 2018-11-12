@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { EstudantesPesquisaComponent } from './estudantes-pesquisa/estudantes-pesquisa.component';
+import { EstudantesPesquisaComponent, ConfirmacaoCadastroDialogComponent } from './estudantes-pesquisa/estudantes-pesquisa.component';
 import { AdminRoutingModule } from '../../../routing/admin-routing.module';
 
 import { MatInputModule } from '@angular/material/input';
@@ -42,8 +42,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatRadioModule,
     MatCheckboxModule
   ],
-  declarations: [EstudantesPesquisaComponent],
+  declarations: [EstudantesPesquisaComponent, ConfirmacaoCadastroDialogComponent],
   providers:[],
-  entryComponents: [] // DIALOGS AQUI
+  entryComponents: [ConfirmacaoCadastroDialogComponent] // DIALOGS AQUI
 })
 export class AdminModule { }

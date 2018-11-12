@@ -8,26 +8,26 @@ import { AuthGuard } from './auth.guard';
 import { EmAnaliseComponent } from '../modulos/usuarios/estudante/em-analise/em-analise.component';
 
 const routes: Routes = [
-  {
-    path: 'resumoDiario',
-    component: DashboardComponent,
-    canActivate: [AuthGuard],
-    data: { tiposUsuariosPermitidos: ['est'] }
-  },
-  {
-    path: 'cadastro/estudante',
-    component: EstudanteCadastroComponent
-  },
-  {
-    path: 'checkin',
-    component: CheckinComponent,
-    canActivate: [AuthGuard],
-    data: { tiposUsuariosPermitidos: ['est'] }
-  },
-  {
-    path: 'emAnalise',
-    component: EmAnaliseComponent
-  }
+  // {
+  //   path: 'resumoDiario',
+  //   component: DashboardComponent,
+  //   canActivate: [AuthGuard],
+  //   data: { tiposUsuariosPermitidos: ['est'] }
+  // },
+  // {
+  //   path: 'cadastro/estudante',
+  //   component: EstudanteCadastroComponent
+  // },
+  // {
+  //   path: 'checkin',
+  //   component: CheckinComponent,
+  //   canActivate: [AuthGuard],
+  //   data: { tiposUsuariosPermitidos: ['est'] }
+  // },
+  // {
+  //   path: 'emAnalise',
+  //   component: EmAnaliseComponent
+  // }
 
 ];
 

@@ -1,3 +1,4 @@
+import { Administrador } from './../modulos/core/model';
 import { JwtHelper } from 'angular2-jwt';
 import { Estudante } from '../modulos/core/model';
 import { Injectable } from '@angular/core';
@@ -116,20 +117,34 @@ export class AuthService {
 
         console.log('Novo Access token criado');
 
-        return Promise.resolve(null);
+        // return Promise.resolve(null);
       })
       .then(() => {
         if(!this.storageDataService.usuarioLogado)
         {
           const idUsuarioLogado = localStorage.getItem('idUsuarioLogado');
 
-          this.httpClient.get(`http://127.0.0.1:8000/api/estudantes/${idUsuarioLogado}`)
-            .toPromise()
-            .then(response => {
+          const tipoUsuarioLogado = localStorage.getItem('tipoUsuarioLogado');
 
-              this.storageDataService.usuarioLogado = response as Estudante;;
-            })
-            .catch(erro => this.errorHandlerService.handle(erro));
+          if(tipoUsuarioLogado === 'est')
+          {
+            this.httpClient.get(`${environment}/estudantes/${idUsuarioLogado}`)
+              .toPromise()
+              .then(response => {
+                this.storageDataService.usuarioLogado = response as Estudante;
+              })
+              .catch(erro => this.errorHandlerService.handle(erro));
+          }
+          else if(tipoUsuarioLogado === 'admin')
+          {
+            this.httpClient.get(`${environment.apiUrl}/administradores/${idUsuarioLogado}`)
+              .toPromise()
+              .then(response => {
+                this.storageDataService.usuarioLogado = response as Administrador;
+              })
+              .catch(erro => this.errorHandlerService.handle(erro));
+          }
+
         }
       })
       .catch(response => {
@@ -161,9 +176,11 @@ export class AuthService {
     localStorage.removeItem('embarquei-token');
     localStorage.removeItem('tipoUsuarioLogado');
     localStorage.removeItem('idUsuarioLogado');
+    localStorage.removeItem('isUsuarioAtivo');
     this.cookieService.delete('refresh_token');
     this.jwtPayload = null;
     this.storageDataService.usuarioLogado = null;
+    this.storageDataService.tituloBarraSuperior = 'Embarquei'
   }
 
   interceptarRequisicao()
