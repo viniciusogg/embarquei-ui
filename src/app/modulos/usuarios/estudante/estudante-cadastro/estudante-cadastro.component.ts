@@ -157,7 +157,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   {
     const comprovanteMatricula = new ComprovanteMatricula();
 
-    comprovanteMatricula.arquivo = `comprovante-${this.firstFormGroup.get('campoNumeroCelular').value}.pdf`;
+    comprovanteMatricula.caminhoSistemaArquivos = `comprovante-${this.firstFormGroup.get('campoNumeroCelular').value}.pdf`;
     comprovanteMatricula.status = STATUS_COMPROVANTE.EM_ANALISE;
     comprovanteMatricula.dataEnvio = new Date();
     comprovanteMatricula.justificativa = '-';
@@ -169,11 +169,11 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   {
     const horariosSemanaisEstudante = new Array<HorarioSemanalEstudante>();
 
-    const segunda = new HorarioSemanalEstudante(DIA_SEMANA.SEGUNDA);
-    const terca = new HorarioSemanalEstudante(DIA_SEMANA.TERCA);
-    const quarta = new HorarioSemanalEstudante(DIA_SEMANA.QUARTA);
-    const quinta = new HorarioSemanalEstudante(DIA_SEMANA.QUINTA);
-    const sexta = new HorarioSemanalEstudante(DIA_SEMANA.SEXTA);
+    const segunda = new HorarioSemanalEstudante(DIA_SEMANA.SEGUNDA, true);
+    const terca = new HorarioSemanalEstudante(DIA_SEMANA.TERCA, true);
+    const quarta = new HorarioSemanalEstudante(DIA_SEMANA.QUARTA, true);
+    const quinta = new HorarioSemanalEstudante(DIA_SEMANA.QUINTA, true);
+    const sexta = new HorarioSemanalEstudante(DIA_SEMANA.SEXTA, true);
 
     horariosSemanaisEstudante.push(segunda, terca, quarta, quinta, sexta);
 

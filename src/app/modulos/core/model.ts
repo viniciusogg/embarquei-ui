@@ -32,19 +32,21 @@ export class Estudante extends Usuario {
 export class HorarioSemanalEstudante {
   id: string;
   diaSemana: DIA_SEMANA;
+  temAula: boolean;
   estudante: Estudante;
 
-  constructor(diaSemana)
+  constructor(diaSemana, temAula)
   {
     this.diaSemana = diaSemana;
+    this.temAula = temAula;
   }
 }
 
 export class ComprovanteMatricula {
   id: string;
-  arquivo: string;
+  caminhoSistemaArquivos: string;
   status: STATUS_COMPROVANTE;
-  dataEnvio: Date;
+  dataEnvio: any;
   justificativa: string;
 }
 

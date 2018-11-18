@@ -28,7 +28,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 
     // if (this.router.url !== '/login') {
 
-      this.mobileQuery = media.matchMedia('(max-width: 700px)');
+      this.mobileQuery = media.matchMedia('(max-width: 1024px)'); // 700
 
       this._mobileQueryListener = () => changeDetectorRef.detectChanges();
       this.mobileQuery.addListener(this._mobileQueryListener);
@@ -68,8 +68,20 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     return !this.isTelaLogin();
   }
 
-  ocultarMenu() {
-    return this.router.url !== '/cadastro/estudante' && !this.isTelaLogin();
+  ocultarMenu()
+  {
+    let isAutenticado = true;
+
+    if(localStorage.getItem('embarquei-token') === undefined)
+    {
+      isAutenticado = false;
+    }
+
+    // return this.router.url !== '/cadastro/estudante' && !this.isTelaLogin()
+    //     && this.router.url !== '/pagina-nao-encontrada' && isAutenticado;
+
+    return this.router.url !== '/cadastro/estudante' && !this.isTelaLogin()
+        && isAutenticado;
   }
 
   isTelaLogin() {

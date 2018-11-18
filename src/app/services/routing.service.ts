@@ -9,6 +9,7 @@ import { CheckinComponent } from './../modulos/usuarios/estudante/checkin/checki
 import { AuthGuard } from './../routing/auth.guard';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { EstudanteDetalhesComponent } from '../modulos/usuarios/admin/estudante-detalhes/estudante-detalhes.component';
 
 @Injectable({
   providedIn: 'root'
@@ -93,10 +94,19 @@ export class RoutingService {
       canActivate: [AuthGuard],
       data: { tiposUsuariosPermitidos: ['admin'] }
      },
+     {
+       path: 'estudantes/:id',
+       component: EstudanteDetalhesComponent,
+       canActivate: [AuthGuard],
+       data: { tiposUsuariosPermitidos: ['admin'] }
+     }
   ];
 
   rotaEmAnalise = [
-    {path: 'emAnalise', component: EmAnaliseComponent}
+    {
+      path: 'emAnalise', component: EmAnaliseComponent,
+      data: { tiposUsuariosPermitidos: ['est'] }
+    }
   ]
 
 }

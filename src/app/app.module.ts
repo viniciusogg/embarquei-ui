@@ -18,6 +18,7 @@ import { EmAnaliseComponent } from './modulos/usuarios/estudante/em-analise/em-a
 import { CheckinComponent } from './modulos/usuarios/estudante/checkin/checkin.component';
 import { EstudanteCadastroComponent } from './modulos/usuarios/estudante/estudante-cadastro/estudante-cadastro.component';
 import { DashboardComponent } from './modulos/usuarios/estudante/dashboard/dashboard.component';
+import { EstudanteDetalhesComponent } from './modulos/usuarios/admin/estudante-detalhes/estudante-detalhes.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,9 @@ import { DashboardComponent } from './modulos/usuarios/estudante/dashboard/dashb
     EstudanteCadastroComponent,
     CheckinComponent,
     EmAnaliseComponent,
-    EstudantesPesquisaComponent
+
+    EstudantesPesquisaComponent,
+    EstudanteDetalhesComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

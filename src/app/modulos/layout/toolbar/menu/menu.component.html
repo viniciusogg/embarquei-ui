@@ -2,7 +2,8 @@
   <div style="background-image: url('assets/road3.jpg'); min-height: 100px; padding: 15px 10px;
       background-position: center;
       background-size: cover;
-      display: block;"> <!-- flex -->
+      display: block;
+      max-width: 235px;"> <!-- flex -->
       <div cdkFocus style="background: transparent no-repeat center;
           background-size: cover;
           width: 80px;
@@ -12,7 +13,7 @@
         <!-- <img src="./../../../../../assets/doge.jpg"
             style="width: 80px; height: 80px; border-radius: 100%;" cdkFocus> -->
       </div>
-    <h3 class="mat-h3" style="color: white; margin: auto 10px;font-weight: bold;">
+    <h3 class="mat-h3" style="color: white; margin-top: 10px; margin-bottom: unset; font-weight: bold;">
       {{storageDataService.usuarioLogado?.nome}} {{storageDataService.usuarioLogado?.sobrenome}}
     </h3>
   </div>

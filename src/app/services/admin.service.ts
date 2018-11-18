@@ -1,6 +1,6 @@
 import { StorageDataService } from './storage-data.service';
 import { ErrorHandlerService } from './../modulos/core/error-handler.service';
-import { Administrador } from './../modulos/core/model';
+import { Administrador, Estudante } from './../modulos/core/model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.prod';
@@ -62,6 +62,23 @@ export class AdminService {
 
         return administrador;
       })
+      .catch(erro => this.errorHandlerService.handle(erro));
+  }
+
+  atualizarStatusEstudante(id, dados): Promise<any>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    };
+
+    const body = dados;
+
+    return this.httpClient.put(`${this.estudantesUrl}/ativo/${id}`, body, httpOptions)
+      .toPromise()
+      .then()
       .catch(erro => this.errorHandlerService.handle(erro));
   }
 

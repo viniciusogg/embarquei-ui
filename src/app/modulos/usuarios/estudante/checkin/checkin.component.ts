@@ -35,7 +35,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
       private storageDataService: StorageDataService, private authServive: AuthService,
       private snackBar: MatSnackBar)
   {
-    this.mobileQuery = media.matchMedia('(max-width: 700px)');
+    this.mobileQuery = media.matchMedia('(max-width: 1024px)'); //700
 
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
