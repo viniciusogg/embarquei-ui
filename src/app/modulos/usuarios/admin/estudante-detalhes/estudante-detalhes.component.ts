@@ -110,6 +110,11 @@ export class EstudanteDetalhesComponent implements OnInit, AfterViewInit {
     }
   }
 
+  url()
+  {
+    return `url(${this.estudante.foto})`;
+  }
+
   private createForm()
   {
     this.comprovanteMatriculaFormGroup = this.formBuilder.group({

@@ -3,9 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './routing/app-routing.module';
+import { environment } from '../environments/environment';
 
 import { CoreModule } from './modulos/core/core.module';
 import { LayoutModule } from './modulos/layout/layout.module';
@@ -31,6 +33,8 @@ import { EstudanteDetalhesComponent } from './modulos/usuarios/admin/estudante-d
     CoreModule,
     HttpModule,
     HttpClientModule,
+
+    AngularFireModule.initializeApp(environment.firebase),
 
     LayoutModule,
     SegurancaModule,

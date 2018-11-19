@@ -10,13 +10,13 @@
 
           <h3>Dados pessoais</h3>
 
-          <div *ngIf="false">
-            <a mat-fab (click)="imageInput.click()">
-              <!-- <span>ADICIONAR FOTO</span> -->
+          <div>
+            <a mat-fab (click)="imageInput.click(); removerFotoCarregada()">
               <mat-icon>photo_camera</mat-icon>
-              <input #imageInput type="file" (change)="onFileInput($event)"  style="display:none;"
-                  required formControlName="campoFoto">
+                <input #imageInput type="file" (change)="onFotoInput($event)" style="display:none;"
+                    required formControlName="campoFoto">
             </a>
+            <span class="mat-small" style="margin-left: 10px"> {{fotoEstudante?.file ? '' : 'Adicione uma foto sua'}} {{fotoEstudante?.file.name | slice:0:20}}{{fotoEstudante?.file.name.length > 20 ? '...' : ''}}</span>
           </div>
 
           <mat-form-field appearance="outline" class="spacer-field">
@@ -51,7 +51,7 @@
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext [disabled]="firstFormGroup.invalid"
-                class="botao-next" color="accent" (click)="salvarImagem()">CONTINUAR</button>
+                class="botao-next" color="accent" (click)="salvarFoto();">CONTINUAR</button>
             <a [routerLink]="['/login']" mat-button type="button" >VOLTAR</a>
           </div>
         </form>
@@ -61,7 +61,7 @@
         <form [formGroup]="secondFormGroup" class="form-container">
 
           <h3>Seu endereço</h3>
-
+          <span>{{fotoEstudante?.url}}</span>
           <mat-form-field appearance="outline" class="spacer-field">
             <mat-label>Cidade</mat-label>
             <mat-select formControlName="campoCidade" id="campoCidade" [(value)]="cidade" required>
@@ -146,18 +146,22 @@
             </mat-card-header>
 
             <mat-card-content style="text-align: center;" class="accent-normal">
-                <button mat-raised-button color="accent">
-                  ADICIONAR
-                </button>
+              <button mat-raised-button color="accent" (click)="comprovanteInput.click(); removerComprovanteCarregado()">
+                ADICIONAR
+              </button>
+
+              <input #comprovanteInput type="file" (change)="onComprovanteInput($event)" style="display:none;"
+                  required formControlName="campoComprovante">
+
             </mat-card-content>
             <div style="text-align: center; font-size: 11px">
-              <span>Nenhum comprovante foi adicionado</span>
+              <span>{{comprovante?.file ? comprovante.file.name : 'Nenhum comprovante foi adicionado'}}</span>
             </div>
           </mat-card>
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext color="accent" class="botao-next"
-                [disabled]="thirdFormGroup.invalid" (click)="buscarPontosParada()">CONTINUAR</button>
+                [disabled]="thirdFormGroup.invalid" (click)="buscarPontosParada(); salvarComprovante();">CONTINUAR</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
           </div>
         </form>
@@ -167,7 +171,7 @@
         <form [formGroup]="fourthFormGroup" class="form-container">
 
           <h3>Seus pontos de parada</h3>
-
+          <span>{{comprovante?.url}}</span>
           <mat-form-field appearance="outline" class="spacer-field">
             <mat-label>Onde você espera o transporte?</mat-label>
             <mat-select formControlName="campoPontoIda" id="campoPontoIda"
@@ -201,8 +205,8 @@
           </mat-form-field>
 
           <div class="div-botoes-navegacao accent-normal">
-              <button mat-raised-button color="accent" [disabled]="fourthFormGroup.invalid"
-                  matStepperNext class="botao-next">PROXIMO</button>
+            <button mat-raised-button color="accent" [disabled]="fourthFormGroup.invalid"
+                matStepperNext class="botao-next">PROXIMO</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
           </div>
         </form>
@@ -234,8 +238,8 @@
           </mat-form-field>
 
           <div class="div-botoes-navegacao accent-normal">
-              <button mat-raised-button color="accent" [disabled]="quintoFormGroup.invalid || isSenhasDiferentes()"
-                  (click)="salvar()" class="botao-next">CONCLUIR</button>
+            <button mat-raised-button color="accent" [disabled]="quintoFormGroup.invalid || isSenhasDiferentes()"
+                (click)="salvar()" class="botao-next">CONCLUIR</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
           </div>
         </form>

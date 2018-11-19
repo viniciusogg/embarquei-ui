@@ -1,17 +1,18 @@
-import { environment } from './../../../../../environments/environment.prod';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { InstituicaoEnsinoService } from './../../../../services/instituicao-ensino.service';
-import { CidadeService } from './../../../../services/cidade.service';
-import { TrajetoService } from './../../../../services/trajeto.service';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { InstituicaoEnsinoService } from './../../../../services/instituicao-ensino.service';
+import { CidadeService } from './../../../../services/cidade.service';
+import { TrajetoService } from './../../../../services/trajeto.service';
+import { UploadService } from './../../../../services/upload.service';
 import { ErrorHandlerService } from './../../../core/error-handler.service';
 import { EstudanteService } from './../../../../services/estudante.service';
-import { Estudante, Endereco, ComprovanteMatricula, STATUS_COMPROVANTE, HorarioSemanalEstudante, DIA_SEMANA, PontoParada, Cidade, InstituicaoEnsino, Curso } from './../../../core/model';
+import { Estudante, Endereco, ComprovanteMatricula, STATUS_COMPROVANTE, HorarioSemanalEstudante, DIA_SEMANA, FileUpload } from './../../../core/model';
 import { StorageDataService } from './../../../../services/storage-data.service';
-import { isDate } from '@angular/common/src/i18n/format_date';
 
 @Component({
   selector: 'app-estudante-cadastro',
@@ -29,7 +30,9 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   cidade = '';
   instituicaoEnsino = '';
   curso = ''
-  fotoEstudante = null;
+  fotoEstudante: FileUpload;
+  comprovante: FileUpload;
+  progress: { percentage: number } = { percentage: 0 };
 
   public cidades = new Array<any>();
   public instituicoesEnsino = new Array<any>();
@@ -38,7 +41,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   public pontosParadaVolta = new Array<any>();
 
   constructor(private formBuilder: FormBuilder, private router: Router,
-      private instituicaoEnsinoService: InstituicaoEnsinoService, private httpClient: HttpClient,
+      private instituicaoEnsinoService: InstituicaoEnsinoService, private uploadService: UploadService,
       private trajetoService: TrajetoService, private cidadeService: CidadeService,
       private estudanteService: EstudanteService, private snackBar: MatSnackBar,
       private errorHandlerService: ErrorHandlerService, private storageDataService: StorageDataService)
@@ -67,12 +70,15 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
 
     this.estudanteService.cadastrarEstudante(estudante)
       .then((estudanteAdicionado) => {
+
         this.router.navigate(['/login']);
 
         this.snackBar.open('Estudante cadastrado com sucesso', '', { duration: 3500});
       })
       .catch(erro => {
         this.errorHandlerService.handle(erro);
+
+        // REMOVER FOTO E COMPROVANTE
       });
   }
 
@@ -84,7 +90,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     estudante.sobrenome = this.firstFormGroup.get('campoSobrenome').value;
     estudante.numeroCelular = this.firstFormGroup.get('campoNumeroCelular').value;
     estudante.senha = this.quintoFormGroup.get('campoConfirmacaoSenha').value;
-    estudante.foto = `foto-${this.firstFormGroup.get('campoNumeroCelular').value}.jpg`//this.fotoEstudante;
+    estudante.foto = this.fotoEstudante.url;
     estudante.ativo = false;
 
     estudante.endereco = this.criarEndereco();
@@ -96,48 +102,21 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     return estudante;
   }
 
-  salvarImagem()
+  private salvarFoto()
   {
-    // dois pontos   (:) -> %3A
-    // barra         (/) -> %2F
-    // igual         (=) -> %3D
-    // 'e' comercial (&) -> %26
+    // console.log(this.fotoEstudante);
 
-    // const timestamp = new Date().getTime() + '';
+    // const file = this.selectedFiles.item(0);
+    // this.selectedFiles = undefined;
 
-    // const url_request_token = 'https%3A%2F%2Fwww.flickr.com%2Fservices%2Foauth%2Frequest_token';
-    // const nonce = CryptoJS.MD5(timestamp).toString();
-    // const oauth_timestamp = timestamp;
-    // const consumer_key = '0f1cfba7b36e969278db0fbbc34bd6c6';
-    // const sig_method = 'HMAC-SHA1';
-    // const version = "1.0";
-    // const callback = 'http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2requestTokenFlickr';
+    // this.fotoEstudante = new FileUpload(file);
 
-    // const signature = '0f1cfba7b36e969278db0fbbc34bd6c6' + '%26';// +FLICKR_API_SECRET;
+    this.uploadService.pushFileToStorage(this.fotoEstudante, this.progress, 'fotos-perfil');
+  }
 
-    // const basestring = 'GET&'+url_request_token+'&oauth_callback%3D'+callback+
-    //     '%26oauth_consumer_key%3D'+consumer_key+'%26oauth_nonce%3D'+nonce+
-    //     '%26oauth_signature_method%3D'+sig_method+
-    //     '%26oauth_timestamp%3D'+oauth_timestamp+'%26oauth_version%3D'+version;
-
-    // const oauth_signature = CryptoJS.HmacSHA1(basestring, signature).toString();
-
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Access-Control-Allow-Headers': 'Content-Type',
-    //     'Content-Type': 'application/json'
-    //     // 'Content-Type': 'application/x-www-form-urlencoded'
-    //   }),
-    //   withCredentials: true
-    // };
-
-    // const body: string = JSON.stringify({'url': `https://www.flickr.com/services/oauth/request_token?oauth_nonce=${nonce}&oauth_timestamp=${oauth_timestamp}&oauth_consumer_key=${consumer_key}&oauth_signature_method=${sig_method}&oauth_version=${version}&oauth_signature=${oauth_signature}&oauth_callback=${callback}`});
-
-    // return this.httpClient.post(`${environment.apiUrl}/requestTokenFlickr`, body, httpOptions)
-    //   .toPromise()
-    //   .then(response => {
-    //     console.log(response);
-    //   });
+  private salvarComprovante()
+  {
+    this.uploadService.pushFileToStorage(this.comprovante, this.progress, 'comprovantes-matricula')
   }
 
   private criarEndereco(): Endereco
@@ -157,7 +136,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   {
     const comprovanteMatricula = new ComprovanteMatricula();
 
-    comprovanteMatricula.caminhoSistemaArquivos = `comprovante-${this.firstFormGroup.get('campoNumeroCelular').value}.pdf`;
+    comprovanteMatricula.caminhoSistemaArquivos = this.comprovante.url;
     comprovanteMatricula.status = STATUS_COMPROVANTE.EM_ANALISE;
     comprovanteMatricula.dataEnvio = new Date();
     comprovanteMatricula.justificativa = '-';
@@ -193,7 +172,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   private createForms()
   {
     this.firstFormGroup = this.formBuilder.group({
-      // campoFoto: [null, Validators.required],
+      campoFoto: [null, Validators.required],
       campoNome: [null, Validators.required],
       campoSobrenome: [null, Validators.required],
       campoNumeroCelular: [null, Validators.required]
@@ -208,6 +187,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     this.thirdFormGroup = this.formBuilder.group({
       campoInstituicaoEnsino: [null, Validators.required],
       campoCurso: [null, Validators.required],
+      campoComprovante: [null, Validators.required]
     });
 
     this.fourthFormGroup = this.formBuilder.group({
@@ -221,10 +201,25 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     });
   }
 
-  onFileInput(event)
+  onFotoInput(event)
   {
-    console.log(event);
-    this.fotoEstudante = event.target.files[0]['name'];
+    //    this.fotoEstudante = event.target.files[0]['name'];
+    this.fotoEstudante = new FileUpload(event.target.files[0]);
+  }
+
+  onComprovanteInput(event)
+  {
+    this.comprovante = new FileUpload(event.target.files[0])
+  }
+
+  removerFotoCarregada()
+  {
+    this.fotoEstudante = null;
+  }
+
+  removerComprovanteCarregado()
+  {
+    this.comprovante = null;
   }
 
   verificarSenhasDiferentes()

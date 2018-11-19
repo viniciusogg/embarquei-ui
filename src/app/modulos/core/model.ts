@@ -151,6 +151,15 @@ export enum DIA_SEMANA {
   SEXTA = 'SEXTA'
 }
 
+export class FileUpload {
+  url: string;
+  file:File;
+
+  constructor(file: File) {
+    this.file = file;
+  }
+}
+
 export enum STATUS_COMPROVANTE {
   EM_ANALISE = 'EM_ANALISE',
   APROVADO = 'APROVADO',
@@ -176,3 +185,4 @@ export enum TIPO_NOTIFICACAO {
   MUDANCA_VEICULO = 'MUDANCA_VEICULO',
   CONFIRMACAO_PRESENCA = 'CONFIRMACAO_PRESENCA'
 }
+

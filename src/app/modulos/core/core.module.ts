@@ -1,3 +1,4 @@
+import { AngularFireDatabase } from '@angular/fire/database';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -42,7 +43,9 @@ import { CookieService } from 'ngx-cookie-service';
     LogoutService,
     TrajetoService,
     CidadeService,
-    InstituicaoEnsinoService
+    InstituicaoEnsinoService,
+
+    AngularFireDatabase
   ]
 })
 export class CoreModule { }

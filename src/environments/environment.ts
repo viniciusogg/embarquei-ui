@@ -5,5 +5,13 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://127.0.0.1:8000/api'
+  apiUrl: 'http://127.0.0.1:8000/api',
+  firebase: {
+    apiKey: "AIzaSyDs64iL2t1zsXBmljC30c2m8BbPP51_SxE",
+    authDomain: "embarquei-app.firebaseapp.com",
+    databaseURL: "https://embarquei-app.firebaseio.com",
+    projectId: "embarquei-app",
+    storageBucket: "embarquei-app.appspot.com",
+    messagingSenderId: "990913480286"
+  }
 };
