@@ -4,8 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EstudanteService } from './../../../../services/estudante.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Estudante, PontoParada, Endereco, STATUS_COMPROVANTE } from './../../../core/model';
-import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
-import { MatRadioGroup } from '@angular/material';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-estudante-detalhes',
@@ -18,6 +17,7 @@ export class EstudanteDetalhesComponent implements OnInit, AfterViewInit {
   pontoIda: PontoParada = new PontoParada();
   pontoVolta: PontoParada = new PontoParada();
   endereco: Endereco = new Endereco();
+  comprovanteMatriculaLink: string;
   dataEnvioComprovante: any;
   instituicaoEnsino: string;
   curso: string;
@@ -46,6 +46,8 @@ export class EstudanteDetalhesComponent implements OnInit, AfterViewInit {
       .then(estudante => {
 
         this.estudante = estudante;
+
+        this.comprovanteMatriculaLink = estudante.comprovanteMatricula.caminhoSistemaArquivos;
 
         for(let ponto of estudante.pontosParada)
         {

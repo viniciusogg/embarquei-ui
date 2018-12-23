@@ -1,3 +1,5 @@
+import { Cidade } from './../modulos/core/model';
+import { Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ErrorHandlerService } from '../modulos/core/error-handler.service';
@@ -28,9 +30,27 @@ export class CidadeService {
         const resultado = {
           cidades: response
         };
-
         return resultado;
       })
       .catch(erro => this.errorHandlerService.handle(erro));
+  }
+
+  getCidadesComRotas(): Promise<Cidade[]>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      withCredentials: false
+    };
+
+    return this.httpClient.get(`${this.cidadeUrl}/comRota`, httpOptions)
+      .toPromise()
+      .then(response => {
+
+        const cidades: Cidade[] = response as Cidade[];
+
+        return cidades;
+      })
   }
 }

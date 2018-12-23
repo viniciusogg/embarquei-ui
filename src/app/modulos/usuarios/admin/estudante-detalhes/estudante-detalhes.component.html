@@ -91,32 +91,31 @@
       <mat-card>
         <mat-card-title>Comprovante de matrícula</mat-card-title>
 
-        <div style="margin: 15px 0; display: flex;">
+        <div style="margin: 15px 0 15px 15px;; display: flex;">
           <span class="mat-body-strong" style="min-width: 120px">Data de envio</span>
           <span class="mat-small" style="margin: auto 0;">{{dataEnvioComprovante}}</span>
         </div>
 
         <div style="display: grid">
-          <div style="display: flex">
-            <mat-card style="min-width: 45%; min-height: 250px;">
-              <h1>pdf</h1>
-            </mat-card>
+          <div style="margin: 0px 0px 15px 15px;">
+            <a mat-stroked-button color="primary" target="_blank" rel="noopener noreferrer"
+                [href]="comprovanteMatriculaLink">VER COMPROVANTE</a>
+          </div>
 
-            <div style="margin-left: 15px;">
-              <span class="mat-small">
-                Se estiver tudo certo com o comprovante marque a opção <strong>ACEITAR</strong>,
-                caso contrário, marque a opção <strong>RECUSAR</strong> e escreva uma justificativa
-                descrevendo o motivo da recusa. Por fim, aperte o botão <strong>SALVAR</strong>
-                para confirmar as alterações.
-              </span>
+          <div style="margin-left: 15px;">
+            <span class="mat-small">
+              Se estiver tudo certo com o comprovante marque a opção <strong>ACEITAR</strong>,
+              caso contrário, marque a opção <strong>RECUSAR</strong> e escreva uma justificativa
+              descrevendo o motivo da recusa. Por fim, aperte o botão <strong>SALVAR</strong>
+              para confirmar as alterações.
+            </span>
 
-              <mat-radio-group style="display: grid; margin: 15px 0;" [(ngModel)]="statusComprovante">
-                <mat-radio-button (click)="comprovanteMatriculaFormGroup.get('campoJustificativa').disable(); removerValidador()"
-                    style="margin: 10px 0px;" value="true">ACEITAR</mat-radio-button>
-                <mat-radio-button (click)="comprovanteMatriculaFormGroup.get('campoJustificativa').enable(); adicionarValidador()"
-                    style="margin: 10px 0px;" value="false">RECUSAR</mat-radio-button>
-              </mat-radio-group>
-            </div>
+            <mat-radio-group style="display: grid; margin: 15px 0;" [(ngModel)]="statusComprovante">
+              <mat-radio-button (click)="comprovanteMatriculaFormGroup.get('campoJustificativa').disable(); removerValidador()"
+                  style="margin: 10px 0px;" value="true">ACEITAR</mat-radio-button>
+              <mat-radio-button (click)="comprovanteMatriculaFormGroup.get('campoJustificativa').enable(); adicionarValidador()"
+                  style="margin: 10px 0px;" value="false">RECUSAR</mat-radio-button>
+            </mat-radio-group>
           </div>
 
           <form [formGroup]="comprovanteMatriculaFormGroup" autocomplete="off">

@@ -254,10 +254,10 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
 
   buscarCidades()
   {
-    this.cidadeService.getAll()
+    this.cidadeService.getCidadesComRotas()
       .then(response => {
 
-        this.cidades = response.cidades;
+        this.cidades = response;
         // console.log(response.cidades);
         // console.log(this.cidades);
       });

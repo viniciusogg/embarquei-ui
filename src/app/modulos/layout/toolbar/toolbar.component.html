@@ -21,14 +21,14 @@
         </mat-toolbar-row>
       </mat-toolbar>
 
-      <mat-sidenav-container class="sidenav-container"
+      <mat-sidenav-container class="sidenav-container" [ngStyle]="{'background': alterarBackground()}"
           [style.marginTop.px]="mobileQuery.matches && ocultarToolbar() ? 56 : 0"> <!-- && ocultarToolbar() -->
         <mat-sidenav #sidenavRef [mode]="mobileQuery.matches ? 'over' : 'side'" *ngIf="ocultarMenu()"
               [fixedInViewport]="mobileQuery.matches" fixedTopGap="Non-fixed" id="sidebar"> <!-- Non-fixed -->
             <app-menu [drawerRef]="drawerRef"></app-menu>
         </mat-sidenav>
 
-        <mat-sidenav-content [ngStyle]="{'background': alterarBackground()}">
+        <mat-sidenav-content> <!-- [ngStyle]="{'background': alterarBackground()}" -->
           <router-outlet></router-outlet>
         </mat-sidenav-content>
       </mat-sidenav-container>
