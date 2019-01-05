@@ -17,11 +17,11 @@ export class Administrador extends Usuario {
 }
 
 export class Motorista extends Usuario {
-
+  foto?: Imagem;
 }
 
 export class Estudante extends Usuario {
-  foto: string;
+  foto?: Imagem;
   pontosParada: Array<PontoParada>;
   comprovanteMatricula: ComprovanteMatricula;
   curso: any;
@@ -40,14 +40,6 @@ export class HorarioSemanalEstudante {
     this.diaSemana = diaSemana;
     this.temAula = temAula;
   }
-}
-
-export class ComprovanteMatricula {
-  id: string;
-  caminhoSistemaArquivos: string;
-  status: STATUS_COMPROVANTE;
-  dataEnvio: any;
-  justificativa: string;
 }
 
 export class PontoParada {
@@ -98,7 +90,7 @@ export class VeiculoTransporte {
   placa: string;
   tipo: TIPO_VEICULO;
   cor: string;
-  imagem: string;
+  imagem?: Imagem;
   instituicoesEnsino: Array<InstituicaoEnsino>;
 }
 
@@ -143,21 +135,27 @@ export class Cidade {
   nome: string;
 }
 
+export abstract class Arquivo {
+  id: string;
+  caminhoSistemaArquivos?: string;
+}
+
+export class Imagem extends Arquivo {
+
+}
+
+export class ComprovanteMatricula extends Arquivo {
+  status: STATUS_COMPROVANTE;
+  dataEnvio: any;
+  justificativa: string;
+}
+
 export enum DIA_SEMANA {
   SEGUNDA = 'SEGUNDA',
   TERCA = 'TERCA',
   QUARTA = 'QUARTA',
   QUINTA = 'QUINTA',
   SEXTA = 'SEXTA'
-}
-
-export class FileUpload {
-  url: string;
-  file:File;
-
-  constructor(file: File) {
-    this.file = file;
-  }
 }
 
 export enum STATUS_COMPROVANTE {
@@ -186,3 +184,7 @@ export enum TIPO_NOTIFICACAO {
   CONFIRMACAO_PRESENCA = 'CONFIRMACAO_PRESENCA'
 }
 
+export enum COLECAO_ARQUIVO {
+  COMPROVANTES_MATRICULA = 'comprovantes_matricula',
+  FOTOS_CONTAS = 'fotos_contas'
+}

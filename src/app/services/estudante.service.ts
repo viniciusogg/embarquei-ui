@@ -30,7 +30,11 @@ export class EstudanteService {
 
     return this.httpClient.post(this.estudantesUrl, body, httpOptions)
       .toPromise()
-      .then(response => Promise.resolve(null));
+      .then(response => {
+        const estudante = response as Estudante;
+
+        return estudante;
+      });
   }
 
   getById(id): Promise<any>
@@ -45,7 +49,6 @@ export class EstudanteService {
     return this.httpClient.get(`${this.estudantesUrl}/${id}`, httpOptions)
       .toPromise()
       .then(response => {
-
         const estudante = response as Estudante;
 
         return estudante;

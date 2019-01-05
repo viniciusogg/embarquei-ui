@@ -1,24 +1,26 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import * as firebase from 'firebase';
-import { FileUpload } from './../modulos/core/model';
+// import { FileUpload, COLECAO_ARQUIVO } from './../modulos/core/model';
 import 'firebase/storage';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
 
-  private basePath;
+  private colecao;
 
-  constructor(private angularFireDatabase: AngularFireDatabase) { }
+  constructor(private angularFireDatabase: AngularFireDatabase, private angularFireStorage: AngularFireStorage) { }
 
-  pushFileToStorage(fileUpload: FileUpload, progress: { percentage: number }, basePath: string) {
+  /*
+  pushFileToStorage(fileUpload: FileUpload, progress: { percentage: number }, colecao: string) {
 
-    this.basePath = basePath;
+    this.colecao = colecao;
 
     const storageRef = firebase.storage().ref();
-    const uploadTask = storageRef.child(`${this.basePath}/${fileUpload.file.name}`).put(fileUpload.file);
+    const uploadTask = storageRef.child(`${this.colecao}/${fileUpload.file.name}`).put(fileUpload.file);
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) => {
@@ -33,22 +35,40 @@ export class UploadService {
       () => {
         // success
         uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-          console.log('File available at', downloadURL);
-          fileUpload.url = downloadURL;
+          // console.log('File available at', downloadURL);
+          fileUpload.caminhoSistemaArquivos = downloadURL;
           this.saveFileData(fileUpload);
         });
       }
     );
+  }*/
+
+  simpleUpload(file: File, nomeColecao)
+  {
+    this.angularFireStorage.upload(`${nomeColecao}/${file.name}`, file);
+
+    // return this.angularFireStorage.ref
+    /**
+    const firestoreRef = firebase.storage().ref();
+    firestoreRef.child(`${filePath}/${file.name}`).put(file);
+    */
   }
 
-  private saveFileData(fileUpload: FileUpload) {
-    this.angularFireDatabase.list(`${this.basePath}/`).push(fileUpload);
+  getFile(path)
+  {
+    const ref = this.angularFireStorage.ref(path);
+    return ref.getDownloadURL();
   }
 
-  getFileUploads(numberItems): AngularFireList<FileUpload> {
-    return this.angularFireDatabase.list(this.basePath, ref =>
-      ref.limitToLast(numberItems));
-  }
+  // private saveFileData(fileUpload: FileUpload) {
+  //   this.angularFireDatabase.list(`${this.colecao}/`).push(fileUpload);
+  // }
+
+  // getFileUploads(numberItems): AngularFireList<FileUpload> {
+  //   return this.angularFireDatabase.list(this.colecao, ref =>
+  //     ref.limitToLast(numberItems));
+  // }
+
 
   // deleteFileUpload(fileUpload: FileUpload) {
   //   this.deleteFileDatabase(fileUpload.key)
@@ -64,6 +84,6 @@ export class UploadService {
 
   private deleteFileStorage(name: string) {
     const storageRef = firebase.storage().ref();
-    storageRef.child(`${this.basePath}/${name}`).delete();
+    storageRef.child(`${this.colecao}/${name}`).delete();
   }
 }

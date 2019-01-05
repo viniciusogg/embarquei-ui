@@ -5,16 +5,16 @@
     </h1>
   </div>
 
-  <div style="display: flex">
-    <div style="min-width: 35%">
-      <mat-card class="espacamento-card-detalhes-estudante">
+  <div style="display: flex; flex-wrap: wrap; margin-bottom: 90px">
+    <div [ngStyle]="{'flex': flexPrimeiraColuna}">
+      <mat-card class="espacamento-card-detalhes-estudante"> <!-- flex-wrap: wrap; justify-content: center; -->
         <mat-card-title>Dados pessoais</mat-card-title>
 
         <div style="display: flex">
           <div [ngStyle]="{'background': 'transparent no-repeat center',
               'background-size': 'cover',
-              'width': '75px',
-              'height': '75px',
+              'width': '100px',
+              'height': '100px',
               'margin': '15px 15px 15px 0',
               'border-radius': '100px',
               'background-image': url()}">
@@ -28,6 +28,24 @@
 
             <span class="mat-body-strong">Telefone</span>
             <span class="mat-small">{{estudante.numeroCelular}}</span>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="espacamento-card-detalhes-estudante">
+        <mat-card-title>Endereço</mat-card-title>
+
+        <div style="display:grid;">
+          <div style="display:flex;">
+            <span class="mat-body-strong" style="min-width: 95px">Logradouro</span>
+            <span class="mat-small" style="margin: auto 0;">{{endereco.logradouro}}</span>
+          </div>
+
+          <span style="margin-bottom: 10px"></span>
+
+          <div style="display:flex;">
+            <span class="mat-body-strong" style="min-width: 60px">Bairro</span>
+            <span class="mat-small" style="margin: auto 0;">{{endereco.bairro}}</span>
           </div>
         </div>
       </mat-card>
@@ -51,24 +69,6 @@
       </mat-card>
 
       <mat-card class="espacamento-card-detalhes-estudante">
-        <mat-card-title>Endereço</mat-card-title>
-
-        <div style="display:grid;">
-          <div style="display:flex;">
-            <span class="mat-body-strong" style="min-width: 100px">Logradouro</span>
-            <span class="mat-small" style="margin: auto 0;">{{endereco.logradouro}}</span>
-          </div>
-
-          <span style="margin-bottom: 10px"></span>
-
-          <div style="display:flex;">
-            <span class="mat-body-strong" style="min-width: 100px">Bairro</span>
-            <span class="mat-small" style="margin: auto 0;">{{endereco.bairro}}</span>
-          </div>
-        </div>
-      </mat-card>
-
-      <mat-card class="espacamento-card-detalhes-estudante">
         <mat-card-title>Dados acadêmicos</mat-card-title>
 
         <div style="display:grid;">
@@ -80,29 +80,38 @@
           <span style="margin-bottom: 10px"></span>
 
           <div style="display:flex;">
-            <span class="mat-body-strong" style="min-width: 147px">Curso</span> <!-- 57 -->
+            <span class="mat-body-strong" style="min-width: 60px">Curso</span> <!-- 57 -->
             <span class="mat-small" style="margin: auto 0;">{{curso}}</span>
           </div>
         </div>
       </mat-card>
     </div>
 
-    <div style="margin-left: 10px; min-width: 64%;">
+    <div [ngStyle]="{'margin-left': marginLeftSegundaColuna, 'min-width': '300px', 'flex': '1'}">
+      <mat-card style="margin-bottom: 10px;">
+        <mat-card-title>Conta</mat-card-title>
+
+        <div style="display: flex;">
+          <span class="mat-body-strong" style="min-width: 60px">Status</span>
+          <span class="mat-small" style="margin: auto 0;">{{estudante.ativo ? 'Conta ativada' : (estudante.comprovanteMatricula?.status === 'EM_ANALISE' ? 'Aguardando análise' : 'Comprovante recusado')}}</span>
+        </div>
+      </mat-card>
+
       <mat-card>
         <mat-card-title>Comprovante de matrícula</mat-card-title>
 
-        <div style="margin: 15px 0 15px 15px;; display: flex;">
+        <div style="margin: 15px 0 15px 0px; display: flex;">
           <span class="mat-body-strong" style="min-width: 120px">Data de envio</span>
           <span class="mat-small" style="margin: auto 0;">{{dataEnvioComprovante}}</span>
         </div>
 
         <div style="display: grid">
-          <div style="margin: 0px 0px 15px 15px;">
+          <div style="margin: 0px 0px 15px 0px;">
             <a mat-stroked-button color="primary" target="_blank" rel="noopener noreferrer"
                 [href]="comprovanteMatriculaLink">VER COMPROVANTE</a>
           </div>
 
-          <div style="margin-left: 15px;">
+          <div>
             <span class="mat-small">
               Se estiver tudo certo com o comprovante marque a opção <strong>ACEITAR</strong>,
               caso contrário, marque a opção <strong>RECUSAR</strong> e escreva uma justificativa
@@ -122,7 +131,8 @@
             <div style="margin-top: 25px;">
               <mat-form-field appearance="outline" style="width: 100%;" floatLabel="auto">
                 <mat-label>Justificativa</mat-label>
-                <textarea matInput cdkTextareaAutosize placeholder="Justificativa" [required]="statusComprovante === 'false'"
+                <textarea matInput cdkTextareaAutosize 
+                    placeholder="Por que o comprovante de matrícula não é válido?" [required]="statusComprovante === 'false'"
                     cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2" formControlName="campoJustificativa">
                 </textarea>
 
@@ -132,8 +142,13 @@
               </mat-form-field>
             </div>
 
-            <div style="margin-top: 20px; text-align: end;">
-              <button [disabled]="statusComprovante === null || !(comprovanteMatriculaFormGroup.status !== 'INVALID')" mat-raised-button color="accent" (click)="salvar()">SALVAR</button>
+            <div style="display: flex; margin-top: 20px; margin-bottom: 24px">
+              <div style="text-align: start; flex: 1;">
+                <a mat-button [routerLink]="['/estudantes']">VOLTAR</a>
+              </div>
+              <div style="text-align: end; flex: 1;">
+                <button [disabled]="statusComprovante === null || !(comprovanteMatriculaFormGroup.status !== 'INVALID')" mat-raised-button color="accent" (click)="salvar()">SALVAR</button>
+              </div>
             </div>
           </form>
         </div>

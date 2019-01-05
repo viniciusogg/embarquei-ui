@@ -16,7 +16,7 @@
                 <input #imageInput type="file" (change)="onFotoInput($event)" style="display:none;"
                     required formControlName="campoFoto">
             </a>
-            <span class="mat-small" style="margin-left: 10px"> {{fotoEstudante?.file ? '' : 'Adicione uma foto sua'}} {{fotoEstudante?.file.name | slice:0:20}}{{fotoEstudante?.file.name.length > 20 ? '...' : ''}}</span>
+            <span class="mat-small" style="margin-left: 10px"> {{fotoEstudante ? '' : 'Adicione uma foto sua'}} {{fotoEstudante?.name | slice:0:20}}{{fotoEstudante?.name.length > 20 ? '...' : ''}}</span>
           </div>
 
           <mat-form-field appearance="outline" class="spacer-field">
@@ -51,7 +51,7 @@
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext [disabled]="firstFormGroup.invalid"
-                class="botao-next" color="accent" (click)="salvarFoto();">CONTINUAR</button>
+                class="botao-next" color="accent">CONTINUAR</button>
             <a [routerLink]="['/login']" mat-button type="button" >VOLTAR</a>
           </div>
         </form>
@@ -155,13 +155,13 @@
 
             </mat-card-content>
             <div style="text-align: center; font-size: 11px">
-              <span>{{comprovante?.file ? comprovante.file.name : 'Nenhum comprovante foi adicionado'}}</span>
+              <span>{{comprovanteMatricula ? comprovanteMatricula.name : 'Nenhum comprovante foi adicionado'}}</span>
             </div>
           </mat-card>
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext color="accent" class="botao-next"
-                [disabled]="thirdFormGroup.invalid" (click)="buscarPontosParada(); salvarComprovante();">CONTINUAR</button>
+                [disabled]="thirdFormGroup.invalid" (click)="buscarPontosParada()">CONTINUAR</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
           </div>
         </form>

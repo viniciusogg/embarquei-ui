@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './routing/app-routing.module';
@@ -35,7 +36,7 @@ import { EstudanteDetalhesComponent } from './modulos/usuarios/admin/estudante-d
     HttpClientModule,
 
     AngularFireModule.initializeApp(environment.firebase),
-
+    AngularFireStorageModule,
     LayoutModule,
     SegurancaModule,
     EstudanteModule,
