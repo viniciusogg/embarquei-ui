@@ -9,6 +9,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { EstudanteService } from '../../../services/estudante.service';
+import { Estudante } from '../../core/model';
+import { UploadService } from '../../../services/upload.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +26,7 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
       private errorHandlerService: ErrorHandlerService, private storageDataService: StorageDataService,
       private estudanteService: EstudanteService, private adminService: AdminService,
-      private routingService: RoutingService)
+      private routingService: RoutingService, private uploadService: UploadService)
   {
     this.createForm();
   }
@@ -41,14 +43,24 @@ export class LoginComponent implements OnInit {
 
             if(tipoRetornado.tipo === 'est')
             {
+              let estudante: Estudante;
+
               this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
                 .then(usuario => {
+                  estudante = usuario;
                   this.storageDataService.usuarioLogado = usuario;
                   localStorage.setItem('isUsuarioAtivo', usuario.ativo);
                   this.routingService.configurarRotas(localStorage.getItem('tipoUsuarioLogado'));
                 })
                 .then(() => {
-
+                  console.log(estudante);
+                  this.uploadService.getFile(estudante.foto.caminhoSistemaArquivos)
+                    .toPromise()
+                    .then((response) => {
+                      this.storageDataService.usuarioLogado.linkFoto = response;
+                    });
+                })
+                .then(() => {
                   if(this.storageDataService.usuarioLogado.ativo)
                   {
                     this.router.navigate(['/checkin']);

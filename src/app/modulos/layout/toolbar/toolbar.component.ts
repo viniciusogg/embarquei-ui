@@ -6,6 +6,8 @@ import { MatSidenav, MatDialog } from '@angular/material';
 
 import { StorageDataService } from './../../../services/storage-data.service';
 import { LembreteDialogComponent } from './../../usuarios/estudante/checkin/checkin.component';
+import { UploadService } from '../../../services/upload.service';
+import { Estudante } from '../../core/model';
 
 @Component({
   selector: 'app-toolbar',
@@ -14,9 +16,11 @@ import { LembreteDialogComponent } from './../../usuarios/estudante/checkin/chec
 })
 export class ToolbarComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('sidenavRef') public sidenavRef: MatSidenav;
+  // @ViewChild('sidenavRef') public sidenavRef: MatSidenav;
 
   mobileQuery: MediaQueryList;
+
+  fotoUsuario: string;
 
   private _mobileQueryListener: () => void;
 
@@ -28,10 +32,10 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 
     // if (this.router.url !== '/login') {
 
-      this.mobileQuery = media.matchMedia('(max-width: 1024px)'); // 700
+      // this.mobileQuery = media.matchMedia('(max-width: 1024px)'); // 700
 
-      this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-      this.mobileQuery.addListener(this._mobileQueryListener);
+      // this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+      // this.mobileQuery.addListener(this._mobileQueryListener);
     // }
   }
 
@@ -49,22 +53,18 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit()
   {
-    if (this.router.url !== '/login') { // /login
-      if (this.mobileQuery.matches) {
-        this.sidenavRef.close();
-      }
-      else {
-        this.sidenavRef.open();
-      }
-    }
+    // if (this.router.url !== '/login') {
+    //   if (this.mobileQuery.matches) {
+    //     this.sidenavRef.close();
+    //   }
+    //   else {
+    //     this.sidenavRef.open();
+    //   }
+    // }
   }
 
-  // redirecionar(url: string) {
-  //   this.router.navigate([url]);
-  // }
-
-  ocultarToolbar() {
-    // console.log(!this.router.url.includes('/recuperacao/senha/'));
+  ocultarToolbar() 
+  {
     return !this.isTelaLogin();
   }
 
@@ -77,22 +77,20 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
       isAutenticado = false;
     }
 
-    // return this.router.url !== '/cadastro/estudante' && !this.isTelaLogin()
-    //     && this.router.url !== '/pagina-nao-encontrada' && isAutenticado;
-
     return this.router.url !== '/cadastro/estudante' && !this.isTelaLogin()
         && isAutenticado;
   }
 
-  isTelaLogin() {
+  isTelaLogin() 
+  {
     return this.router.url === '/login';
   }
 
   alterarBackground() {
-    if (this.isTelaLogin()) {
+    if (this.isTelaLogin()) 
+    {
       return '#2979FF';
     }
-
     return 'unset';
   }
 

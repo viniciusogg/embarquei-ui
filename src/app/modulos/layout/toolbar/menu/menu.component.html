@@ -1,31 +1,32 @@
 <div>
-  <div style="background-image: url('assets/road3.jpg'); min-height: 100px; padding: 15px 10px;
+  <div style="background-image: url('assets/road4.jpg'); min-height: 100px; padding: 15px 10px;
       background-position: center;
       background-size: cover;
       display: block;
       max-width: 235px;"> <!-- flex -->
-      <div cdkFocus style="background: transparent no-repeat center;
-          background-size: cover;
-          width: 80px;
-          height: 80px;
-          border-radius: 100px;
-          background-image: url(assets/doge.jpg);">
-        <!-- <img src="./../../../../../assets/doge.jpg"
-            style="width: 80px; height: 80px; border-radius: 100%;" cdkFocus> -->
-      </div>
+    <div *ngIf="getTipoUsuarioLogado() !== 'admin'" cdkFocus [ngStyle]="{'background': '#fafafa no-repeat center',
+        'background-size': 'cover',
+        'width': '80px',
+        'height': '80px',
+        'border-radius': '100px',
+        'background-image': url()}">
+    </div>
     <h3 class="mat-h3" style="color: white; margin-top: 10px; margin-bottom: unset; font-weight: bold;">
       {{storageDataService.usuarioLogado?.nome}} {{storageDataService.usuarioLogado?.sobrenome}}
     </h3>
   </div>
 
   <mat-nav-list>
-    <mat-list-item [id]="opcao.id" *ngFor="let opcao of getArrayOpcoes()"
+    <mat-list-item [id]="opcao.id" 
+        *ngFor="let opcao of (storageDataService?.usuarioLogado?.ativo ? 
+          (getTipoUsuarioLogado() === 'est' ? 
+          opcoesMenuLateralEstudante : opcoesMenuLateralAdmin) : opcoesMenuLateralEmAnalise); index as i; first as primeiraOpcao; last as ultimaOpcao"
         (click)="redirecionar(opcao.url)">
       <mat-icon mat-list-icon>{{opcao.icone}}</mat-icon>
       <a matLine>{{opcao.label}}</a>
-    </mat-list-item>
 
-    <mat-divider *ngIf="getArrayOpcoes()?.length > 1"></mat-divider>
+      <mat-divider *ngIf="ultimaOpcao"></mat-divider>
+    </mat-list-item>
 
     <mat-list-item id="botaoSair" (click)="drawerRef.close(); logout();">
       <a matLine>Sair</a>

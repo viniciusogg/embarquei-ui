@@ -6,6 +6,7 @@ export abstract class Usuario {
   senha: string;
   ativo: boolean;
   endereco: Endereco;
+  linkFoto?: string;
 }
 
 export abstract class Mensageiro extends Usuario {

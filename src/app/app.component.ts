@@ -3,6 +3,8 @@ import { AdminService } from './services/admin.service';
 import { EstudanteService } from './services/estudante.service';
 import { Component, OnInit } from '@angular/core';
 import { StorageDataService } from './services/storage-data.service';
+import { UploadService } from './services/upload.service';
+import { Estudante } from './modulos/core/model';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,7 @@ export class AppComponent implements OnInit{
   title = 'app';
 
   constructor(private estudanteService: EstudanteService, private storageDataService: StorageDataService,
-      private adminService: AdminService, private routingService: RoutingService)
+      private adminService: AdminService, private routingService: RoutingService, private uploadService: UploadService)
   {
 
   }
@@ -31,9 +33,20 @@ export class AppComponent implements OnInit{
     {
       if(localStorage.getItem('tipoUsuarioLogado') === 'est')
       {
+        let estudante: Estudante;
+
         this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
-          .then(estudante => {
-            this.storageDataService.setUsuarioLogado(estudante);
+          .then(response => {
+            estudante = response;
+            this.storageDataService.setUsuarioLogado(response);
+          })
+          .then(() => {
+            this.uploadService.getFile(estudante.foto.caminhoSistemaArquivos)
+              .toPromise()
+              .then((response) => {
+                this.storageDataService.usuarioLogado.linkFoto = response;
+              })
+              .catch(erro => console.log(erro));
           })
           .catch(erro => console.log(erro));
       }

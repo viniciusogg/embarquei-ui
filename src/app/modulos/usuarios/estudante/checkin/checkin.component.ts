@@ -35,7 +35,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
       private storageDataService: StorageDataService, private authServive: AuthService,
       private snackBar: MatSnackBar)
   {
-    this.mobileQuery = media.matchMedia('(max-width: 1024px)'); //700
+    this.mobileQuery = media.matchMedia('(max-width: 500px)'); //700
 
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -43,13 +43,12 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit()
   {
-    console.log('iniciou checkin');
+    setTimeout(() => {
+      this.storageDataService.tituloBarraSuperior = 'Check-in';
+    });
   }
 
-  ngOnInit()
-  {
-    this.storageDataService.tituloBarraSuperior = 'Check-in';
-  }
+  ngOnInit() {}
 
   confirmarPresenca()
   {
@@ -157,7 +156,7 @@ export class AjudaDialogComponent implements OnInit {
 })
 export class LembreteDialogComponent implements OnInit {
 
-  segunda = false;
+  segunda = true;
   terca = false;
   quarta = false;
   quinta = false;
