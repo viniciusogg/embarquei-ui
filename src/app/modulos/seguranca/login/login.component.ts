@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
                   this.routingService.configurarRotas(localStorage.getItem('tipoUsuarioLogado'));
                 })
                 .then(() => {
-                  console.log(estudante);
+                  // console.log(estudante);
                   this.uploadService.getFile(estudante.foto.caminhoSistemaArquivos)
                     .toPromise()
                     .then((response) => {

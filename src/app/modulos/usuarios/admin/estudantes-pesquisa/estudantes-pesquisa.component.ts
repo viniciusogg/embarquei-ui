@@ -43,7 +43,7 @@ export class EstudantesPesquisaComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.listarEstudantes();
-    console.log('Iniciou tela de estudantes cadastrados');
+    // console.log('Iniciou tela de estudantes cadastrados');
   }
 
   listarEstudantes() {

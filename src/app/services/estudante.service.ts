@@ -56,4 +56,25 @@ export class EstudanteService {
       .catch(erro => console.log(erro));
   }
 
+  atualizar(id, dados): Promise<any>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    };
+
+    const body = JSON.stringify(dados);
+
+    return this.httpClient.put(`${this.estudantesUrl}/${id}`, body, httpOptions)
+      .toPromise()
+      .then((response) => {
+        const estudante = response as Estudante;
+
+        return estudante;
+      });
+  }
+
 }

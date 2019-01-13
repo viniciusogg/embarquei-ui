@@ -57,6 +57,7 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
   margin-top: 15px;
 }
 
+/*--------------------- CHECKIN -----------------------*/
 @media (min-width: 700px) {
   #tabGroupCheckin > .mat-tab-header {
     position:unset !important;
@@ -80,6 +81,13 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
     margin-top: 48px;
   }
 }
+
+//*[@id="listaPresenca"]/mat-list-item/div
+mat-list#listaPresenca > mat-list-item > div {
+  padding: unset;
+}
+/*--------------------- CHECKIN -----------------------*/
+
 
 /*------------------------------------------- LOGIN -------------------------------------------*/
 #campoNumeroCelularLogin::placeholder {

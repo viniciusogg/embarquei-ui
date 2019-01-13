@@ -25,7 +25,7 @@ export class Estudante extends Usuario {
   foto?: Imagem;
   pontosParada: Array<PontoParada>;
   comprovanteMatricula: ComprovanteMatricula;
-  curso: any;
+  curso: Curso; //Curso
   horariosSemanaisEstudante: Array<HorarioSemanalEstudante>;
   endereco: Endereco;
 }
@@ -34,7 +34,7 @@ export class HorarioSemanalEstudante {
   id: string;
   diaSemana: DIA_SEMANA;
   temAula: boolean;
-  estudante: Estudante;
+  estudante?: Estudante;
 
   constructor(diaSemana, temAula)
   {
@@ -47,17 +47,17 @@ export class PontoParada {
   id: string;
   nome: string;
   ordem: number;
-  estudantes: Array<Estudante>;
+  estudantes?: Array<Estudante>;
   trajeto: Trajeto;
 }
 
 export class Trajeto {
   id: string;
-  urlMapa: string;
+  urlMapa?: string;
   tipo: TIPO_TRAJETO
-  pontosParada: Array<PontoParada>;
-  horarioTrajeto: HorarioTrajeto;
-  rota: Rota;
+  pontosParada?: Array<PontoParada>;
+  horarioTrajeto?: HorarioTrajeto;
+  rota?: Rota;
 }
 
 export class Rota {
@@ -76,13 +76,14 @@ export class HorarioTrajeto {
 export class Curso {
   id: string;
   nome: string;
+  instituicaoEnsino: InstituicaoEnsino;
 }
 
 export class InstituicaoEnsino {
   id: string;
   nome: string;
-  cursos: Array<Curso>;
-  endereco: Endereco;
+  cursos?: Array<Curso>;
+  endereco?: Endereco;
 }
 
 export class VeiculoTransporte {
@@ -97,8 +98,9 @@ export class VeiculoTransporte {
 
 export class Checkin {
   id: string;
-  confirmado: boolean;
-  estudante: Estudante;
+  status: STATUS_CHECKIN;
+  estudante?: Estudante;
+  dataUltimaAtualizacao: Date;
 }
 
 export class ListaPresenca {
@@ -126,14 +128,14 @@ export class RenovacaoCadastro {
 
 export class Endereco {
   id: string;
-  cidade: any;
+  cidade: Cidade;
   logradouro: string;
   bairro: string;
 }
 
 export class Cidade {
   id: string;
-  nome: string;
+  nome?: string;
 }
 
 export abstract class Arquivo {
@@ -188,4 +190,10 @@ export enum TIPO_NOTIFICACAO {
 export enum COLECAO_ARQUIVO {
   COMPROVANTES_MATRICULA = 'comprovantes_matricula',
   FOTOS_CONTAS = 'fotos_contas'
+}
+
+export enum STATUS_CHECKIN {
+  CONFIRMADO = 'CONFIRMADO',
+  EMBARCOU = 'EMBARCOU',
+  AGUARDANDO_CONFIRMACAO = 'AGUARDANDO_CONFIRMACAO'
 }

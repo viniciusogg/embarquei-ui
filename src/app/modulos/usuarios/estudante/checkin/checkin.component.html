@@ -1,8 +1,8 @@
-<mat-tab-group mat-stretch-tabs id="tabGroupCheckin"
+<mat-tab-group mat-stretch-tabs id="tabGroupCheckin" (selectedTabChange)="getListaPresenca($event)"
     color="accent"
     backgroundColor="primary">
     <!-- mat-elevation-z2 -->
-  <mat-tab>
+  <mat-tab label="confirmacaoPresenca">
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon">done_all</mat-icon>
       <span *ngIf="!mobileQuery.matches">Confirme sua presença</span>
@@ -17,7 +17,7 @@
           </span>
         </div>
 
-        <div style="text-align: center; margin-top: 50px;" *ngIf="!embarcou">
+        <div style="text-align: center; margin-top: 50px;" *ngIf="exibirBotao"> <!-- !embarcou -->
           <div style="display: flow-root; height: 31px;" class="accent-dark">
             <button mat-icon-button style="float: right;" color="accent"
                 (click)="abrirAjuda('botaoEmbarquei')" *ngIf="isPresencaConfirmada">
@@ -27,7 +27,7 @@
 
           <button mat-raised-button [color]="corBotao" (click)="confirmarPresenca()"
               style="height: 50px; width: 160px; border-radius: 50px;
-              font-weight: bold; font-size: 18px;">
+              font-weight: bold; font-size: 18px; padding-top: 2px;">
             {{textoBotao}}
           </button>
         </div>
@@ -40,10 +40,10 @@
         </div>
 
         <div style="text-align: center; margin-top: 80px;" *ngIf="embarcou">
-          <span style="font-size: 15px; color: gray;">Volte amanhã para confirmar sua presença novamente.</span>
+          <span style="font-size: 15px; color: gray;">Volte aqui no seu próximo dia de aula para confirmar sua presença novamente.</span>
         </div>
 
-        <div style="text-align: center; margin-top: 23px;" *ngIf="!isPresencaConfirmada">
+        <div style="text-align: center; margin-top: 23px;" *ngIf="exibirCheckbox"> <!-- !isPresencaConfirmada -->
           <div style="display: flow-root; width: 94%; height: 30px;">
             <button mat-icon-button style="float:right" color="primary" (click)="abrirAjuda('checkboxEstaNoPonto')">
               <mat-icon>help_outline</mat-icon>
@@ -66,10 +66,53 @@
     </div>
   </mat-tab>
 
-  <mat-tab [id]="abaPresencasConfirmadas">
+  <mat-tab [id]="abaPresencasConfirmadas" label="listaPresenca">
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon">list</mat-icon>
-      <span *ngIf="!mobileQuery.matches">Presenças confirmadas</span>
+      <span *ngIf="!mobileQuery.matches">Lista de presença</span>
+    </ng-template>
+
+    <ng-template matTabContent>
+      <div class="container">
+        <mat-card style="margin-bottom: 10px">
+          <h3 style="font-weight: 100; font-size: 23px;">Resumo da viagem</h3> <!-- Detalhes dos passageiros -->
+
+          <div style="min-height: 20px; margin: 15px 0;"> <!-- margin-top: 35px; padding: 10px; -->
+            <span style="font-size: 15px; color: gray;">
+              24 estudantes confirmaram presença hoje
+            </span>
+          </div>
+
+          <div style="min-height: 20px; margin: 15px 0;"> <!-- margin-top: 35px; padding: 10px; -->
+            <span style="font-size: 15px; color: gray;">
+              15 estudantes aguardando a saída do veículo
+              <!-- 15 estudantes já embarcaram para voltar para casa -->
+              <!-- 15 estudantes já estão no veícula aguardando a volta para casa -->
+              <!-- 15 estudantes já embarcaram e estão aguardando a volta para casa -->
+            </span>
+          </div>
+
+          <div style="min-height: 20px; margin: 15px 0;"> <!-- margin-top: 35px; padding: 10px; -->
+            <span style="font-size: 15px; color: gray;">
+              9 estudantes ainda estão na instituição de ensino
+              <!-- 9 estudantes ainda estão em aulab -->
+            </span>
+          </div>
+        </mat-card>
+
+        <mat-card>
+          <h3 style="font-weight: 100; font-size: 23px;">Estudantes</h3>
+
+          <mat-list id="listaPresenca">
+            <mat-list-item *ngFor="let checkin of listaPresenca?.checkins">
+              <img matListAvatar [src]="checkin?.estudante?.linkFoto === undefined || checkin?.estudante?.linkFoto === null ? 'assets/account-circle.png' : checkin?.estudante?.linkFoto" 
+                  style="width:60px; height: 60px; border-radius: 100px">
+              <h4 mat-line> {{checkin?.estudante?.nome}} {{checkin?.estudante?.sobrenome}} </h4>
+              <p mat-line> {{ formatarStatusCheckin(checkin) }} </p>
+            </mat-list-item>
+          </mat-list>
+        </mat-card>
+      </div>
     </ng-template>
   </mat-tab>
 </mat-tab-group>

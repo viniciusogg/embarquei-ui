@@ -10,7 +10,7 @@ import { TrajetoService } from './../../../../services/trajeto.service';
 import { UploadService } from './../../../../services/upload.service';
 import { ErrorHandlerService } from './../../../core/error-handler.service';
 import { EstudanteService } from './../../../../services/estudante.service';
-import { Estudante, Endereco, ComprovanteMatricula, STATUS_COMPROVANTE, HorarioSemanalEstudante, DIA_SEMANA, Imagem, COLECAO_ARQUIVO } from './../../../core/model';
+import { Estudante, Endereco, ComprovanteMatricula, STATUS_COMPROVANTE, HorarioSemanalEstudante, DIA_SEMANA, Imagem, COLECAO_ARQUIVO, Curso } from './../../../core/model';
 import { StorageDataService } from './../../../../services/storage-data.service';
 
 import { v4 as uuid } from 'uuid';
@@ -77,7 +77,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
         
         this.router.navigate(['/login']);
   
-        this.snackBar.open('Estudante cadastrado com sucesso', '', { duration: 3500});
+        this.snackBar.open('Conta criada com sucesso', '', { duration: 3500});
       })
       .catch(erro => {
         this.errorHandlerService.handle(erro);
@@ -97,7 +97,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     estudante.foto = this.criarFoto();
     estudante.endereco = this.criarEndereco();
     estudante.comprovanteMatricula = this.criarComprovanteMatricula();
-    estudante.curso = {id: this.thirdFormGroup.get('campoCurso').value};
+    estudante.curso = this.criarCurso();
     estudante.horariosSemanaisEstudante = this.criarHorarioSemanalEstudante();
     estudante.pontosParada = this.criarPontoParada();
 
@@ -114,6 +114,14 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   {
     // const documento = new File([this.comprovanteMatricula], id, {type: this.comprovanteMatricula.type});
     this.uploadService.simpleUpload(this.comprovanteMatricula, COLECAO_ARQUIVO.COMPROVANTES_MATRICULA);
+  }
+
+  private criarCurso(): Curso
+  {
+    const curso = new Curso();
+    curso.id = this.thirdFormGroup.get('campoCurso').value;
+    
+    return curso;
   }
 
   private criarFoto(): Imagem 

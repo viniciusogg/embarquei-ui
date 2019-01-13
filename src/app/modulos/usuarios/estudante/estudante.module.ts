@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule } from '@angular/material/list';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EstudanteCadastroComponent } from './estudante-cadastro/estudante-cadastro.component';
@@ -42,7 +43,8 @@ import { EmAnaliseComponent } from './em-analise/em-analise.component';
     MatBottomSheetModule,
     MatTabsModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatListModule
   ],
   declarations: [
     DashboardComponent,

@@ -30,7 +30,7 @@
   }
 } */
 
-.is-mobile .toolbar {
+.toolbar {
   position: fixed;
   z-index: 2;
 }

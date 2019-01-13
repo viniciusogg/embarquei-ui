@@ -32,7 +32,7 @@ export class AdminService {
 
     return this.getById(localStorage.getItem('idUsuarioLogado'))
       .then(usuario => {
-        return this.httpClient.get(`${this.estudantesUrl}/cidade/${usuario.endereco.cidadeId}`, httpOptions)
+        return this.httpClient.get(`${this.estudantesUrl}/cidade/${usuario.endereco.cidade.id}`, httpOptions)
           .toPromise()
           .then(response => {
 
