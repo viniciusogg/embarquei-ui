@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate
   canActivate(next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean
   {
-    if (this.authService.isAccessTokenInvalido())
+/*    if (this.authService.isAccessTokenInvalido())
     {
       return this.authService.obterNovoAccessToken()
         .then(() => {
@@ -31,13 +31,9 @@ export class AuthGuard implements CanActivate
 
         });
     }
-    // else if (next.data.tiposUsuariosPermitidos && !this.authService.temQualquerPermissao(next.data.tiposUsuariosPermitidos)) {
-    //   this.router.navigate(['/acesso-negado']);
-    //   return false;
-    // }
 
-    // return true;
-    return this.verificarAcesso(next);
+    return this.verificarAcesso(next);*/
+    return true;
   }
 
   private verificarAcesso(next: ActivatedRouteSnapshot): boolean

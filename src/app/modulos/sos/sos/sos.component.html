@@ -1,0 +1,28 @@
+<mat-card class="espacamento-card">
+      <div style="display: flex; margin-bottom: 25px" *ngFor="let item of sos">
+        <div style="display:flex; margin-top: auto;">
+
+          <div [ngStyle]="{'background': 'transparent no-repeat center',
+              'background-size': 'cover', 'width': '55px', 'height': '55px',
+              'border-radius': '150px', 'background-image': item.url}">
+          </div>
+    
+          <div style="display:grid">
+            <div style="padding: 5px;">
+              <span>{{item.nome}}</span>
+            </div>
+            <div style="padding: 5px;">
+              <span style="color:gray; font-size: 13px">{{item.numero}}</span> 
+            </div>
+          </div>
+        </div>
+    
+        <span style="flex: 1 1 auto;"></span>
+    
+        <button mat-icon-button>
+          <mat-icon>local_phone</mat-icon> 
+        </button>
+      </div>
+
+  
+  </mat-card>

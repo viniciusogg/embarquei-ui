@@ -12,6 +12,10 @@ import { LayoutModule } from './modulos/layout/layout.module';
 import { SegurancaModule } from './modulos/seguranca/seguranca.module';
 import { EstudanteModule } from './modulos/usuarios/estudante/estudante.module';
 import { AdminModule } from './modulos/usuarios/admin/admin.module';
+import { NotificacaoModule } from './modulos/notificacao/notificacao.module';
+import { RenovacaoCadastroModule } from './modulos/renovacao-cadastro/renovacao-cadastro.module';
+import { SosModule } from './modulos/sos/sos.module';
+import { VeiculoTransporteModule } from './modulos/veiculo-transporte/veiculo-transporte.module';
 
 
 @NgModule({
@@ -29,7 +33,11 @@ import { AdminModule } from './modulos/usuarios/admin/admin.module';
     LayoutModule,
     SegurancaModule,
     EstudanteModule,
-    AdminModule
+    AdminModule,
+    NotificacaoModule,
+    RenovacaoCadastroModule,
+    SosModule,
+    VeiculoTransporteModule
   ],
   exports: [
      //MatSnackBarModule
