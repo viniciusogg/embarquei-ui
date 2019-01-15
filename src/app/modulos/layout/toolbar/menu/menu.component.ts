@@ -12,10 +12,10 @@ import { MatSidenav, MatDrawer } from '@angular/material';
 import { UploadService } from '../../../../services/upload.service';
 import { isUndefined, isNull } from 'util';
 
-
 @Component({
   selector: 'app-menu',
-  templateUrl: './menu.component.html'
+  templateUrl: './menu.component.html',
+  styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit, AfterViewInit {//, OnChanges {
 

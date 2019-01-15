@@ -17,10 +17,11 @@
           </span>
         </div>
 
-        <div style="text-align: center; margin-top: 50px;" *ngIf="exibirBotao"> <!-- !embarcou -->
+        <div style="text-align: center; margin-top: 50px;" *ngIf="exibirBotao"> 
           <div style="display: flow-root; height: 31px;" class="accent-dark">
-            <button mat-icon-button style="float: right;" color="accent"
-                (click)="abrirAjuda('botaoEmbarquei')" *ngIf="isPresencaConfirmada">
+            <button mat-icon-button style="float: right;" [color]="isPresencaConfirmada ? 'accent' : 'primary'"
+                (click)="isPresencaConfirmada ? abrirAjuda('botaoEmbarquei') : abrirAjuda('botaoConfirmar')" 
+                *ngIf="!embarcou">
               <mat-icon>help_outline</mat-icon>
             </button>
           </div>
@@ -43,7 +44,7 @@
           <span style="font-size: 15px; color: gray;">Volte aqui no seu próximo dia de aula para confirmar sua presença novamente.</span>
         </div>
 
-        <div style="text-align: center; margin-top: 23px;" *ngIf="exibirCheckbox"> <!-- !isPresencaConfirmada -->
+        <div style="text-align: center; margin-top: 23px;" *ngIf="exibirCheckbox">
           <div style="display: flow-root; width: 94%; height: 30px;">
             <button mat-icon-button style="float:right" color="primary" (click)="abrirAjuda('checkboxEstaNoPonto')">
               <mat-icon>help_outline</mat-icon>
@@ -74,29 +75,64 @@
 
     <ng-template matTabContent>
       <div class="container">
-        <mat-card style="margin-bottom: 10px">
-          <h3 style="font-weight: 100; font-size: 23px;">Resumo da viagem</h3> <!-- Detalhes dos passageiros -->
+        <mat-card style="margin-bottom: 10px" *ngIf="totalPresencasConfirmadas !== 0">
+          <h3 style="font-weight: 100; font-size: 23px;">Resumo da viagem</h3>
 
-          <div style="min-height: 20px; margin: 15px 0;"> <!-- margin-top: 35px; padding: 10px; -->
-            <span style="font-size: 15px; color: gray;">
-              24 estudantes confirmaram presença hoje
+          <div style="min-height: 20px; margin: 15px 0; display: flex" class="accent-dark">
+            <span style="font-size: 15px; color: gray;" [ngPlural]="totalPresencasConfirmadas" class="margem-texto-resumo-viagem">
+              <!-- Quantidade de estudantes que confirmaram presença hoje: {{totalPresencasConfirmadas}} -->
+              <ng-template ngPluralCase="1">{{totalPresencasConfirmadas}} estudante confirmou presença hoje</ng-template>
+              <ng-template ngPluralCase="2">{{totalPresencasConfirmadas}} estudantes confirmaram presença hoje</ng-template>              
+              <ng-template ngPluralCase="few">{{totalPresencasConfirmadas}} estudantes confirmaram presença hoje</ng-template>              
+              <ng-template ngPluralCase="many">{{totalPresencasConfirmadas}} estudantes confirmaram presença hoje</ng-template>
             </span>
+
+            <button mat-icon-button color="accent" (click)="abrirAjuda('totalPresencasConfirmadas')">
+              <mat-icon>help_outline</mat-icon>
+            </button>
           </div>
 
-          <div style="min-height: 20px; margin: 15px 0;"> <!-- margin-top: 35px; padding: 10px; -->
-            <span style="font-size: 15px; color: gray;">
-              15 estudantes aguardando a saída do veículo
+          <div class="padding-divisor">
+            <mat-divider [inset]="true"></mat-divider>
+          </div>
+
+          <div style="min-height: 20px; margin: 15px 0; display: flex"
+              *ngIf="quantidadeAguardandoSaida !== 0" class="accent-dark">
+            <span style="font-size: 15px; color: gray;" [ngPlural]="quantidadeAguardandoSaida" class="margem-texto-resumo-viagem">
+              <ng-template ngPluralCase="1">{{quantidadeAguardandoSaida}} estudante aguardando a saída do veículo</ng-template>
+              <ng-template ngPluralCase="2">{{quantidadeAguardandoSaida}} estudantes aguardando a saída do veículo</ng-template>              
+              <ng-template ngPluralCase="few">{{quantidadeAguardandoSaida}} estudantes aguardando a saída do veículo</ng-template>              
+              <ng-template ngPluralCase="many">{{quantidadeAguardandoSaida}} estudantes aguardando a saída do veículo</ng-template>
+              <!-- Quantidade de estudantes aguardando a saída do veículo: {{quantidadeAguardandoSaida}} -->
               <!-- 15 estudantes já embarcaram para voltar para casa -->
               <!-- 15 estudantes já estão no veícula aguardando a volta para casa -->
               <!-- 15 estudantes já embarcaram e estão aguardando a volta para casa -->
             </span>
+
+            <button mat-icon-button color="accent" (click)="abrirAjuda('quantidadeAguardandoSaida')">
+              <mat-icon>help_outline</mat-icon>
+            </button>
           </div>
 
-          <div style="min-height: 20px; margin: 15px 0;"> <!-- margin-top: 35px; padding: 10px; -->
-            <span style="font-size: 15px; color: gray;">
-              9 estudantes ainda estão na instituição de ensino
-              <!-- 9 estudantes ainda estão em aulab -->
+          <div class="padding-divisor">
+            <mat-divider [inset]="true"></mat-divider>
+          </div>
+
+          <div style="min-height: 20px; margin: 15px 0; display: flex" 
+              *ngIf="quantidadeAguardandoSaida !== 0" class="accent-dark">
+            <span style="font-size: 15px; color: gray;" [ngPlural]="quantidadeEmAula" class="margem-texto-resumo-viagem">
+              <ng-template ngPluralCase="0">Nenhum estudante está em aula, o veículo já pode voltar para o município</ng-template>
+              <ng-template ngPluralCase="1">{{quantidadeEmAula}} estudante ainda está em aula</ng-template>
+              <ng-template ngPluralCase="2">{{quantidadeEmAula}} estudantes ainda estão em aula</ng-template>                
+              <ng-template ngPluralCase="few">{{quantidadeEmAula}} estudantes ainda estão em aula</ng-template>
+              <ng-template ngPluralCase="many">{{quantidadeEmAula}} estudantes ainda estão em aula</ng-template>
+              <!-- 9 estudantes ainda estão na instituição de ensino -->
+              <!-- Quantidades de estudantes em aula: {{quantidadeEmAula}} -->
             </span>
+
+            <button mat-icon-button color="accent" (click)="abrirAjuda('quantidadeEmAula')">
+              <mat-icon>help_outline</mat-icon>
+            </button>
           </div>
         </mat-card>
 
@@ -104,12 +140,21 @@
           <h3 style="font-weight: 100; font-size: 23px;">Estudantes</h3>
 
           <mat-list id="listaPresenca">
-            <mat-list-item *ngFor="let checkin of listaPresenca?.checkins">
+            <mat-list-item *ngFor="let checkin of listaPresenca?.checkins; last as last">
               <img matListAvatar [src]="checkin?.estudante?.linkFoto === undefined || checkin?.estudante?.linkFoto === null ? 'assets/account-circle.png' : checkin?.estudante?.linkFoto" 
                   style="width:60px; height: 60px; border-radius: 100px">
               <h4 mat-line> {{checkin?.estudante?.nome}} {{checkin?.estudante?.sobrenome}} </h4>
-              <p mat-line> {{ formatarStatusCheckin(checkin) }} </p>
+              <p mat-line [class.status-aguardando-volta]="formatarStatusCheckin(checkin) !== 'AGUARDANDO_CONFIRMACAO' ? 
+                  (checkin.status === 'EMBARCOU' ? true : false) : false"
+                  [class.status-presenca-confirmada]="formatarStatusCheckin(checkin) !== 'AGUARDANDO_CONFIRMACAO' ? 
+                  (checkin.status === 'CONFIRMADO' ? true : false) : false"> 
+                {{ formatarStatusCheckin(checkin) === 'AGUARDANDO_CONFIRMACAO' ? 'Não confirmou presença' : 
+                (checkin.status === 'CONFIRMADO' ? 'Presença confirmada' : 
+                (checkin.status === 'EMBARCOU' ? 'Aguardando viagem de volta' : 'Não confirmou presença') ) }} 
+              </p>
+              <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
             </mat-list-item>
+            <!-- <mat-divider></mat-divider> -->
           </mat-list>
         </mat-card>
       </div>

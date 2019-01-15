@@ -58,33 +58,26 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
 }
 
 /*--------------------- CHECKIN -----------------------*/
-@media (min-width: 700px) {
-  #tabGroupCheckin > .mat-tab-header {
-    position:unset !important;
-    width: 100% !important;
-    z-index: 2 !important;
-  }
-
-  #tabGroupCheckin > div.mat-tab-body-wrapper {
-    margin-top: 0px;
-  }
+#tabGroupCheckin > .mat-tab-header {
+  position: fixed !important;
+  width: 100% !important;
+  z-index: 2 !important;
 }
 
-@media (max-width: 701px) {
-  #tabGroupCheckin > .mat-tab-header {
-    position:fixed !important;
-    width: 100% !important;
-    z-index: 2 !important;
-  }
-
-  #tabGroupCheckin > div.mat-tab-body-wrapper {
-    margin-top: 48px;
-  }
+#tabGroupCheckin > div.mat-tab-body-wrapper {
+  margin-top: 48px;
 }
 
-//*[@id="listaPresenca"]/mat-list-item/div
 mat-list#listaPresenca > mat-list-item > div {
   padding: unset;
+}
+
+.status-aguardando-volta {
+  color: #43A047
+}
+
+.status-presenca-confirmada {
+  color: #BF360C
 }
 /*--------------------- CHECKIN -----------------------*/
 

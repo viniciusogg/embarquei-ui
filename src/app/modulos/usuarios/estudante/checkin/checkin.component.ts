@@ -28,6 +28,10 @@ export class CheckinComponent implements OnInit, AfterViewInit {
   checkin: any;
   listaPresenca: ListaPresenca;
 
+  totalPresencasConfirmadas = 0;
+  quantidadeAguardandoSaida = 0;
+  quantidadeEmAula = 0;
+
   private _mobileQueryListener: () => void;
 
   private textoPresencaoNaoConfirmada = 'Você não confirmou sua presença.';
@@ -35,8 +39,8 @@ export class CheckinComponent implements OnInit, AfterViewInit {
   private textoBotaoConfirmar = 'CONFIRMAR';
   private textoBotaoEmbarquei = 'EMBARQUEI';
 
-  textoAjuda = this.textoPresencaoNaoConfirmada;
-  textoBotao = this.textoBotaoConfirmar;
+  textoAjuda = ''; // this.textoPresencaoNaoConfirmada
+  textoBotao = ''; // this.textoBotaoConfirmar
   isPresencaConfirmada = false;
   corBotao = 'accent';
   estaNoPonto = false;
@@ -74,18 +78,8 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
         const dataUltimaAtualizacao = moment(checkin.dataUltimaAtualizacao, 'DD/MM/YYYY'); // HH:mm
         const dataAtual = moment(new Date().toLocaleDateString(), 'DD/MM/YYYY');
-
-        // console.log('Response: ' + moment(checkin.dataUltimaAtualizacao, 'DD/MM/YYYY'));
-        // console.log('New date: ' + moment(new Date(), 'DD/MM/YYYY'));
-        // console.log(moment.locale());
-
-        // console.log(moment(new Date(), 'DD/MM/YYYY').isSame(moment(new Date(), 'DD/MM/YYYY')));
-        // console.log(dataUltimaAtualizacao.isBefore(dataAtual));
-
-        // console.log(dataUltimaAtualizacao);
-        // console.log(dataAtual);
-
-        // CONFIRMOU A PRESENÇA MAS NÃO CLICOU EM 'EMBARQUEI'
+        
+        // CONFIRMOU A PRESENÇA NO DIA ANTERIOR MAS NÃO CLICOU EM 'EMBARQUEI'
         if (checkin.status !== STATUS_CHECKIN.AGUARDANDO_CONFIRMACAO 
           && dataUltimaAtualizacao.isBefore(dataAtual))
         {
@@ -209,8 +203,6 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
   getListaPresenca(event: MatTabChangeEvent)
   {
-    // console.log('listaPresenca');
-    // console.log(event);
     if (event.tab.textLabel === 'listaPresenca')
     {
       this.listaPresencaService.getById(this.checkin.listaPresencaId)
@@ -226,9 +218,35 @@ export class CheckinComponent implements OnInit, AfterViewInit {
                 checkin.estudante.linkFoto = response;
               });
           }
+          this.gerarDadosResumoViagem(this.listaPresenca);
         })
         .catch(erro => this.errorHandlerService.handle(erro));
     }
+  }
+
+  private gerarDadosResumoViagem(listaPresenca: ListaPresenca)
+  {
+    this.totalPresencasConfirmadas = 0;
+    this.quantidadeAguardandoSaida = 0;
+    this.quantidadeEmAula = 0;
+
+    for (let checkin of listaPresenca.checkins) 
+    {
+      const dataUltimaAtualizacao = moment(checkin.dataUltimaAtualizacao, 'DD/MM/YYYY');
+      const dataAtual = moment(new Date().toLocaleDateString(), 'DD/MM/YYYY');
+
+      if (checkin.status === STATUS_CHECKIN.CONFIRMADO || checkin.status === STATUS_CHECKIN.EMBARCOU 
+        && dataUltimaAtualizacao.isSame(dataAtual))
+      {
+        this.totalPresencasConfirmadas += 1;
+      }
+      if (checkin.status === STATUS_CHECKIN.EMBARCOU && 
+        dataUltimaAtualizacao.isSame(dataAtual))
+      {
+        this.quantidadeAguardandoSaida += 1;
+      }
+    }
+    this.quantidadeEmAula = this.totalPresencasConfirmadas - this.quantidadeAguardandoSaida;
   }
 
   formatarStatusCheckin(checkin: Checkin)
@@ -239,20 +257,34 @@ export class CheckinComponent implements OnInit, AfterViewInit {
     if (checkin.status !== STATUS_CHECKIN.AGUARDANDO_CONFIRMACAO 
       && dataUltimaAtualizacao.isBefore(dataAtual))
     {
-      return 'Não confirmou presença';
-    }
+      // return 'Não confirmou presença';
+      return STATUS_CHECKIN.AGUARDANDO_CONFIRMACAO;
+    }/*
     else if (checkin.status === STATUS_CHECKIN.CONFIRMADO)
     {
       return 'Presença confirmada';
     }
     else if (checkin.status === STATUS_CHECKIN.EMBARCOU)
     {
-      return 'Embarcou no veículo';
+      return 'Aguardando viagem de volta';
     }
     else if (checkin.status === STATUS_CHECKIN.AGUARDANDO_CONFIRMACAO)
     {
       return 'Não confirmou presença';
-    }
+    }*/
+  }
+
+  abrirAjuda(ajuda: string)
+  {
+    this.dialog.open(AjudaDialogComponent, {
+      height: ajuda === 'checkboxEstaNoPonto' ? '75%' : (ajuda === 'quantidadeEmAula' ||
+        ajuda === 'quantidadeAguardandoSaida' ? '71%' : 
+        (ajuda === 'totalPresencasConfirmadas' ? '48%' : '90%') ), 
+      width: '99%',
+      data: {
+        ajuda: ajuda,
+      }
+    });
   }
   
   private criarInstanciaCheckin(id, status: STATUS_CHECKIN): Checkin
@@ -263,16 +295,6 @@ export class CheckinComponent implements OnInit, AfterViewInit {
     checkin.dataUltimaAtualizacao = moment(new Date().toLocaleString(), 'DD/MM/YYYY HH:mm:ss').toDate();
 
     return checkin;
-  }
-
-  abrirAjuda(ajuda: string)
-  {
-    this.dialog.open(AjudaDialogComponent, {
-      height: ajuda === 'checkboxEstaNoPonto' ? '75%' : '90%', width: '99%',
-      data: {
-        ajuda: ajuda,
-      }
-    });
   }
 }
 
@@ -299,37 +321,61 @@ export class AjudaDialogComponent implements OnInit {
 
   carregarTextoAjuda()
   {
-    if(this.ajuda === 'checkboxEstaNoPonto')
+    if (this.ajuda === 'checkboxEstaNoPonto')
     {
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong>1.</strong> Quando você marca a opção <strong>Estou no meu ponto</strong> ' +
         'significa que você está esperando o ônibus no seu ponto. </p> <p> <strong>2.</strong> Quando esta opção está marcada, você só ' +
         'deve apertar o botão <strong>CONFIRMAR</strong> quando o ônibus chegar no seu ponto.</p> <p> <strong>3.</strong> Ao fazer isso, você ' +
         'ajuda outros estudantes à visualizar por quais pontos o ônibus já passou.</p>');
     }
-    else if(this.ajuda === 'botaoEmbarquei')
+    else if (this.ajuda === 'botaoEmbarquei')
     {
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> O botão <strong>EMBARQUEI</strong> deve ser apertado quando você ' +
         'estiver indo em direção ou ao entrar no seu ônibus, na viagem de volta para o seu município. </p> <p> <strong>ATENÇÃO</strong>, quando ' +
-        'você aperta este botão, seu nome é marcado como <strong>presente</strong> na lista de presença do ônibus, indicando que você se ' + 
+        'você aperta este botão, seu nome é marcado como <strong>aguardando viagem de volta</strong> na lista de presença do ônibus, indicando que você se ' + 
         'encontra dentro do veículo, além disso, vc só poderá confirmar sua presença novamente no dia seguinte. </p> <p> Portanto, para evitar ' +
         'que você seja esquecido na instituição de ensino ou que você fique impossibilitado de confirmar sua preseça, <strong>só aperte o ' + 
         'botão EMBARQUEI</strong> quando, de fato, você estiver indo em direção ao seu veículo de transporte ou ao embarcar nele. </p> ' + 
         '<p> Caso você aperte o botão por acidente, você pode desfazer esta ação apertando o botão <strong>DESFAZER</strong> que ficará ' + 
         'visível apenas por alguns segundos na parte inferior da tela. </p>');
     }
-    else if(this.ajuda === 'desistir')
+    else if (this.ajuda === 'desistir')
     {
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Se você confirmou sua preseça com antecedencia, ' +
-      'você poderá cancelar apertando a opção <strong>DESISTIR</strong>. Você deve apertar esse botão se: </p> ' +
-      '<ol> ' +
-        '<li>Você perder o horário do ônibus (na ida para a instituição de ensino)</li> ' +
-        '<li>Você não for voltar para o seu município no ônibus</li> ' +
-        '<li>Você desistir de ir para a aula de última hora etc</li> ' +
-      '</ol> ' +
-      '<p> É essencial que, em caso de ocorrência de alguma dessas situações descritas, você lembre ' +
-      'de <strong>DESISTIR</strong> da viagem, do contrário, seu nome ficará na lista ' +
-      'de presença do ônibus, fazendo com que, na volta para o município, o motorista espere ' + 
-      'indeterminadamente por uma pessoa que não utilizou o transporte. </p>');
+        'você poderá cancelar apertando a opção <strong>DESISTIR</strong>. Você deve apertar esse botão se: </p> ' +
+        '<p> ' +
+          '<strong>1.</strong> Você perder o horário do transporte estudantil (na ida para a instituição de ensino). <br>' +
+          '<strong>2.</strong> Você não for voltar para o seu município utilizando o veículo estudantil. <br>' +
+          '<strong>3.</strong> Você desistir de ir para a aula de última hora etc.' +
+        '</p> ' +
+        '<p> É essencial que, em caso de ocorrência de alguma dessas situações descritas, você lembre ' +
+        'de <strong>DESISTIR</strong> da viagem, do contrário, seu nome ficará na lista ' +
+        'de presença do ônibus, fazendo com que, na volta para o município, o motorista espere ' + 
+        'indeterminadamente por uma pessoa que não utilizou o transporte. </p>');
+    }
+    else if (this.ajuda === 'botaoConfirmar')
+    {
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong> CONFIRMAR </strong> sua presença não ' + 
+        'significa que o veículo de transporte vai te esperar caso você não esteja no seu ponto quando ele passar por lá.</p> ' + 
+        '<p> Ao <strong> CONFIRMAR </strong> sua presença, você apenas garante que não será esquecido(a) na volta para casa, portanto, atenção ao ' + 
+        'horário de partida para não perder o transporte na ida para a instituição de ensino. </p>');
+    }
+    else if (this.ajuda === 'totalPresencasConfirmadas')
+    {
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong> Presença confirmada </strong> <br> é a quantidade de estudantes que confirmaram presença para utilizar o transporte ' + 
+        'estudantil hoje. </p>');
+    }
+    else if (this.ajuda === 'quantidadeAguardandoSaida') 
+    {
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong> Estudante aguardando </strong> <br> é a quantidade de estudantes que já estão no veículo estudantil aguardando ' + 
+        'a viagem de volta para casa. </p> <p> Estudantes prontos para voltar ao município de origem tem status igual à <span class="status-aguardando-volta"> Aguardando viagem ' + 
+        'de volta </span> na lista de estudantes. </p>');
+    }
+    else if (this.ajuda === 'quantidadeEmAula')
+    {
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong>Estudante em aula</strong> <br> é a quantidade de estudantes que estão assistindo aula na instituição de ensino. </p>' + 
+        '<p> <strong>1.</strong> O veículo estudantil voltará ao município de origem quando não houverem mais estudantes em aula. </p> <p> <strong>2.</strong> Estudantes em aula tem status igual à ' +
+        '<span class="status-presenca-confirmada"> Presença confirmada </span> na lista de estudantes. </p>')
     }
   }
 }

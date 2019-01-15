@@ -121,9 +121,9 @@
 
             <mat-radio-group style="display: grid; margin: 15px 0;" [(ngModel)]="statusComprovante">
               <mat-radio-button (click)="comprovanteMatriculaFormGroup.get('campoJustificativa').disable(); removerValidador()"
-                  style="margin: 10px 0px;" value="true">ACEITAR</mat-radio-button>
+                  style="margin: 10px 0px; max-width: min-content;" value="true">ACEITAR</mat-radio-button>
               <mat-radio-button (click)="comprovanteMatriculaFormGroup.get('campoJustificativa').enable(); adicionarValidador()"
-                  style="margin: 10px 0px;" value="false">RECUSAR</mat-radio-button>
+                  style="margin: 10px 0px; max-width: min-content;" value="false">RECUSAR</mat-radio-button>
             </mat-radio-group>
           </div>
 

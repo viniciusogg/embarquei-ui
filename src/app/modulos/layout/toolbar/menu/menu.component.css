@@ -1,0 +1,13 @@
+.nome-usuario-menu {
+    color: white; 
+    margin-bottom: unset; 
+    font-weight: bold;
+}
+
+.nome-admin-menu {
+    margin-top: 35px;
+}
+
+.nome-estudante-motorista-menu {
+    margin-top: 10px;
+}

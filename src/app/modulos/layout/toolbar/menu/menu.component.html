@@ -11,7 +11,8 @@
         'border-radius': '100px',
         'background-image': url()}">
     </div>
-    <h3 class="mat-h3" style="color: white; margin-top: 10px; margin-bottom: unset; font-weight: bold;">
+    <h3 class="mat-h3 nome-usuario-menu" [class.nome-admin-menu]="getTipoUsuarioLogado() === 'admin'" 
+        [class.nome-estudante-motorista-menu]="getTipoUsuarioLogado() !== 'admin'">
       {{storageDataService.usuarioLogado?.nome}} {{storageDataService.usuarioLogado?.sobrenome}}
     </h3>
   </div>
