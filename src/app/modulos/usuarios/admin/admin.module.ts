@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { FormsModule } from '@angular/forms';
 
-
-import { EstudantesPesquisaComponent } from './estudantes-pesquisa/estudantes-pesquisa.component';
-import { AdminRoutingModule } from '../../../routing/admin-routing.module';
+import { EstudantesListagemComponent } from './estudantes-listagem/estudantes-listagem.component';
 import { EstudanteDetalhesComponent } from './estudante-detalhes/estudante-detalhes.component';
+import { MotoristaCadastroComponent } from './motorista-cadastro/motorista-cadastro.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,14 +25,16 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { MotoristasListagemComponent } from './motoristas-listagem/motoristas-listagem.component';
+import { VeiculosListagemComponent } from './veiculos-listagem/veiculos-listagem.component';
+import { VeiculoCadastroComponent } from './veiculo-cadastro/veiculo-cadastro.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-
-    AdminRoutingModule,
+    RouterModule,
 
     MatButtonModule,
     MatInputModule,
@@ -51,7 +53,12 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     MatGridListModule,
     TextFieldModule
   ],
-  declarations: [EstudantesPesquisaComponent, EstudanteDetalhesComponent],
+  declarations: [
+    EstudantesListagemComponent, 
+    EstudanteDetalhesComponent, 
+    MotoristaCadastroComponent, 
+    MotoristasListagemComponent, VeiculosListagemComponent, VeiculoCadastroComponent
+  ],
   providers:[],
   entryComponents: [] // DIALOGS AQUI
 })

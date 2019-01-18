@@ -5,7 +5,7 @@
 
   <mat-drawer-content>
     <div class="container-layout">
-      <mat-toolbar color="primary" class="toolbar" *ngIf="ocultarToolbar()"><!-- mat-elevation-z2 -->
+      <mat-toolbar color="primary" class="toolbar mat-elevation-z3" *ngIf="ocultarToolbar()"><!-- mat-elevation-z2 -->
         <mat-toolbar-row *ngIf="ocultarToolbar()">
           <button id="botaoMenu" mat-icon-button (click)="drawerRef.toggle();" *ngIf="ocultarMenu()">
             <mat-icon>menu</mat-icon>

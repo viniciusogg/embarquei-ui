@@ -1,8 +1,14 @@
 <div class="container">
+  <div class="titulo-pagina">
+    <h1 class="mat-h1">Estudantes</h1>
+  </div>
 
   <mat-card>
 
-    <h1> Estudantes </h1>
+    <!-- <mat-card-header>
+      <mat-card-title> Estudantes </mat-card-title>
+    </mat-card-header> -->
+    <!-- <h1> Estudantes </h1> -->
 
     <!--<div class="div-filtro">
       <mat-form-field style="width: 40%" floatLabel="always" *ngIf="false">
@@ -14,7 +20,6 @@
     </div>-->
 
     <div> <!-- style="margin: 15px 0px" -->
-
       <table mat-table [dataSource]="dataSourceEstudantes"
           matSort #tabelaRef #sort="matSort" style="width: 100%;">
 
@@ -67,7 +72,6 @@
           *ngIf="dataSourceEstudantes.data.length === 0">
         <span>Não existem dados para exibição</span>
       </div>
-
     </div>
   </mat-card>
 </div>

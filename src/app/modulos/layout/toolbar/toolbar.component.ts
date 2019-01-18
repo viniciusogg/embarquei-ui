@@ -1,10 +1,12 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDrawer } from '@angular/material';
 
 import { StorageDataService } from './../../../services/storage-data.service';
 import { LembreteDialogComponent } from './../../usuarios/estudante/checkin/checkin.component';
+
+import * as Hammer from 'hammerjs';
 
 @Component({
   selector: 'app-toolbar',
@@ -17,9 +19,26 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 
   isAutenticado;
 
-  constructor(private dialog: MatDialog, private router: Router, private storageDataService: StorageDataService) {}
+  @ViewChild('drawerRef') public drawer: MatDrawer;
 
-  ngOnInit() {}
+  constructor(private dialog: MatDialog, private router: Router, 
+    private storageDataService: StorageDataService, private elementRef: ElementRef) 
+  {}
+
+  ngOnInit() 
+  {
+    // const hammertime = new Hammer(this.elementRef.nativeElement, {});
+   
+    // if (this.isAutenticado)
+    // {
+    //   hammertime.on('panright', (ev) => {
+    //     this.drawer.open();
+    //   });
+    //   hammertime.on('panleft', (ev) => {
+    //     this.drawer.close();
+    //   });
+    // }
+  }
 
   ngAfterViewInit() {}
 
@@ -30,16 +49,27 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 
   ocultarMenu()
   {
-    this.isAutenticado = true;
+    // this.isAutenticado = true;
 
+    // const token = localStorage.getItem('embarquei-token');
+
+    // if (token === undefined || token === null)
+    // {
+    //   this.isAutenticado = false;
+    // }
+    return this.router.url !== '/estudante/cadastro' && !this.isTelaLogin()
+      && this.existeToken();
+  }
+
+  existeToken()
+  {
     const token = localStorage.getItem('embarquei-token');
 
     if (token === undefined || token === null)
     {
-      this.isAutenticado = false;
+      return false;
     }
-    return this.router.url !== '/cadastro/estudante' && !this.isTelaLogin()
-      && this.isAutenticado;
+    return true;
   }
 
   isTelaLogin() 
@@ -60,5 +90,23 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     this.dialog.open(LembreteDialogComponent, {
       height: '90%', width: '99%'//,
     });
+  }
+
+  @HostListener('panright')
+  openDrawer() 
+  {
+    if (this.existeToken()) 
+    {
+      this.drawer.open();
+    }
+  }
+
+  @HostListener('panleft')
+  closeDrawer() 
+  {
+    if (this.existeToken())
+    {
+      this.drawer.close();
+    }
   }
 }

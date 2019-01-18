@@ -16,12 +16,16 @@ import { SegurancaModule } from './modulos/seguranca/seguranca.module';
 import { EstudanteModule } from './modulos/usuarios/estudante/estudante.module';
 import { AdminModule } from './modulos/usuarios/admin/admin.module';
 
-import { EstudantesPesquisaComponent } from './modulos/usuarios/admin/estudantes-pesquisa/estudantes-pesquisa.component';
+import { EstudantesListagemComponent } from './modulos/usuarios/admin/estudantes-listagem/estudantes-listagem.component';
 import { EmAnaliseComponent } from './modulos/usuarios/estudante/em-analise/em-analise.component';
 import { CheckinComponent } from './modulos/usuarios/estudante/checkin/checkin.component';
 import { EstudanteCadastroComponent } from './modulos/usuarios/estudante/estudante-cadastro/estudante-cadastro.component';
 import { DashboardComponent } from './modulos/usuarios/estudante/dashboard/dashboard.component';
 import { EstudanteDetalhesComponent } from './modulos/usuarios/admin/estudante-detalhes/estudante-detalhes.component';
+import { MotoristaCadastroComponent } from './modulos/usuarios/admin/motorista-cadastro/motorista-cadastro.component';
+import { MotoristasListagemComponent } from './modulos/usuarios/admin/motoristas-listagem/motoristas-listagem.component';
+import { VeiculoCadastroComponent } from './modulos/usuarios/admin/veiculo-cadastro/veiculo-cadastro.component';
+import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-listagem/veiculos-listagem.component';
 
 @NgModule({
   declarations: [
@@ -35,24 +39,27 @@ import { EstudanteDetalhesComponent } from './modulos/usuarios/admin/estudante-d
     HttpModule,
     HttpClientModule,
 
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule,
     LayoutModule,
     SegurancaModule,
     EstudanteModule,
-    AdminModule
-  ],
-  exports: [
-     //MatSnackBarModule
+    AdminModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
   ],
   entryComponents: [
+    // estudante
     DashboardComponent,
     EstudanteCadastroComponent,
     CheckinComponent,
     EmAnaliseComponent,
 
-    EstudantesPesquisaComponent,
-    EstudanteDetalhesComponent
+    // admin
+    EstudantesListagemComponent,
+    EstudanteDetalhesComponent,
+    MotoristaCadastroComponent, 
+    MotoristasListagemComponent,
+    VeiculoCadastroComponent,
+    VeiculosListagemComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

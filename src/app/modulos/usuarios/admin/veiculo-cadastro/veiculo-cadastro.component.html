@@ -1,0 +1,128 @@
+<div class="container">
+  <form [formGroup]="veiculoForm" autocomplete="off">
+
+    <mat-card class="espacamento-card">
+      <mat-card-header>
+        <mat-card-title> Dados do veículo </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="form-container margem-superir-formulario">
+        <div>
+          <a mat-fab (click)="imageInput.click(); removerFotoCarregada()">
+            <mat-icon>photo_camera</mat-icon>
+              <input #imageInput type="file" (change)="onFotoInput($event)" style="display:none;"
+                  formControlName="campoFoto">
+          </a>
+          <span class="mat-small" style="margin-left: 10px"> {{fotoVeiculo ? '' : 'Adicione uma foto do veículo'}} {{fotoVeiculo?.name | slice:0:20}}{{fotoVeiculo?.name.length > 20 ? '...' : ''}}</span>
+        </div>
+
+        <mat-form-field appearance="outline" class="spacer-field">
+          <mat-label>Placa</mat-label>
+          <input id="campoPlaca" matInput placeholder="ABC-123" required
+              formControlName="campoPlaca">
+  
+          <mat-error *ngIf="veiculoForm.get('campoPlaca').hasError('required')">
+            A placa é obrigatória
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="spacer-field">
+          <!-- <mat-label>Tipo</mat-label>
+          <input id="campoTipo" matInput required
+              formControlName="campoTipo"> -->
+
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="campoTipo" [(value)]="tipo" required>
+            <mat-option *ngFor="let tipo of tiposVeiculo" [value]="tipo.valor">
+              {{tipo.valor === 'ONIBUS' ? 'Ônibus' : 'Van'}}
+            </mat-option>
+          </mat-select>
+
+          <mat-error *ngIf="veiculoForm.get('campoTipo').hasError('required')">
+            O tipo é obrigatório
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="spacer-field">
+          <mat-label>Capacidade</mat-label>
+          <input id="campoCapacidade" matInput placeholder="Quantidade de assentos" required
+              formControlName="campoCapacidade" type="number" min="0">
+  
+          <mat-error *ngIf="veiculoForm.get('campoCapacidade').hasError('required')">
+            A capacidade é obrigatória
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title> Instituições de ensino </mat-card-title>
+        <mat-card-subtitle> 
+          Adicione uma ou mais intituições de ensino atendidas por este veículo de transporte. 
+          Para fazer isso, escolha uma instituição abaixo e aperte o botão <strong>{{exibirFabButton ? '+' : 'ADICIONAR'}}</strong>. 
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content style="display: flex; flex-wrap: wrap;">
+        <mat-form-field appearance="outline" class="spacer-field">
+          <mat-label>Instituição de ensino</mat-label>
+          <mat-select formControlName="campoInstituicao" [(value)]="instituicao" required>
+            <mat-option *ngFor="let instituicao of instituicoesEnsino" [value]="instituicao.nome">
+              {{instituicao.nome}}
+            </mat-option>
+          </mat-select>
+
+          <mat-error *ngIf="veiculoForm.get('campoInstituicao').hasError('required')">
+            A instituicao de ensino é obrigatória
+          </mat-error>
+        </mat-form-field>
+
+        <div>
+          <button *ngIf="exibirFabButton" type="button" mat-mini-fab color="accent" 
+              class="margem-botao-add-instituicao">
+            <mat-icon>add</mat-icon>
+          </button>
+
+          <button *ngIf="!exibirFabButton" type="button" mat-raised-button color="accent" 
+              class="margem-botao-add-instituicao">
+            ADICIONAR
+          </button>
+        </div>
+
+        <table mat-table [dataSource]="dataSourceInstituicoes"
+            #tabelaRef style="width: 100%; margin-top: 10px;">
+
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef> Nome </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.nome}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef class="coluna-acoes"> Remover dessa lista </th>
+            <td mat-cell *matCellDef="let element" class="coluna-acoes">
+              <button [id]="element.id" mat-icon-button type="button">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div class="msg-tabela-vazia" *ngIf="dataSourceInstituicoes.data.length === 0">
+          <span>Não existem dados para exibição</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="div-botoes-acao">
+      <button mat-raised-button class="botao-cancelar" type="button">CANCELAR</button>
+      
+      <button mat-raised-button color="accent">SALVAR</button>
+    </div>
+  </form>
+</div>

@@ -4,15 +4,15 @@ import { Router } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
-import { AdminService } from './../../../../services/admin.service';
-import { Estudante } from './../../../core/model';
+import { AdminService } from '../../../../services/admin.service';
+import { Estudante } from '../../../core/model';
 
 @Component({
-  selector: 'app-estudantes-pesquisa',
-  templateUrl: './estudantes-pesquisa.component.html',
-  styleUrls: ['./estudantes-pesquisa.component.css']
+  selector: 'app-estudantes-listagem',
+  templateUrl: './estudantes-listagem.component.html',
+  styleUrls: ['./estudantes-listagem.component.css']
 })
-export class EstudantesPesquisaComponent implements OnInit, AfterViewInit {
+export class EstudantesListagemComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sort') sort: MatSort;
 
@@ -38,18 +38,17 @@ export class EstudantesPesquisaComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  ngAfterViewInit() {
+  ngAfterViewInit() 
+  {
     this.listarEstudantes();
-    // console.log('Iniciou tela de estudantes cadastrados');
   }
 
-  listarEstudantes() {
+  listarEstudantes() 
+  {
     this.adminService.listarEstudantes()
       .then(resultado => {
-
         this.dataSourceEstudantes.data = resultado.estudantes;
 
         this.dataSourceEstudantes.sort = this.sort;

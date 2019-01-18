@@ -11,11 +11,11 @@ $default-theme: mat-light-theme($default-primary, $default-accent, $default-warn
 
 $dark-accent:  mat-palette($mat-yellow, 700);
 $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-warn);
-.accent-dark{
+.accent-dark {
   @include angular-material-theme($accent-dark-theme);
 }
 
-.accent-normal{
+.accent-normal {
   @include angular-material-theme($default-theme);
 }
 
@@ -32,7 +32,17 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
   width: 100%;
 }
 
-.snack-bar-error{
+.titulo-pagina {
+  text-align: center;
+  // margin: 25px;
+  margin: 25px 0;
+}
+
+.espacamento-card {
+  margin: 0 0 10px 0;
+}
+
+.snack-bar-error {
   background: #F44336;
 }
 
@@ -41,15 +51,11 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
   border-radius: 2px 2px 0px 0px !important;
 }
 
-#titulo-dialog{
+#titulo-dialog {
   text-align: center;
 }
 
-.espacamento-card{
-  margin: 10px 0;
-}
-
-.titulo-card{
+.titulo-card {
   font-size: 13px;
 }
 
@@ -57,11 +63,35 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
   margin-top: 15px;
 }
 
+// .mat-elevation-tab {
+//   box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 
+//     0px 3px 4px 0px rgba(0, 0, 0, 0.14), 
+//     0px 4px 8px 0px rgba(0, 0, 0, 0.12);
+// }
+
+.div-botao-flutuante {
+  display: flex; 
+  z-index: 5; 
+  align-self: flex-end; 
+  position: fixed; 
+  bottom: 4%; left: 75%;
+}
+
+.extended-fab {
+  border-radius: 50px !important; 
+  height: 56px; 
+  padding: 11px 24px !important; 
+  font-weight: bold;
+}
+
 /*--------------------- CHECKIN -----------------------*/
 #tabGroupCheckin > .mat-tab-header {
   position: fixed !important;
   width: 100% !important;
   z-index: 2 !important;
+  box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 
+    0px 3px 4px 0px rgba(0, 0, 0, 0.14), 
+    0px 4px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
 #tabGroupCheckin > div.mat-tab-body-wrapper {
@@ -91,23 +121,23 @@ mat-list#listaPresenca > mat-list-item > div {
   color: rgba(255, 255, 255, 0.48);
 }
 
-#formFieldSenha > div > div.mat-form-field-flex > div:nth-child(1){
+#formFieldSenha > div > div.mat-form-field-flex > div:nth-child(1) {
   color: rgba(255, 255, 255, 0.12);
 }
 
-#formFieldNumeroCelular > div > div.mat-form-field-flex > div:nth-child(1){
+#formFieldNumeroCelular > div > div.mat-form-field-flex > div:nth-child(1) {
   color: rgba(255, 255, 255, 0.12);
 }
 
-#formFieldNumeroCelular > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-tns-c13-2.ng-star-inserted{
+#formFieldNumeroCelular > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-tns-c13-2.ng-star-inserted {
   color: white;
 }
 
-#formFieldSenha > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-tns-c13-3.ng-star-inserted{
+#formFieldSenha > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-tns-c13-3.ng-star-inserted {
   color: white;
 }
 
-.mat-form-field-appearance-outline.mat-focused.mat-accent .mat-form-field-outline-thick{
+.mat-form-field-appearance-outline.mat-focused.mat-accent .mat-form-field-outline-thick {
   color: #fdd835 !important;
 }
 
@@ -119,11 +149,11 @@ mat-list#listaPresenca > mat-list-item > div {
   color: rgba(0, 0, 0, 0.87);
 }
 
-#formFieldNumeroCelular > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-star-inserted{
+#formFieldNumeroCelular > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-star-inserted {
   color: white;
 }
 
-#formFieldSenha > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-star-inserted{
+#formFieldSenha > div > div.mat-form-field-flex > div.mat-form-field-outline.mat-form-field-outline-thick.ng-star-inserted {
   color: white;
 }
 
@@ -143,8 +173,53 @@ label[aria-owns="campoSenhaLogin"] {
   width: 24px !important;
 }
 
-.mat-horizontal-stepper-header-container{
+.mat-horizontal-stepper-header-container {
   display: none !important;
 }
 /*--------------------------------------- STEPPER ---------------------------------------*/
 
+
+/*-------------------------------- Tabelas --------------------------------------*/
+/*-------------------------------- Cadastro motorista --------------------------------*/
+app-motorista-cadastro > div > form > mat-card:nth-child(2) > mat-card-content > div > button > span > mat-icon {
+  margin: 0px 0px 3px 2px;
+}
+/*-------------------------------- Cadastro motorista --------------------------------*/
+
+app-veiculo-cadastro > div > form > mat-card:nth-child(2) > mat-card-content > div > button > span > mat-icon {
+  margin: 0px 0px 3px 2px;
+}
+
+.coluna-instituicoes {
+  max-width: 100px !important;
+}
+
+.coluna-acoes {
+  text-align: center !important;
+}
+
+.msg-tabela-vazia {
+  text-align: center; 
+  margin-top: 10px;
+  flex: 1;
+}
+
+.div-botoes-acao {
+  text-align: end;
+  margin: 10px 0;
+}
+
+.botao-cancelar {
+  margin-right: 20px !important;
+}
+/*-------------------------------- Tabelas --------------------------------------*/
+
+/*-------------------------------- forms admins --------------------------------*/
+.margem-superir-formulario {
+  margin-top: 35px !important;
+}
+
+.margem-botao-add-instituicao {
+  margin: 8px 0px 0px 10px !important;
+}
+/*-------------------------------- forms admins --------------------------------*/

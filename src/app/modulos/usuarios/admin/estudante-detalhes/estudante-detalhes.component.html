@@ -1,5 +1,5 @@
 <div class="container">
-  <div style="text-align: center; margin: 25px">
+  <div class="titulo-pagina">
     <h1 class="mat-h1">
       Detalhes do(a) estudante
     </h1>
@@ -7,8 +7,10 @@
 
   <div style="display: flex; flex-wrap: wrap; margin-bottom: 90px">
     <div [ngStyle]="{'flex': flexPrimeiraColuna}">
-      <mat-card class="espacamento-card-detalhes-estudante"> <!-- flex-wrap: wrap; justify-content: center; -->
-        <mat-card-title>Dados pessoais</mat-card-title>
+      <mat-card class="espacamento-card"> <!-- flex-wrap: wrap; justify-content: center; -->
+        <mat-card-header>
+          <mat-card-title>Dados pessoais</mat-card-title>
+        </mat-card-header>
 
         <div style="display: flex">
           <div [ngStyle]="{'background': '#e4e4e4 no-repeat center',
@@ -32,8 +34,10 @@
         </div>
       </mat-card>
 
-      <mat-card class="espacamento-card-detalhes-estudante">
-        <mat-card-title>Endereço</mat-card-title>
+      <mat-card class="espacamento-card">
+        <mat-card-header>
+          <mat-card-title>Endereço</mat-card-title>
+        </mat-card-header>
 
         <div style="display:grid;">
           <div style="display:flex;">
@@ -50,8 +54,10 @@
         </div>
       </mat-card>
 
-      <mat-card class="espacamento-card-detalhes-estudante">
-        <mat-card-title>Pontos de parada</mat-card-title>
+      <mat-card class="espacamento-card">
+        <mat-card-header>
+          <mat-card-title>Pontos de parada</mat-card-title>
+        </mat-card-header>
 
         <div style="display:grid;">
           <div style="display:flex;">
@@ -68,8 +74,10 @@
         </div>
       </mat-card>
 
-      <mat-card class="espacamento-card-detalhes-estudante">
-        <mat-card-title>Dados acadêmicos</mat-card-title>
+      <mat-card class="espacamento-card">
+        <mat-card-header>
+          <mat-card-title>Dados acadêmicos</mat-card-title>
+        </mat-card-header>
 
         <div style="display:grid;">
           <div style="display:flex;">
@@ -89,7 +97,9 @@
 
     <div [ngStyle]="{'margin-left': marginLeftSegundaColuna, 'min-width': '300px', 'flex': '1'}">
       <mat-card style="margin-bottom: 10px;">
-        <mat-card-title>Conta</mat-card-title>
+        <mat-card-header>
+          <mat-card-title>Conta</mat-card-title>
+        </mat-card-header>
 
         <div style="display: flex;">
           <span class="mat-body-strong" style="min-width: 60px">Status</span>
@@ -98,7 +108,9 @@
       </mat-card>
 
       <mat-card>
-        <mat-card-title>Comprovante de matrícula</mat-card-title>
+        <mat-card-header>
+          <mat-card-title>Comprovante de matrícula</mat-card-title>
+        </mat-card-header>
 
         <div style="margin: 15px 0 15px 0px; display: flex;">
           <span class="mat-body-strong" style="min-width: 120px">Data de envio</span>

@@ -4,8 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { EstudanteRoutingModule } from '../../../routing/estudante-routing.module';
-
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,7 +28,6 @@ import { EmAnaliseComponent } from './em-analise/em-analise.component';
     CommonModule,
     RouterModule,
 
-    EstudanteRoutingModule,
     ReactiveFormsModule,
     FormsModule,
 

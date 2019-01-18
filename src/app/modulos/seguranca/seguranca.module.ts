@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Http, RequestOptions } from '@angular/http';
 
 import { LoginComponent } from './login/login.component';
-import { SegurancaRoutingModule } from './../../routing/seguranca-routing.module';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -48,7 +47,6 @@ export function jwtOptionsFactory(authService) {
 @NgModule({
   imports: [
     CommonModule,
-    SegurancaRoutingModule,
 
     ReactiveFormsModule,
 

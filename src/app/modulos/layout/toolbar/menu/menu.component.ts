@@ -87,8 +87,8 @@ export class MenuComponent implements OnInit, AfterViewInit {//, OnChanges {
     {label: 'Início', icone: 'home', url: '/inicio', id: 'botaoInicio'},
     {label: 'Estudantes', icone: 'school', url: '/estudantes', id: 'botaoEstudantes'},
     {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
-    {label: 'Condutores', icone: 'people', url: '/', id: 'botaoCondutores'},
-    {label: 'Veículos Estudantis', icone: 'directions_bus', url: '/', id: 'botaoVeículosEstudantis'},
+    {label: 'Motoristas', icone: 'people', url: '/motoristas', id: 'botaoCondutores'},
+    {label: 'Veículos Estudantis', icone: 'directions_bus', url: '/veiculos', id: 'botaoVeículosEstudantis'},
     {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
     {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
   ];

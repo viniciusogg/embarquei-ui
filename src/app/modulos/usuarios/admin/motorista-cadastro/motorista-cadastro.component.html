@@ -1,0 +1,112 @@
+<div class="container">
+  <form [formGroup]="motoristaForm" autocomplete="off">
+
+    <mat-card class="espacamento-card">
+      <mat-card-header>
+        <mat-card-title> Dados do motorista </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="form-container margem-superir-formulario">
+        <mat-form-field appearance="outline" class="spacer-field">
+          <mat-label>Nome</mat-label>
+          <input id="campoNome" matInput placeholder="Primeiro nome" required
+              formControlName="campoNome">
+  
+          <mat-error *ngIf="motoristaForm.get('campoNome').hasError('required')">
+            O nome é obrigatório
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="spacer-field">
+          <mat-label>Sobrenome</mat-label>
+          <input id="campoSobrenome" matInput placeholder="Último nome" required
+              formControlName="campoSobrenome">
+  
+          <mat-error *ngIf="motoristaForm.get('campoSobrenome').hasError('required')">
+            O sobrenome é obrigatório
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="spacer-field">
+          <mat-label>Número do celular</mat-label>
+          <input id="campoNumeroCelular" matInput placeholder="Exemplo: 87912345678" required
+              formControlName="campoNumeroCelular">
+  
+          <mat-error *ngIf="motoristaForm.get('campoNumeroCelular').hasError('required')">
+            O número de celular é obrigatório
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title> Instituições de ensino </mat-card-title>
+        <mat-card-subtitle> 
+          Adicione uma ou mais intituições de ensino onde o(a) motorista deixará e buscará estudantes. 
+          Para fazer isso, escolha uma instituição abaixo e aperte o botão <strong>{{exibirFabButton ? '+' : 'ADICIONAR'}}</strong>. 
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content style="display: flex; flex-wrap: wrap;">
+        <mat-form-field appearance="outline" class="spacer-field">
+          <mat-label>Instituição de ensino</mat-label>
+          <mat-select formControlName="campoInstituicao" [(value)]="instituicao" required>
+            <mat-option *ngFor="let instituicao of instituicoesEnsino" [value]="instituicao.nome">
+              {{instituicao.nome}}
+            </mat-option>
+          </mat-select>
+
+          <mat-error *ngIf="motoristaForm.get('campoInstituicao').hasError('required')">
+            A instituicao de ensino é obrigatória
+          </mat-error>
+        </mat-form-field>
+
+        <div>
+          <button *ngIf="exibirFabButton" type="button" mat-mini-fab color="accent" 
+              class="margem-botao-add-instituicao">
+            <mat-icon>add</mat-icon>
+          </button>
+
+          <button *ngIf="!exibirFabButton" type="button" mat-raised-button color="accent" 
+              class="margem-botao-add-instituicao">
+            ADICIONAR
+          </button>
+        </div>
+
+        <table mat-table [dataSource]="dataSourceInstituicoes"
+            #tabelaRef style="width: 100%; margin-top: 10px;">
+
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef> Nome </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.nome}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef class="coluna-acoes"> Remover dessa lista </th>
+            <td mat-cell *matCellDef="let element" class="coluna-acoes">
+              <button [id]="element.id" mat-icon-button type="button">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div class="msg-tabela-vazia" *ngIf="dataSourceInstituicoes.data.length === 0">
+          <span>Não existem dados para exibição</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="div-botoes-acao">
+      <button mat-raised-button class="botao-cancelar" type="button">CANCELAR</button>
+      
+      <button mat-raised-button color="accent">SALVAR</button>
+    </div>
+  </form>
+</div>

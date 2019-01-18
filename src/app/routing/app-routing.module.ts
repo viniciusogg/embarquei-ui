@@ -1,4 +1,4 @@
-import { EstudantesPesquisaComponent } from '../modulos/usuarios/admin/estudantes-pesquisa/estudantes-pesquisa.component';
+// import { EstudantesPesquisaComponent } from '../modulos/usuarios/admin/estudantes-pesquisa/estudantes-pesquisa.component';
 import { AuthGuard } from './auth.guard';
 import { DashboardComponent } from '../modulos/usuarios/estudante/dashboard/dashboard.component';
 import { EstudanteCadastroComponent } from '../modulos/usuarios/estudante/estudante-cadastro/estudante-cadastro.component';
