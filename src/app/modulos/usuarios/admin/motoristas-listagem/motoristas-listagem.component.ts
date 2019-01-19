@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort, MatTableDataSource } from '@angular/material';
-import { Motorista } from './../../../../modulos/core/model';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatSort, MatTableDataSource } from '@angular/material';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Motorista } from './../../../../modulos/core/model';
+import { MotoristaService } from './../../../../services/motorista.service';
 
 @Component({
   selector: 'app-motoristas-listagem',
   templateUrl: './motoristas-listagem.component.html',
   styleUrls: ['./motoristas-listagem.component.css']
 })
-export class MotoristasListagemComponent implements OnInit {
+export class MotoristasListagemComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sort') sort: MatSort;
 
@@ -18,7 +19,7 @@ export class MotoristasListagemComponent implements OnInit {
 
   fab = false;
 
-  constructor(private router: Router, 
+  constructor(private router: Router, private motoristaService: MotoristaService,
       private breakPointObserver: BreakpointObserver)
   { 
     this.breakPointObserver.observe([
@@ -40,141 +41,23 @@ export class MotoristasListagemComponent implements OnInit {
     });
   }
 
-  ngOnInit() 
+  ngOnInit() {}
+
+  ngAfterViewInit()
   {
-    this.dataSourceMotoristas.data = [
-      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'},
-        ]
-      },
-      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'}
-        ]
-      },
-      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'}
-        ]
-      },
-      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'}
-        ]
-      },
-      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'}
-        ]
-      },
-      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'}
-        ]
-      },
-      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'}
-        ]
-      },
-      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'}
-        ]
-      },
-      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'}
-        ]
-      },
-      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'}
-        ]
-      },      {
-        id: '1', 
-        nome: 'Teste',
-        sobrenome: 'Teste',
-        senha: '12345',
-        ativo: true,
-        numeroCelular: '12345678', 
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'},
-          {id: '1', nome: 'UEPB'}
-        ]
-      }
-    ];
+    this.listarMotoristas();
   }
 
+  listarMotoristas() 
+  {
+    this.motoristaService.getByCidade()
+      .then(response => {
+        if (response)
+        {
+          this.dataSourceMotoristas.data = response;
+  
+          this.dataSourceMotoristas.sort = this.sort;
+        }
+      });
+  }
 }

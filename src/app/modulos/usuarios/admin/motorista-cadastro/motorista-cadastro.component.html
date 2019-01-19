@@ -51,8 +51,8 @@
       <mat-card-content style="display: flex; flex-wrap: wrap;">
         <mat-form-field appearance="outline" class="spacer-field">
           <mat-label>Instituição de ensino</mat-label>
-          <mat-select formControlName="campoInstituicao" [(value)]="instituicao" required>
-            <mat-option *ngFor="let instituicao of instituicoesEnsino" [value]="instituicao.nome">
+          <mat-select formControlName="campoInstituicao" [(value)]="instituicaoEnsino" required>
+            <mat-option *ngFor="let instituicao of instituicoesEnsino" [value]="instituicao">
               {{instituicao.nome}}
             </mat-option>
           </mat-select>
@@ -64,12 +64,12 @@
 
         <div>
           <button *ngIf="exibirFabButton" type="button" mat-mini-fab color="accent" 
-              class="margem-botao-add-instituicao">
+              class="margem-botao-add-instituicao" (click)="adicionarInstituicao()">
             <mat-icon>add</mat-icon>
           </button>
 
           <button *ngIf="!exibirFabButton" type="button" mat-raised-button color="accent" 
-              class="margem-botao-add-instituicao">
+              class="margem-botao-add-instituicao" (click)="adicionarInstituicao()">
             ADICIONAR
           </button>
         </div>
@@ -87,7 +87,7 @@
           <ng-container matColumnDef="acoes">
             <th mat-header-cell *matHeaderCellDef class="coluna-acoes"> Remover dessa lista </th>
             <td mat-cell *matCellDef="let element" class="coluna-acoes">
-              <button [id]="element.id" mat-icon-button type="button">
+              <button [id]="element.id" mat-icon-button type="button" (click)="removerInstituicao(element)">
                 <mat-icon>clear</mat-icon>
               </button>
             </td>
@@ -104,9 +104,11 @@
     </mat-card>
 
     <div class="div-botoes-acao">
-      <button mat-raised-button class="botao-cancelar" type="button">CANCELAR</button>
+      <a mat-raised-button class="botao-cancelar" [routerLink]="['/motoristas']" 
+          type="button">CANCELAR</a>
       
-      <button mat-raised-button color="accent">SALVAR</button>
+      <button mat-raised-button color="accent" (click)="salvar()"
+          [disabled]="!motoristaForm.valid || dataSourceInstituicoes.data.length === 0">SALVAR</button>
     </div>
   </form>
 </div>

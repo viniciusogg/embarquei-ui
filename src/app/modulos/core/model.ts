@@ -5,7 +5,7 @@ export abstract class Usuario {
   numeroCelular: string;
   senha: string;
   ativo: boolean;
-  // endereco: Endereco;
+  endereco?: Endereco;
   linkFoto?: string;
 }
 
@@ -20,6 +20,7 @@ export class Administrador extends Usuario {
 export class Motorista extends Usuario {
   foto?: Imagem;
   instituicoesEnsino: Array<InstituicaoEnsino>;
+  cidade: Cidade;
 }
 
 export class Estudante extends Usuario {
