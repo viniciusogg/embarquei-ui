@@ -84,6 +84,12 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
   font-weight: bold;
 }
 
+.mat-fab .mat-button-wrapper {
+  padding: 15px 0 !important;
+  // display: inline-block;
+  // line-height: 24px;
+}
+
 /*--------------------- CHECKIN -----------------------*/
 #tabGroupCheckin > .mat-tab-header {
   position: fixed !important;
@@ -206,7 +212,7 @@ app-veiculo-cadastro > div > form > mat-card:nth-child(2) > mat-card-content > d
 
 .div-botoes-acao {
   text-align: end;
-  margin: 10px 0;
+  margin: 10px 0 50px 0;
 }
 
 .botao-cancelar {
@@ -215,8 +221,8 @@ app-veiculo-cadastro > div > form > mat-card:nth-child(2) > mat-card-content > d
 /*-------------------------------- Tabelas --------------------------------------*/
 
 /*-------------------------------- forms admins --------------------------------*/
-.margem-superir-formulario {
-  margin-top: 35px !important;
+.margem-superior-formulario {
+  margin-top: 25px !important;
 }
 
 .margem-botao-add-instituicao {

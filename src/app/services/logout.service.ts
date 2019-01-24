@@ -23,7 +23,7 @@ export class LogoutService {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded'
       }),
-      withCredentials: false
+      withCredentials: true
     };
 
     return this.httpClient.delete(this.tokensRevokeUrl, httpOptions)

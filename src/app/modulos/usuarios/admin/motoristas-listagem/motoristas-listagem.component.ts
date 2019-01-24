@@ -4,6 +4,7 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Motorista } from './../../../../modulos/core/model';
 import { MotoristaService } from './../../../../services/motorista.service';
+import { StorageDataService } from './../../../../services/storage-data.service';
 
 @Component({
   selector: 'app-motoristas-listagem',
@@ -20,7 +21,7 @@ export class MotoristasListagemComponent implements OnInit, AfterViewInit {
   fab = false;
 
   constructor(private router: Router, private motoristaService: MotoristaService,
-      private breakPointObserver: BreakpointObserver)
+      private breakPointObserver: BreakpointObserver, private storageDataService: StorageDataService)
   { 
     this.breakPointObserver.observe([
       Breakpoints.XSmall,
@@ -41,7 +42,12 @@ export class MotoristasListagemComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() 
+  {
+    setTimeout(() => {
+      this.storageDataService.tituloBarraSuperior = 'Motoristas';
+    });
+  }
 
   ngAfterViewInit()
   {

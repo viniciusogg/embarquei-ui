@@ -6,7 +6,7 @@
         <mat-card-title> Dados do motorista </mat-card-title>
       </mat-card-header>
 
-      <mat-card-content class="form-container margem-superir-formulario">
+      <mat-card-content class="form-container margem-superior-formulario">
         <mat-form-field appearance="outline" class="spacer-field">
           <mat-label>Nome</mat-label>
           <input id="campoNome" matInput placeholder="Primeiro nome" required
@@ -44,33 +44,25 @@
         <mat-card-title> Instituições de ensino </mat-card-title>
         <mat-card-subtitle> 
           Adicione uma ou mais intituições de ensino onde o(a) motorista deixará e buscará estudantes. 
-          Para fazer isso, escolha uma instituição abaixo e aperte o botão <strong>{{exibirFabButton ? '+' : 'ADICIONAR'}}</strong>. 
+          Para fazer isso, escolha uma instituição abaixo e aperte o botão <strong>+</strong>.
+          Será possível adicionar apenas instituições que ainda não estão associadas à algum(a) motorista deste município.
         </mat-card-subtitle>
       </mat-card-header>
 
-      <mat-card-content style="display: flex; flex-wrap: wrap;">
+      <mat-card-content style="display: flex; flex-wrap: wrap;" class="margem-superior-formulario">
         <mat-form-field appearance="outline" class="spacer-field">
           <mat-label>Instituição de ensino</mat-label>
-          <mat-select formControlName="campoInstituicao" [(value)]="instituicaoEnsino" required>
+          <mat-select formControlName="campoInstituicao" [(value)]="instituicaoEnsino" [disabled]="desabilitarCampoBotaoInstituicoes">
             <mat-option *ngFor="let instituicao of instituicoesEnsino" [value]="instituicao">
               {{instituicao.nome}}
             </mat-option>
           </mat-select>
-
-          <mat-error *ngIf="motoristaForm.get('campoInstituicao').hasError('required')">
-            A instituicao de ensino é obrigatória
-          </mat-error>
         </mat-form-field>
 
         <div>
-          <button *ngIf="exibirFabButton" type="button" mat-mini-fab color="accent" 
+          <button type="button" mat-mini-fab color="accent" [disabled]="desabilitarCampoBotaoInstituicoes" 
               class="margem-botao-add-instituicao" (click)="adicionarInstituicao()">
             <mat-icon>add</mat-icon>
-          </button>
-
-          <button *ngIf="!exibirFabButton" type="button" mat-raised-button color="accent" 
-              class="margem-botao-add-instituicao" (click)="adicionarInstituicao()">
-            ADICIONAR
           </button>
         </div>
 
@@ -105,10 +97,10 @@
 
     <div class="div-botoes-acao">
       <a mat-raised-button class="botao-cancelar" [routerLink]="['/motoristas']" 
-          type="button">CANCELAR</a>
+          type="button">{{motorista === null ? 'CANCELAR' : 'VOLTAR'}}</a>
       
-      <button mat-raised-button color="accent" (click)="salvar()"
-          [disabled]="!motoristaForm.valid || dataSourceInstituicoes.data.length === 0">SALVAR</button>
+      <button mat-raised-button color="accent" (click)="motorista === null ? salvar() : atualizar()"
+          [disabled]="!motoristaForm.valid">{{motorista === null ? 'SALVAR' : 'ATUALIZAR'}}</button> <!-- || dataSourceInstituicoes.data.length === 0 -->
     </div>
   </form>
 </div>

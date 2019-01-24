@@ -25,12 +25,33 @@ export class MotoristaService {
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
       }),
-      withCredentials: false
+      withCredentials: true
     };
 
     const body = JSON.stringify(motorista);
 
     return this.httpClient.post(this.motoristaEndpoint, body, httpOptions)
+      .toPromise()
+      .then(response => {
+        const motorista = response as Motorista;
+
+        return motorista;
+      });
+  }
+
+  atualizar(motorista: Motorista): Promise<Motorista>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    };
+
+    const body = JSON.stringify(motorista);
+
+    return this.httpClient.put(`${this.motoristaEndpoint}/${motorista.id}`, body, httpOptions)
       .toPromise()
       .then(response => {
         const motorista = response as Motorista;

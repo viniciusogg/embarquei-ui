@@ -20,7 +20,7 @@ export class PontoParadaService {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded'
       }),
-      withCredentials: false
+      withCredentials: true
     };
 
     return this.httpClient.get(`${this.pontosParadaUrl}/${cidadeId}/${instituicaoId}/${rotaId}`, httpOptions)

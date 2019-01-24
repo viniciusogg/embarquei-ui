@@ -57,7 +57,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     // {
     //   this.isAutenticado = false;
     // }
-    return this.router.url !== '/estudante/cadastro' && !this.isTelaLogin()
+    return this.router.url !== '/estudantes/cadastro' && !this.isTelaLogin()
       && this.existeToken();
   }
 

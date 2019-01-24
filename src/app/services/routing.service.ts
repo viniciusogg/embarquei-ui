@@ -54,14 +54,6 @@ export class RoutingService {
   }
 
   rotasEstudante = [
-    // {
-    //   path: '/inicio',
-    //   component:
-    //   pathMatch: 'full'
-    //   redirectTo: '/',
-    //   canActivate: [AuthGuard],
-    //   data: { tiposUsuariosPermitidos: ['est'] }
-    // },
     {
       path: 'resumoDiario',
       component: DashboardComponent,
@@ -81,12 +73,11 @@ export class RoutingService {
   ];
 
   rotasPadrao = [
-    // { path: 'login', component: LoginComponent },
     { path: '', redirectTo: 'login', pathMatch: 'full'},
     { path: 'acesso-negado', component: NaoAutorizadoComponent},
     { path: 'pagina-nao-encontrada', component: NaoEncontradoComponent},
     {
-      path: 'estudante/cadastro',
+      path: 'estudantes/cadastro',
       component: EstudanteCadastroComponent
     },
     { path: '**', redirectTo: 'pagina-nao-encontrada' }
@@ -98,37 +89,43 @@ export class RoutingService {
       component: EstudantesListagemComponent,
       canActivate: [AuthGuard],
       data: { tiposUsuariosPermitidos: ['admin'] }
-     },
-     {
-       path: 'estudantes/:id',
-       component: EstudanteDetalhesComponent,
-       canActivate: [AuthGuard],
-       data: { tiposUsuariosPermitidos: ['admin'] }
-     },
-     {
-       path: 'motorista/cadastro',
-       component: MotoristaCadastroComponent,
-       canActivate: [AuthGuard],
-       data: { tiposUsuariosPermitidos: ['admin'] }
-     },
-     {
-       path: 'motoristas',
-       component: MotoristasListagemComponent,
-       canActivate: [AuthGuard],
-       data: { tiposUsuariosPermitidos: ['admin'] }
-     },
-     {
-       path: 'veiculo/cadastro',
-       component: VeiculoCadastroComponent,
-       canActivate: [AuthGuard],
-       data: { tiposUsuariosPermitidos: ['admin'] }
-     },
-     {
-       path: 'veiculos',
-       component: VeiculosListagemComponent,
-       canActivate: [AuthGuard],
-       data: { tiposUsuariosPermitidos: ['admin'] }
-     }
+    },
+    {
+      path: 'estudantes/:id',
+      component: EstudanteDetalhesComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['admin'] }
+    },
+    {
+      path: 'motoristas/cadastro',
+      component: MotoristaCadastroComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['admin'] }
+    },
+    {
+      path: 'motoristas',
+      component: MotoristasListagemComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['admin'] }
+    },
+    {
+      path: 'motoristas/:id',
+      component: MotoristaCadastroComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['admin'] }
+    },
+    {
+      path: 'veiculo/cadastro',
+      component: VeiculoCadastroComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['admin'] }
+    },
+    {
+      path: 'veiculos',
+      component: VeiculosListagemComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['admin'] }
+    }
   ];
 
   rotaEmAnalise = [

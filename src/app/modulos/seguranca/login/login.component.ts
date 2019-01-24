@@ -124,7 +124,7 @@ export class LoginComponent implements OnInit {
   // }
 
   novaConta(){
-    this.router.navigate(['/estudante/cadastro']);
+    this.router.navigate(['/estudantes/cadastro']);
   }
 
   private createForm()

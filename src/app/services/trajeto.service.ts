@@ -20,7 +20,7 @@ export class TrajetoService {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded'
       }),
-      withCredentials: false
+      withCredentials: true
     };
 
     return this.httpClient.get(`${this.trajetoUrl}/${cidadeId}/${instituicaoId}`, httpOptions)

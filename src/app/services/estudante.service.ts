@@ -23,7 +23,7 @@ export class EstudanteService {
         'Content-Type': 'application/json'
         // 'Content-Type': 'application/x-www-form-urlencoded'
       }),
-      withCredentials: false
+      withCredentials: true
     };
 
     const body = JSON.stringify(estudante);
