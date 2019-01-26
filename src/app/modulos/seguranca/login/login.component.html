@@ -30,13 +30,15 @@
         </mat-error>
       </mat-form-field>
 
-      <button mat-raised-button type="submit" color="accent" class="spacer-field"
-          [disabled]="!loginForm.valid" style="height: 56px; border-radius: 60px; font-weight: bold;"
+      <button mat-raised-button id="botao-login" type="submit" color="accent" class="spacer-field"
+          [disabled]="!loginForm.valid"
           (click)="login();">ENTRAR</button> <!-- height: 45px -->
 
-      <a mat-button class="spacer-field" style="color: white;"> Esqueci minha senha </a>
+      <a mat-button class="spacer-field" 
+          style="color: white; width: 200px; margin: 20px auto 0px auto;"> Esqueci minha senha </a>
 
-      <a mat-button class="spacer-field" (click)="novaConta()" style="color: white;"> Criar uma conta </a>
+      <a mat-button class="spacer-field" [routerLink]="['/estudante/cadastro']" 
+          style="color: white; width: 175px; margin: 10px auto 0 auto;">Criar uma conta</a>
     </mat-card>
   </form>
 </div>

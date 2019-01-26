@@ -123,10 +123,6 @@ export class LoginComponent implements OnInit {
   //     .catch(erro => this.errorHandlerService.handle(erro));
   // }
 
-  novaConta(){
-    this.router.navigate(['/estudantes/cadastro']);
-  }
-
   private createForm()
   {
     this.loginForm = this.formBuilder.group({

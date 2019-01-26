@@ -1,0 +1,19 @@
+.div-imagem-veiculo {
+    width: 256px;
+    margin: auto;
+}
+
+.imagem-veiculo {
+    width: 256px; 
+    border-radius: 50px;
+}
+
+.campo-imagem {
+    margin-bottom: 15px;
+}
+
+.sem-imagem {
+    width: 256px; 
+    border-radius: 150px;
+    border: solid 1px darkgray;
+}

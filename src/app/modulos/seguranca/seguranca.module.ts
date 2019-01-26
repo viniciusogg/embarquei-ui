@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { Http, RequestOptions } from '@angular/http';
+import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { LoginComponent } from './login/login.component';
 import { MatCardModule } from '@angular/material/card';
@@ -11,24 +11,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { TextMaskModule } from 'angular2-text-mask';
 import { AuthService } from './../../services/auth.service';
 import { AuthGuard } from './../../routing/auth.guard';
 
 import { LogoutService } from './../../services/logout.service';
-
-// export function authHttpServiceFactory(authService: AuthService, http: Http, options: RequestOptions)
-// {
-//   const authConfig = new AuthConfig({
-//     tokenName: 'embarquei-token',
-//     globalHeaders: [
-//       {'Content-Type': 'application/json'}
-//     ],
-//   });
-
-//   return new EmbarqueiHttp(authService, authConfig, http, options);
-// }
 
 export function tokenGetter() {
   return localStorage.getItem('embarquei-token');
@@ -47,7 +34,8 @@ export function jwtOptionsFactory(authService) {
 @NgModule({
   imports: [
     CommonModule,
-
+    RouterModule,
+    // FormsModule,
     ReactiveFormsModule,
 
     MatCardModule,
@@ -68,11 +56,6 @@ export function jwtOptionsFactory(authService) {
   ],
   declarations: [LoginComponent],
   providers: [
-    // {
-    //   provide: AuthHttp,
-    //   useFactory: authHttpServiceFactory,
-    //   deps: [AuthService, Http, RequestOptions]
-    // },
     AuthGuard,
     LogoutService
   ],

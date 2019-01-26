@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
+import { StorageDataService } from './../../../../services/storage-data.service';
 import { AdminService } from '../../../../services/admin.service';
 import { Estudante } from '../../../core/model';
 
@@ -20,7 +21,7 @@ export class EstudantesListagemComponent implements OnInit, AfterViewInit {
   displayedColumns = ['nome', 'celular', 'curso', 'status', 'acoes']; // 'status',
 
   constructor(private adminService: AdminService, private router: Router, 
-      private breakPointObserver: BreakpointObserver)
+      private breakPointObserver: BreakpointObserver, private storageDataService: StorageDataService)
   { 
     this.breakPointObserver.observe([
       Breakpoints.XSmall,
@@ -38,7 +39,12 @@ export class EstudantesListagemComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() 
+  {
+    setTimeout(() => {
+      this.storageDataService.tituloBarraSuperior = 'Estudantes';
+    })
+  }
 
   ngAfterViewInit() 
   {

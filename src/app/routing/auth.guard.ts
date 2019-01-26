@@ -19,9 +19,10 @@ export class AuthGuard implements CanActivate
 
   canActivate(next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean
-  {
+  {// && state.url !== '/estudantes/cadastro'
     if (this.isAccessTokenInvalido())
     {
+      // console.log(state.url);
       return this.authService.obterNovoAccessToken()
         .then(() => {
           if (this.isAccessTokenInvalido())

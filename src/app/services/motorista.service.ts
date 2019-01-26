@@ -27,12 +27,12 @@ export class MotoristaService {
       }),
       withCredentials: true
     };
-
     const body = JSON.stringify(motorista);
 
     return this.httpClient.post(this.motoristaEndpoint, body, httpOptions)
       .toPromise()
-      .then(response => {
+      .then(response => 
+      {
         const motorista = response as Motorista;
 
         return motorista;
@@ -48,7 +48,6 @@ export class MotoristaService {
       }),
       withCredentials: true
     };
-
     const body = JSON.stringify(motorista);
 
     return this.httpClient.put(`${this.motoristaEndpoint}/${motorista.id}`, body, httpOptions)
@@ -90,7 +89,8 @@ export class MotoristaService {
 
     return this.httpClient.get(`${this.motoristaEndpoint}/${id}`, httpOptions)
       .toPromise()
-      .then(response => {
+      .then(response => 
+      {
         const motorista = response as Motorista;
 
         return motorista;

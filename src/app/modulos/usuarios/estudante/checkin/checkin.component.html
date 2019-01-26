@@ -9,7 +9,10 @@
     </ng-template>
     <div class="container">
       <mat-card style="height: 100%">
-        <h3 style="font-weight: 100; font-size: 23px;">Confirmação de presença</h3>
+        <mat-card-header>
+          <mat-card-title>Confirmação de presença</mat-card-title>
+        </mat-card-header>
+        <!-- <h3 style="font-weight: 100; font-size: 23px;">Confirmação de presença</h3> -->
 
         <div style="margin-top: 35px; padding: 10px; min-height: 26px;">
           <span style="font-size: 15px; color: gray;">
@@ -76,14 +79,18 @@
     <ng-template matTabContent>
       <div class="container">
         <mat-card style="margin-bottom: 10px" *ngIf="totalPresencasConfirmadas !== 0">
-          <h3 style="font-weight: 100; font-size: 23px;">Resumo da viagem</h3>
+          <mat-card-header>
+            <mat-card-title>Resumo da viagem</mat-card-title>
+          </mat-card-header>
+          <!-- <h3 style="font-weight: 100; font-size: 23px;">Resumo da viagem</h3> -->
 
-          <div style="min-height: 20px; margin: 15px 0; display: flex" class="accent-dark">
+          <div style="min-height: 20px; margin: 15px 0; display: flex; justify-content: space-between;" class="accent-dark">
             <span style="font-size: 15px; color: gray;" [ngPlural]="totalPresencasConfirmadas" class="margem-texto-resumo-viagem">
               <ng-template ngPluralCase="1">{{totalPresencasConfirmadas}} estudante confirmou presença hoje</ng-template>
               <ng-template ngPluralCase="2">{{totalPresencasConfirmadas}} estudantes confirmaram presença hoje</ng-template>              
               <ng-template ngPluralCase="few">{{totalPresencasConfirmadas}} estudantes confirmaram presença hoje</ng-template>              
               <ng-template ngPluralCase="many">{{totalPresencasConfirmadas}} estudantes confirmaram presença hoje</ng-template>
+              <!-- <ng-template>{{totalPresencasConfirmadas}} estudantes pretendem utilizar o transporte estudantil hoje</ng-template> -->
             </span>
 
             <button mat-icon-button color="accent" (click)="abrirAjuda('totalPresencasConfirmadas')">
@@ -95,7 +102,7 @@
             <mat-divider [inset]="true"></mat-divider>
           </div>
 
-          <div style="min-height: 20px; margin: 15px 0; display: flex"
+          <div style="min-height: 20px; margin: 15px 0; display: flex; justify-content: space-between;"
               *ngIf="quantidadeAguardandoSaida !== 0" class="accent-dark">
             <span style="font-size: 15px; color: gray;" [ngPlural]="quantidadeAguardandoSaida" class="margem-texto-resumo-viagem">
               <ng-template ngPluralCase="1">{{quantidadeAguardandoSaida}} estudante aguardando a saída do veículo</ng-template>
@@ -113,7 +120,7 @@
             <mat-divider [inset]="true"></mat-divider>
           </div>
 
-          <div style="min-height: 20px; margin: 15px 0; display: flex" 
+          <div style="min-height: 20px; margin: 15px 0; display: flex; justify-content: space-between;" 
               *ngIf="quantidadeAguardandoSaida !== 0" class="accent-dark">
             <span style="font-size: 15px; color: gray;" [ngPlural]="quantidadeEmAula" class="margem-texto-resumo-viagem">
               <ng-template ngPluralCase="0">Nenhum estudante está em aula, o veículo já pode voltar para o município</ng-template>
@@ -130,7 +137,10 @@
         </mat-card>
 
         <mat-card>
-          <h3 style="font-weight: 100; font-size: 23px;">Estudantes</h3>
+          <mat-card-header>
+            <mat-card-title>Estudantes</mat-card-title>
+          </mat-card-header>
+          <!-- <h3 style="font-weight: 100; font-size: 23px;">Estudantes</h3> -->
 
           <mat-list id="listaPresenca">
             <mat-list-item *ngFor="let checkin of listaPresenca?.checkins; last as last">

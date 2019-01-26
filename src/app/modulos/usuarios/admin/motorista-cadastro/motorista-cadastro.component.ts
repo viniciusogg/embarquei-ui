@@ -15,8 +15,8 @@ import { StorageDataService } from './../../../../services/storage-data.service'
   templateUrl: './motorista-cadastro.component.html',
   styleUrls: ['./motorista-cadastro.component.css']
 })
-export class MotoristaCadastroComponent implements OnInit {
-
+export class MotoristaCadastroComponent implements OnInit 
+{
   motoristaForm: FormGroup;
   instituicaoEnsino: InstituicaoEnsino;
   instituicoesEnsino: Array<InstituicaoEnsino> = new Array<InstituicaoEnsino>();
@@ -31,14 +31,10 @@ export class MotoristaCadastroComponent implements OnInit {
       private errorHandlerService: ErrorHandlerService, private motoristaService: MotoristaService,
       private snackBar: MatSnackBar, private storageDataService: StorageDataService,
       private activatedRoute: ActivatedRoute)
-  { 
-
-  }
+  {}
 
   ngOnInit() 
   {
-    this.storageDataService.tituloBarraSuperior = 'Motoristas';
-
     this.createForm();
 
     const idMotorista = this.activatedRoute.snapshot.params['id'];

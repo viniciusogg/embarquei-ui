@@ -362,7 +362,7 @@ export class AjudaDialogComponent implements OnInit {
     }
     else if (this.ajuda === 'totalPresencasConfirmadas')
     {
-      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong> Presença confirmada </strong> <br> é a quantidade de estudantes que confirmaram presença para utilizar o transporte ' + 
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong> Presença confirmada </strong> <br> é a quantidade de estudantes que pretendem utilizar o transporte ' + 
         'estudantil hoje. </p>');
     }
     else if (this.ajuda === 'quantidadeAguardandoSaida') 

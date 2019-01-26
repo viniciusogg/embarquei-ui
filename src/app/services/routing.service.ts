@@ -77,7 +77,7 @@ export class RoutingService {
     { path: 'acesso-negado', component: NaoAutorizadoComponent},
     { path: 'pagina-nao-encontrada', component: NaoEncontradoComponent},
     {
-      path: 'estudantes/cadastro',
+      path: 'estudante/cadastro',
       component: EstudanteCadastroComponent
     },
     { path: '**', redirectTo: 'pagina-nao-encontrada' }
@@ -123,6 +123,12 @@ export class RoutingService {
     {
       path: 'veiculos',
       component: VeiculosListagemComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['admin'] }
+    },
+    {
+      path: 'veiculos/:id',
+      component: VeiculoCadastroComponent,
       canActivate: [AuthGuard],
       data: { tiposUsuariosPermitidos: ['admin'] }
     }

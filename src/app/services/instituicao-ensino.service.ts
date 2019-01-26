@@ -8,7 +8,7 @@ import { AdminService } from './admin.service';
 @Injectable()
 export class InstituicaoEnsinoService {
 
-  instituicaoUrl: string;
+  private instituicaoUrl: string;
 
   constructor(private httpClient: HttpClient, private errorHandlerService: ErrorHandlerService,
       private adminService: AdminService)
@@ -36,6 +36,7 @@ export class InstituicaoEnsinoService {
       .catch(erro => this.errorHandlerService.handle(erro));
   }
 
+  // Retorna instituições que não tem motoristas da cidade do usuário logado
   getSemMotoristaAssociado(): Promise<any>
   {
     const httpOptions = {
@@ -48,6 +49,26 @@ export class InstituicaoEnsinoService {
     return this.adminService.getById(localStorage.getItem('idUsuarioLogado'))
       .then(usuario => {
         return this.httpClient.get(`${this.instituicaoUrl}/semMotorista/${usuario.endereco.cidade.id}`, httpOptions)
+          .toPromise()
+          .then(response => {
+            return response;
+          });
+      });
+  }
+
+  // Retorna instituições que não tem motoristas da cidade do usuário logado
+  getSemVeiculoAssociado(): Promise<any>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      withCredentials: true
+    };
+
+    return this.adminService.getById(localStorage.getItem('idUsuarioLogado'))
+      .then(usuario => {
+        return this.httpClient.get(`${this.instituicaoUrl}/semVeiculo/${usuario.endereco.cidade.id}`, httpOptions)
           .toPromise()
           .then(response => {
             return response;

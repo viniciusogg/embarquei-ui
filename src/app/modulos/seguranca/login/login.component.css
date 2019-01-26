@@ -16,3 +16,13 @@
 .spacer-field {
   margin-top: 15px;
 }
+
+#botao-login {
+  height: 56px; 
+  padding-top: 3px;
+  font-size: 17px;
+  border-radius: 100px; 
+  font-weight: bold; 
+  width: 80%; 
+  margin: 15px auto 0 auto;
+}

@@ -95,7 +95,9 @@ export class VeiculoTransporte {
   tipo: TIPO_VEICULO;
   cor: string;
   imagem?: Imagem;
+  linkFoto?: string;
   instituicoesEnsino: Array<InstituicaoEnsino>;
+  cidade: Cidade;
 }
 
 export class Checkin {
@@ -191,7 +193,8 @@ export enum TIPO_NOTIFICACAO {
 
 export enum COLECAO_ARQUIVO {
   COMPROVANTES_MATRICULA = 'comprovantes_matricula',
-  FOTOS_CONTAS = 'fotos_contas'
+  FOTOS_CONTAS = 'fotos_contas',
+  FOTOS_VEICULOS = 'fotos_veiculos'
 }
 
 export enum STATUS_CHECKIN {

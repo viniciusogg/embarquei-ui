@@ -57,7 +57,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     // {
     //   this.isAutenticado = false;
     // }
-    return this.router.url !== '/estudantes/cadastro' && !this.isTelaLogin()
+    return this.router.url !== '/estudante/cadastro' && !this.isTelaLogin()
       && this.existeToken();
   }
 
@@ -92,15 +92,17 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     });
   }
 
-  @HostListener('panright')
-  openDrawer() 
-  {
-    if (this.existeToken()) 
-    {
-      this.drawer.open();
-    }
-  }
+  // ABRE A BARRA LATERAL
+  // @HostListener('panright')
+  // openDrawer() 
+  // {
+  //   if (this.existeToken()) 
+  //   {
+  //     this.drawer.open();
+  //   }
+  // }
 
+  // FECHA A BARRA LATERAL
   @HostListener('panleft')
   closeDrawer() 
   {

@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
-import { VeiculoTransporte, TIPO_VEICULO } from './../../../../modulos/core/model';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { VeiculoTransporte, TIPO_VEICULO } from './../../../../modulos/core/model';
+import { VeiculoTransporteService } from './../../../../services/veiculo-transporte.service';
+import { StorageDataService } from './../../../../services/storage-data.service';
 
 @Component({
   selector: 'app-veiculos-listagem',
@@ -18,8 +20,8 @@ export class VeiculosListagemComponent implements OnInit {
 
   fab = false;
 
-  constructor(private router: Router, 
-      private breakPointObserver: BreakpointObserver)
+  constructor(private router: Router, private veiculoTransporteService: VeiculoTransporteService,
+      private breakPointObserver: BreakpointObserver, private storageDataService: StorageDataService)
   { 
     this.breakPointObserver.observe([
       Breakpoints.XSmall,
@@ -50,138 +52,25 @@ export class VeiculosListagemComponent implements OnInit {
 
   ngOnInit() 
   {
-    this.dataSourceVeiculos.data = [
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      },
-      {
-        id: '1', 
-        placa: 'ACB-123',
-        capacidade: 35,
-        cor: 'Branco',
-        tipo: TIPO_VEICULO.ONIBUS,
-        instituicoesEnsino: [
-          {id: '1', nome: 'IFPB'}
-        ]
-      }
-    ];
+    setTimeout(() => {
+      this.storageDataService.tituloBarraSuperior = 'Veículos';
+    });
+
+    this.listarMotoristas();
   }
 
+  listarMotoristas() 
+  {
+    this.veiculoTransporteService.getByCidade()
+      .then(response => 
+      {
+        if (response)
+        {
+          this.dataSourceVeiculos.data = response;
+  
+          this.dataSourceVeiculos.sort = this.sort;
+        }
+      });
+  }
+  
 }

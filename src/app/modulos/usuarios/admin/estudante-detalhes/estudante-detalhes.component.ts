@@ -7,6 +7,7 @@ import { AdminService } from './../../../../services/admin.service';
 import { EstudanteService } from './../../../../services/estudante.service';
 import { Estudante, PontoParada, Endereco, STATUS_COMPROVANTE } from './../../../core/model';
 import { UploadService } from './../../../../services/upload.service';
+import { StorageDataService } from './../../../../services/storage-data.service';
 
 @Component({
   selector: 'app-estudante-detalhes',
@@ -35,7 +36,7 @@ export class EstudanteDetalhesComponent implements OnInit, AfterViewInit
   constructor(private activatedRoute: ActivatedRoute, private adminService: AdminService,
       private estudanteService: EstudanteService, private formBuilder: FormBuilder,
       private snackBar: MatSnackBar, private router: Router, private uploadService: UploadService,
-      private breakpointObserver: BreakpointObserver)
+      private breakpointObserver: BreakpointObserver, private storageDataService: StorageDataService)
   {
     breakpointObserver.observe([
       Breakpoints.XSmall
@@ -61,6 +62,10 @@ export class EstudanteDetalhesComponent implements OnInit, AfterViewInit
   ngOnInit()
   {
     this.createForm();
+
+    setTimeout(() => {
+      this.storageDataService.tituloBarraSuperior = 'Detalhes do(a) estudante';
+    })
   }
 
   carregarEstudante()

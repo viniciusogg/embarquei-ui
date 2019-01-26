@@ -26,6 +26,7 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
 .container {
   display: block;
   padding: 10px;
+  margin-top: 10px;
 }
 
 .form-container > * {
