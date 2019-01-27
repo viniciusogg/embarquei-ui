@@ -3,7 +3,7 @@ import { ErrorHandlerService } from './../modulos/core/error-handler.service';
 import { Administrador, Estudante } from './../modulos/core/model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 import { AuthHttp } from 'angular2-jwt';
 import { Observable } from 'rxjs';
 import { Headers, URLSearchParams } from '@angular/http';

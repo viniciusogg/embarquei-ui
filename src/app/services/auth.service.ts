@@ -18,6 +18,7 @@ export class AuthService {
   oauthTokenUrl: string;
   jwtPayload: any;
   tipoUsuarioLogado: string;
+  private usuarioEndpoint = `${environment.apiUrl}/usuarios`;
 
   constructor(private jwtHelperService: JwtHelper, private cookieService: CookieService,
       private storageDataService: StorageDataService,
@@ -219,9 +220,7 @@ export class AuthService {
       withCredentials: true
     };
 
-    const usuariosUrl = 'http://127.0.0.1:8000/api/usuarios';
-
-    return this.httpClient.get(`${usuariosUrl}/tipo-usuario/${id}`)
+    return this.httpClient.get(`${this.usuarioEndpoint}/tipo-usuario/${id}`, httpOptions)
       .toPromise()
       .then(response => {
         return response;

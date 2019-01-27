@@ -16,6 +16,7 @@ import { AuthService } from './../../services/auth.service';
 import { AuthGuard } from './../../routing/auth.guard';
 
 import { LogoutService } from './../../services/logout.service';
+import { environment } from './../../../environments/environment';
 
 export function tokenGetter() {
   return localStorage.getItem('embarquei-token');
@@ -23,7 +24,7 @@ export function tokenGetter() {
 
 export function jwtOptionsFactory(authService) {
   return {
-    whitelistedDomains: ['127.0.0.1:8000'],
+    whitelistedDomains: [environment.domain],
     // blacklistedRoutes: ['127.0.0.1:8000/api/authenticate'],
     tokenGetter: () => {
       return authService.interceptarRequisicao();

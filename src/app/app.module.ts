@@ -26,6 +26,7 @@ import { MotoristaCadastroComponent } from './modulos/usuarios/admin/motorista-c
 import { MotoristasListagemComponent } from './modulos/usuarios/admin/motoristas-listagem/motoristas-listagem.component';
 import { VeiculoCadastroComponent } from './modulos/usuarios/admin/veiculo-cadastro/veiculo-cadastro.component';
 import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-listagem/veiculos-listagem.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-lis
     AdminModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   entryComponents: [
     // estudante
