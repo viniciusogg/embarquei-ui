@@ -111,7 +111,7 @@
           <mat-form-field appearance="outline" class="spacer-field">
             <mat-label>Instituição de ensino</mat-label>
             <mat-select formControlName="campoInstituicaoEnsino" id="campoInstituicaoEnsino"
-                [(value)]="InstituicaoEnsino" required>
+                [(value)]="instituicaoEnsino" required>
               <mat-option *ngFor="let instituicaoEnsino of instituicoesEnsino"
                   [value]="instituicaoEnsino.nome"
                   (keyup)="alterarCursos(thirdFormGroup.get('campoInstituicaoEnsino').value)"
@@ -171,11 +171,11 @@
         <form [formGroup]="fourthFormGroup" class="form-container">
 
           <h3>Seus pontos de parada</h3>
-          <span>{{comprovante?.url}}</span>
+
           <mat-form-field appearance="outline" class="spacer-field">
             <mat-label>Onde você espera o transporte?</mat-label>
             <mat-select formControlName="campoPontoIda" id="campoPontoIda"
-                [(value)]="ponto" required>
+                [(value)]="pontoEspera" required>
               <mat-option *ngFor="let ponto of pontosParadaIda"
                   [value]="ponto.id">
                 {{ponto.nome}}

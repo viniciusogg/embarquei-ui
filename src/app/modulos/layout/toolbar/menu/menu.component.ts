@@ -25,7 +25,7 @@ export class MenuComponent implements OnInit, AfterViewInit {//, OnChanges {
 
   constructor(private router: Router, private logoutService: LogoutService, private authService: AuthService,
       private errorHandlerService: ErrorHandlerService, private estudanteService: EstudanteService,
-      private storageDataService: StorageDataService,  private jwtHelperService: JwtHelperService,
+      public storageDataService: StorageDataService,  private jwtHelperService: JwtHelperService,
       private adminService: AdminService, private uploadService: UploadService)
   {}
 

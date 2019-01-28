@@ -10,7 +10,7 @@ import { TrajetoService } from './../../../../services/trajeto.service';
 import { UploadService } from './../../../../services/upload.service';
 import { ErrorHandlerService } from './../../../core/error-handler.service';
 import { EstudanteService } from './../../../../services/estudante.service';
-import { Estudante, Endereco, ComprovanteMatricula, STATUS_COMPROVANTE, HorarioSemanalEstudante, DIA_SEMANA, Imagem, COLECAO_ARQUIVO, Curso } from './../../../core/model';
+import { Estudante, Endereco, ComprovanteMatricula, STATUS_COMPROVANTE, HorarioSemanalEstudante, DIA_SEMANA, Imagem, COLECAO_ARQUIVO, Curso, PontoParada } from './../../../core/model';
 import { StorageDataService } from './../../../../services/storage-data.service';
 
 import { v4 as uuid } from 'uuid';
@@ -33,6 +33,8 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   curso = ''
   fotoEstudante: File;
   comprovanteMatricula: File;
+  pontoEspera: PontoParada;
+  pontoDescida: PontoParada;
 
   public cidades = new Array<any>();
   public instituicoesEnsino = new Array<any>();

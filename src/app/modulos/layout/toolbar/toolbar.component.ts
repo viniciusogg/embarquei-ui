@@ -21,7 +21,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
 
   @ViewChild('drawerRef') public drawer: MatDrawer;
 
-  constructor(private dialog: MatDialog, private router: Router, 
+  constructor(private dialog: MatDialog, public router: Router, 
     private storageDataService: StorageDataService, private elementRef: ElementRef) 
   {}
 
