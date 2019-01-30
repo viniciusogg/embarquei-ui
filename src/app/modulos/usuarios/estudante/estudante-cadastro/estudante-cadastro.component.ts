@@ -63,14 +63,12 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   ngAfterViewInit()
   {
     this.buscarCidades();
-    this.buscarInstituicoesEnsino();
+    // this.buscarInstituicoesEnsino();
   }
 
   salvar()
   {
     const estudante = this.criarEstudante();
-
-    // let estudanteSalvo: Estudante;
 
     this.estudanteService.cadastrarEstudante(estudante)
       .then(() => {
@@ -158,7 +156,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     const endereco = new Endereco();
 
     endereco.cidade = {id: this.cidades.filter(cidadeFiltrada =>
-      this.secondFormGroup.get('campoCidade').value === cidadeFiltrada.nome)[0].id};
+      this.secondFormGroup.get('campoCidade').value.nome === cidadeFiltrada.nome)[0].id};
 
     endereco.bairro = this.secondFormGroup.get('campoBairro').value;
     endereco.logradouro = this.secondFormGroup.get('campoLogradouro').value;
@@ -260,27 +258,19 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
 
   buscarInstituicoesEnsino()
   {
-    this.instituicaoEnsinoService.getAll()
-      .then(response => {
-
-        this.instituicoesEnsino = response.instituicoes;
-
-        // for (const instituicao of response.instituicoes)
-        // {
-        //   this.cursos = instituicao.cursos;
-        // }
-        // console.log(response.instituicoes);
+    this.instituicaoEnsinoService.getComRotas(this.secondFormGroup.get('campoCidade').value.id)
+      .then(response => 
+      {
+        this.instituicoesEnsino = response;
       })
+      .catch(erro => this.errorHandlerService.handle(erro));
   }
 
   buscarCidades()
   {
     this.cidadeService.getCidadesComRotas()
       .then(response => {
-
         this.cidades = response;
-        // console.log(response.cidades);
-        // console.log(this.cidades);
       });
   }
 
@@ -291,7 +281,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
 
     for (const cidade of this.cidades)
     {
-      if (cidade.nome === this.secondFormGroup.get('campoCidade').value)
+      if (cidade.nome === this.secondFormGroup.get('campoCidade').value.nome)
       {
         cidadeId = cidade.id;
       }
@@ -306,9 +296,8 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     }
 
     this.trajetoService.getPontosParada(cidadeId, instituicaoId)
-      .then(response => {
-
-        // console.log(response.trajetos);
+      .then(response => 
+      {
         for(const trajeto of response.trajetos)
         {
           if(trajeto.tipo === 'IDA')
@@ -321,7 +310,8 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
           }
         }
       })
-      .catch(erro => {
+      .catch(erro => 
+      {
         this.errorHandlerService.handle(erro)
       });
   }

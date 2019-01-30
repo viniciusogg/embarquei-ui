@@ -16,10 +16,29 @@ export class InstituicaoEnsinoService {
     this.instituicaoUrl = `${environment.apiUrl}/instituicoesEnsino`;
   }
 
+  getComRotas($cidadeId): Promise<InstituicaoEnsino[]>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders(
+      {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      withCredentials: true
+    };
+
+    return this.httpClient.get(`${this.instituicaoUrl}/comRota/${$cidadeId}`, httpOptions).toPromise()
+      .then(response => 
+        {
+          let instituicoesEnsino: InstituicaoEnsino[] = response as InstituicaoEnsino[];
+          return instituicoesEnsino ;
+        });
+  }
+
   getAll(): Promise<any>
   {
     const httpOptions = {
-      headers: new HttpHeaders({
+      headers: new HttpHeaders(
+      {
         'Content-Type': 'application/x-www-form-urlencoded'
       }),
       withCredentials: true

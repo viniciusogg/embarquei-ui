@@ -65,7 +65,7 @@
           <mat-form-field appearance="outline" class="spacer-field">
             <mat-label>Cidade</mat-label>
             <mat-select formControlName="campoCidade" id="campoCidade" [(value)]="cidade" required>
-              <mat-option *ngFor="let cidade of cidades" [value]="cidade.nome">
+              <mat-option *ngFor="let cidade of cidades" [value]="cidade">
                 {{cidade.nome}}
               </mat-option>
             </mat-select>
@@ -97,7 +97,7 @@
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext [disabled]="secondFormGroup.invalid"
-                color="accent" class="botao-next">CONTINUAR</button>
+                color="accent" class="botao-next" (click)="buscarInstituicoesEnsino()">CONTINUAR</button>
             <button mat-button matStepperPrevious>VOLTAR</button>
           </div>
         </form>
