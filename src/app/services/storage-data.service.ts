@@ -10,7 +10,14 @@ export class StorageDataService {
 
   usuarioLogado: Usuario;
 
-  constructor() { }
+  promptEvent;
+
+  constructor() 
+  { 
+    window.addEventListener ('beforeinstallprompt', event => { 
+      this.promptEvent = event; 
+    });
+  }
 
   getUsuarioLogado()
   {

@@ -2,7 +2,7 @@
     "name": "Embarquei",
     "short_name": "Embarquei",
     "theme_color": "#2979FF",
-    "background_color": "#2979FF",
+    "background_color": "#fafafa",
     "display": "standalone",
     "scope": "https://viniciusgouveia.github.io/embarquei-ui/",
     "start_url": "https://viniciusgouveia.github.io/embarquei-ui/login/",

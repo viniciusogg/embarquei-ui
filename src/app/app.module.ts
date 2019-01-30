@@ -5,8 +5,10 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { MatDialogModule } from '@angular/material/dialog';
 
-import { AppComponent } from './app.component';
+import { AppComponent, InstalacaoAppDialogComponent } from './app.component';
 import { AppRoutingModule } from './routing/app-routing.module';
 import { environment } from '../environments/environment';
 
@@ -26,11 +28,11 @@ import { MotoristaCadastroComponent } from './modulos/usuarios/admin/motorista-c
 import { MotoristasListagemComponent } from './modulos/usuarios/admin/motoristas-listagem/motoristas-listagem.component';
 import { VeiculoCadastroComponent } from './modulos/usuarios/admin/veiculo-cadastro/veiculo-cadastro.component';
 import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-listagem/veiculos-listagem.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
     AppComponent,
+    InstalacaoAppDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -47,8 +49,11 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    MatDialogModule
   ],
   entryComponents: [
+    InstalacaoAppDialogComponent,
+
     // estudante
     DashboardComponent,
     EstudanteCadastroComponent,
@@ -64,6 +69,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     VeiculosListagemComponent
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }

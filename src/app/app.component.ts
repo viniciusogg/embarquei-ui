@@ -1,7 +1,9 @@
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+
 import { RoutingService } from './services/routing.service';
 import { AdminService } from './services/admin.service';
 import { EstudanteService } from './services/estudante.service';
-import { Component, OnInit } from '@angular/core';
 import { StorageDataService } from './services/storage-data.service';
 import { UploadService } from './services/upload.service';
 import { Estudante } from './modulos/core/model';
@@ -11,18 +13,26 @@ import { Estudante } from './modulos/core/model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'app';
 
-  constructor(private estudanteService: EstudanteService, private storageDataService: StorageDataService,
-      private adminService: AdminService, private routingService: RoutingService, private uploadService: UploadService)
-  {
-
-  }
+  constructor(private estudanteService: EstudanteService, private storageDataService: StorageDataService, 
+      private dialog: MatDialog, private adminService: AdminService, 
+      private routingService: RoutingService, private uploadService: UploadService)
+  {}
 
   ngOnInit()
   {
     this.armazenarUsuarioNoDataService();
+
+    if (this.storageDataService.promptEvent)
+    {
+      console.log('capturou');
+      this.dialog.open(InstalacaoAppDialogComponent, {
+        height: '75%', 
+        width: '99%'
+      });
+    }
   }
 
   private armazenarUsuarioNoDataService()
@@ -60,4 +70,27 @@ export class AppComponent implements OnInit{
       }
     }
   }
+}
+
+@Component({
+  selector: 'app-instalacao-app-dialog-component',
+  template: `
+  <mat-dialog-content class="mat-typography">
+    <p cdkFocusInitial>Quando for solicitado, adicione o Embarquei na sua tela inicial. A solicitação vai aparecer na parte inferior da tela :)</p>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="primary" (click)="installPwa()"> ENTENDI </button>
+  </mat-dialog-actions>
+  `
+})
+export class InstalacaoAppDialogComponent {
+
+  constructor(private storageDataService: StorageDataService) 
+  {}
+
+  installPwa (): void { 
+    this.storageDataService.promptEvent.prompt(); 
+  }
+
 }
