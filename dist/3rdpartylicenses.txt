@@ -1366,6 +1366,10 @@ MIT
 
 @angular/material/datepicker
 
+@angular/material/toolbar
+
+@angular/material/sidenav
+
 @angular/material/stepper
 
 @angular/material/select
@@ -1375,10 +1379,6 @@ MIT
 @angular/material/table
 
 @angular/material/radio
-
-@angular/material/toolbar
-
-@angular/material/sidenav
 
 @angular/service-worker
 MIT
