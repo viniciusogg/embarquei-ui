@@ -1266,7 +1266,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-@angular/animations
+ngx-cookie-service
+MIT
+
+@angular/fire/database
+MIT
+
+@angular/fire
+MIT
+
+firebase/database
+
+firebase/storage
+
+@angular/fire/storage
 MIT
 
 @angular/cdk
@@ -1319,23 +1332,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-ngx-cookie-service
-MIT
-
-@angular/fire/database
-MIT
-
-@angular/fire
-MIT
-
-firebase/database
-
-firebase/storage
-
-@angular/fire/storage
-MIT
-
 @angular/router
+MIT
+
+@angular/animations
 MIT
 
 @angular/material/button
@@ -1348,21 +1348,17 @@ MIT
 
 @angular/material/dialog
 
+@angular/material/bottom-sheet
+
 @angular/material/icon
 
-@angular/material/toolbar
-
-@angular/material/sidenav
+@angular/material/checkbox
 
 @angular/material/divider
 
 @angular/material/core
 
 @angular/material/list
-
-@angular/material/bottom-sheet
-
-@angular/material/checkbox
 
 @angular/material/tabs
 
@@ -1379,6 +1375,10 @@ MIT
 @angular/material/table
 
 @angular/material/radio
+
+@angular/material/toolbar
+
+@angular/material/sidenav
 
 @angular/service-worker
 MIT
