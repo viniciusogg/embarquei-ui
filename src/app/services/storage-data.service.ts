@@ -14,9 +14,10 @@ export class StorageDataService {
 
   constructor() 
   { 
-    window.addEventListener ('beforeinstallprompt', event => { 
-      this.promptEvent = event; 
-    });
+    // window.addEventListener ('beforeinstallprompt', event => { 
+    //   this.promptEvent = event; 
+    //   console.log(event);
+    // });
   }
 
   getUsuarioLogado()

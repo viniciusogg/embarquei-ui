@@ -19,7 +19,12 @@ export class AppComponent implements OnInit {
   constructor(private estudanteService: EstudanteService, private storageDataService: StorageDataService, 
       private dialog: MatDialog, private adminService: AdminService, 
       private routingService: RoutingService, private uploadService: UploadService)
-  {}
+  {
+    window.addEventListener ('beforeinstallprompt', event => { 
+      this.storageDataService.promptEvent = event; 
+      console.log(event);
+    });
+  }
 
   ngOnInit()
   {
