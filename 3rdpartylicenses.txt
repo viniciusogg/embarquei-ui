@@ -1338,11 +1338,11 @@ MIT
 @angular/animations
 MIT
 
+@angular/material/button
+
 @angular/material/card
 
 @angular/material/form-field
-
-@angular/material/button
 
 @angular/material/snack-bar
 
