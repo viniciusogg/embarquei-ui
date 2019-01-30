@@ -38,7 +38,7 @@ import { CookieService } from 'ngx-cookie-service';
     ErrorHandlerService,
     AdminService,
     EstudanteService,
-    StorageDataService,
+    // StorageDataService,
     JwtHelperService,
     LogoutService,
     TrajetoService,

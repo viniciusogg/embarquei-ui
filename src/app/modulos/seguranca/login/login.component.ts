@@ -2,8 +2,7 @@ import { RoutingService } from './../../../services/routing.service';
 import { AdminService } from './../../../services/admin.service';
 import { StorageDataService } from '../../../services/storage-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -11,27 +10,49 @@ import { ErrorHandlerService } from './../../core/error-handler.service';
 import { EstudanteService } from '../../../services/estudante.service';
 import { Estudante } from '../../core/model';
 import { UploadService } from '../../../services/upload.service';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
 
   loginForm: FormGroup;
 
   //public mascaraMatricula = [/[a-zA-Z]/, /[a-zA-Z]/, '-', /\d/, /\d/, /\d/, /\d/];
+  event = this.storageDataService.promptEvent;
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
-      private errorHandlerService: ErrorHandlerService, private storageDataService: StorageDataService,
+      private errorHandlerService: ErrorHandlerService, public storageDataService: StorageDataService,
       private estudanteService: EstudanteService, private adminService: AdminService,
-      private routingService: RoutingService, private uploadService: UploadService)
+      private routingService: RoutingService, private uploadService: UploadService, private dialog: MatDialog)
   {
     this.createForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() 
+  {
+    this.storageDataService.promptEvent;
+  }
+
+  ngAfterViewInit()
+  {
+    setTimeout(() => {
+      // if (this.storageDataService.promptEvent)
+      // {
+        this.dialog.open(InstalacaoAppDialogComponent, {
+          height: '50%', 
+          width: '99%',
+          disableClose: true
+        });
+      // }
+      return true
+    }, 10000);
+
+    // setTimeout(function(){this.abrirDialogInstalacao()}, 25000);
+  }
 
   login() {
     this.authService.login(this.loginForm.get('campoNumeroCelular').value, this.loginForm.get('campoSenha').value)
@@ -99,29 +120,14 @@ export class LoginComponent implements OnInit {
       });
   }
 
-
-  // getUsuarioLogado()
-  // {
-    // const token = localStorage.getItem('embarquei-token');
-
-    // const token = this.jwtHelper.decodeToken(localStorage.getItem('embarquei-token'));
-
-
-    // const idUsuarioLogado = localStorage.getItem('idUsuarioLogado');
-    // console.log('MenuComponent - getUsuarioLogado() - idUsuario: ' + localStorage.getItem('idUsuarioLogado'));
-    // return this.estudanteService.getById(localStorage.getItem('idUsuarioLogado'))
-    //   .then(usuario => {
-        // this.usuario = usuario;
-        // console.log('token:' + token.sub);zz
-        // console.log(usuario);
-        // Promise.resolve(usuario);
-
-  //       this.usuario = usuario;
-
-  //       console.log(this.usuario);
-  //     })
-  //     .catch(erro => this.errorHandlerService.handle(erro));
-  // }
+  abrirDialogInstalacao()
+  {
+    this.dialog.open(InstalacaoAppDialogComponent, {
+      height: '55%', 
+      width: '99%',
+      disableClose: true
+    });
+  }
 
   private createForm()
   {
@@ -130,4 +136,32 @@ export class LoginComponent implements OnInit {
       campoSenha: [null, Validators.required],
     });
   }
+}
+
+
+@Component({
+  selector: 'app-instalacao-app-dialog-component',
+  template: `
+  <mat-dialog-content class="mat-typography">
+    <p cdkFocusInitial>Quando for solicitado, adicione o Embarquei na sua tela inicial ou  
+      acesse as configurações do seu navegador e selecione a opção <strong>Adicionar à tela inicial</strong> :)</p>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="primary" (click)="installPwa()"> ENTENDI </button>
+  </mat-dialog-actions>
+  `
+})
+export class InstalacaoAppDialogComponent {
+
+  constructor(private storageDataService: StorageDataService) 
+  {}
+
+  installPwa (): void { 
+    if (this.storageDataService.promptEvent)
+    {
+      this.storageDataService.promptEvent.prompt(); 
+    }
+  }
+
 }

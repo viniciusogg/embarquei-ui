@@ -6,9 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { MatDialogModule } from '@angular/material/dialog';
 
-import { AppComponent, InstalacaoAppDialogComponent } from './app.component';
+import { AppComponent } from './app.component';
 import { AppRoutingModule } from './routing/app-routing.module';
 import { environment } from '../environments/environment';
 
@@ -31,8 +30,7 @@ import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-lis
 
 @NgModule({
   declarations: [
-    AppComponent,
-    InstalacaoAppDialogComponent
+    AppComponent
   ],
   imports: [
     AppRoutingModule,
@@ -48,12 +46,9 @@ import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-lis
     AdminModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    MatDialogModule
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   entryComponents: [
-    InstalacaoAppDialogComponent,
-
     // estudante
     DashboardComponent,
     EstudanteCadastroComponent,

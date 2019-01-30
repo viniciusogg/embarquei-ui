@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Usuario } from '../modulos/core/model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class StorageDataService {
 
   tituloBarraSuperior = 'Embarquei';
@@ -14,10 +16,10 @@ export class StorageDataService {
 
   constructor() 
   { 
-    // window.addEventListener ('beforeinstallprompt', event => { 
-    //   this.promptEvent = event; 
-    //   console.log(event);
-    // });
+    window.addEventListener('beforeinstallprompt', event => { 
+      this.promptEvent = event; 
+      console.log(event);
+    });
   }
 
   getUsuarioLogado()

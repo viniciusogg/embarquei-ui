@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, HostListener, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { MatDialog, MatDrawer } from '@angular/material';
@@ -13,7 +13,7 @@ import * as Hammer from 'hammerjs';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css']
 })
-export class ToolbarComponent implements OnInit, AfterViewInit {
+export class ToolbarComponent implements OnInit {
 
   fotoUsuario: string;
 
@@ -39,8 +39,6 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     //   });
     // }
   }
-
-  ngAfterViewInit() {}
 
   ocultarToolbar() 
   {
@@ -92,6 +90,8 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+
   // ABRE A BARRA LATERAL
   // @HostListener('panright')
   // openDrawer() 
@@ -112,3 +112,4 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     }
   }
 }
+

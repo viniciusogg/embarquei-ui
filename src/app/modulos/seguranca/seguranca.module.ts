@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import { LoginComponent } from './login/login.component';
+import { LoginComponent, InstalacaoAppDialogComponent } from './login/login.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -55,11 +55,11 @@ export function jwtOptionsFactory(authService) {
       }
     })
   ],
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, InstalacaoAppDialogComponent],
   providers: [
     AuthGuard,
     LogoutService
   ],
-
+  entryComponents: [InstalacaoAppDialogComponent]
 })
 export class SegurancaModule { }

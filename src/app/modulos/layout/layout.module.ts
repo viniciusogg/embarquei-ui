@@ -11,6 +11,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MenuComponent } from './toolbar/menu/menu.component';
@@ -27,7 +28,8 @@ import { MenuComponent } from './toolbar/menu/menu.component';
     MatListModule,
     MatMenuModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDialogModule
   ],
   declarations: [ToolbarComponent, MenuComponent],
   exports: [ToolbarComponent, MenuComponent],
