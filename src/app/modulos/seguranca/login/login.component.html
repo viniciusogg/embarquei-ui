@@ -34,7 +34,7 @@
           [disabled]="!loginForm.valid"
           (click)="login();">ENTRAR</button> <!-- height: 45px -->
 
-      <a mat-button class="spacer-field" 
+      <a mat-button class="spacer-field" *ngIf="false"
           style="color: white; width: 200px; margin: 20px auto 0px auto;"> Esqueci minha senha </a>
 
       <a mat-button class="spacer-field" [routerLink]="['/estudante/cadastro']" 
