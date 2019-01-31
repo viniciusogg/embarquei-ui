@@ -16,6 +16,7 @@ import { MotoristaCadastroComponent } from '../modulos/usuarios/admin/motorista-
 import { MotoristasListagemComponent } from '../modulos/usuarios/admin/motoristas-listagem/motoristas-listagem.component';
 import { VeiculoCadastroComponent } from '../modulos/usuarios/admin/veiculo-cadastro/veiculo-cadastro.component';
 import { VeiculosListagemComponent } from '../modulos/usuarios/admin/veiculos-listagem/veiculos-listagem.component';
+import { PainelControleComponent } from '../modulos/usuarios/motorista/painel-controle/painel-controle.component';
 
 @Injectable({
   providedIn: 'root'
@@ -133,6 +134,15 @@ export class RoutingService {
       data: { tiposUsuariosPermitidos: ['admin'] }
     }
   ];
+
+  rotasMotorista = [
+    {
+      path: 'painelControle',
+      component: PainelControleComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['mot'] }
+    }
+  ]
 
   rotaEmAnalise = [
     {

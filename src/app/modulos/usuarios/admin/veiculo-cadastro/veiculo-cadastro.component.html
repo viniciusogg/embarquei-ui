@@ -114,7 +114,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 
-        <div class="msg-tabela-vazia" *ngIf="dataSourceInstituicoes.data.length === 0">
+        <div class="msg-tabela-vazia" *ngIf="dataSourceInstituicoes?.data?.length === 0">
           <span>Não existem dados para exibição</span>
         </div>
       </mat-card-content>

@@ -14,6 +14,7 @@ import { Estudante, Endereco, ComprovanteMatricula, STATUS_COMPROVANTE, HorarioS
 import { StorageDataService } from './../../../../services/storage-data.service';
 
 import { v4 as uuid } from 'uuid';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-estudante-cadastro',
@@ -42,7 +43,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   public pontosParadaIda = new Array<any>();
   public pontosParadaVolta = new Array<any>();
 
-  constructor(private formBuilder: FormBuilder, private router: Router,
+  constructor(private formBuilder: FormBuilder, private router: Router, private jwtHelper: JwtHelperService,
       private instituicaoEnsinoService: InstituicaoEnsinoService, private uploadService: UploadService,
       private trajetoService: TrajetoService, private cidadeService: CidadeService,
       private estudanteService: EstudanteService, private snackBar: MatSnackBar,
@@ -51,7 +52,26 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     this.storageDataService.tituloBarraSuperior = 'Crie sua conta';
   }
 
-  ngOnInit() {
+  ngOnInit() 
+  {
+    const token = localStorage.getItem('embarquei-token');
+    const tipoUsuarioLogado = localStorage.getItem('tipoUsuarioLogado');
+
+    if (token && !this.jwtHelper.isTokenExpired(token))
+    {
+      if (tipoUsuarioLogado === 'est')
+      {
+        this.router.navigate(['/resumoDiario']);
+      }
+      else if (tipoUsuarioLogado === 'admin')
+      {
+        this.router.navigate(['/estudantes']);
+      }
+      else if (tipoUsuarioLogado === 'mot')
+      {
+        this.router.navigate(['/painelControle']);
+      }
+    }
     this.createForms();
   }
 

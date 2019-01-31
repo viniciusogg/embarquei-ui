@@ -11,6 +11,7 @@ import { EstudanteService } from '../../../services/estudante.service';
 import { Estudante } from '../../core/model';
 import { UploadService } from '../../../services/upload.service';
 import { MatDialog } from '@angular/material';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-login',
@@ -26,28 +27,47 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
       private errorHandlerService: ErrorHandlerService, public storageDataService: StorageDataService,
-      private estudanteService: EstudanteService, private adminService: AdminService,
-      private routingService: RoutingService, private uploadService: UploadService, private dialog: MatDialog)
+      private estudanteService: EstudanteService, private adminService: AdminService, private jwtHelper: JwtHelperService,
+      private routingService: RoutingService, private uploadService: UploadService, private dialog: MatDialog,
+      private activatedRoute: ActivatedRoute)
   {
     this.createForm();
   }
 
   ngOnInit() 
   {
+    const token = localStorage.getItem('embarquei-token');
+    const tipoUsuarioLogado = localStorage.getItem('tipoUsuarioLogado');
+
+    if (token && !this.jwtHelper.isTokenExpired(token))
+    {
+      if (tipoUsuarioLogado === 'est')
+      {
+        this.router.navigate(['/resumoDiario']);
+      }
+      else if (tipoUsuarioLogado === 'admin')
+      {
+        this.router.navigate(['/estudantes']);
+      }
+      else if (tipoUsuarioLogado === 'mot')
+      {
+        this.router.navigate(['/painelControle']);
+      }
+    }
     this.storageDataService.promptEvent;
   }
 
   ngAfterViewInit()
   {
     setTimeout(() => {
-      // if (this.storageDataService.promptEvent)
-      // {
+      if (this.router.url === '/login')
+      {
         this.dialog.open(InstalacaoAppDialogComponent, {
           height: '50%', 
           width: '99%',
           disableClose: true
         });
-      // }
+      }
       return true
     }, 10000);
 

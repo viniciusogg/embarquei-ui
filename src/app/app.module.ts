@@ -16,6 +16,7 @@ import { LayoutModule } from './modulos/layout/layout.module';
 import { SegurancaModule } from './modulos/seguranca/seguranca.module';
 import { EstudanteModule } from './modulos/usuarios/estudante/estudante.module';
 import { AdminModule } from './modulos/usuarios/admin/admin.module';
+import { MotoristaModule } from './modulos/usuarios/motorista/motorista.module';
 
 import { EstudantesListagemComponent } from './modulos/usuarios/admin/estudantes-listagem/estudantes-listagem.component';
 import { EmAnaliseComponent } from './modulos/usuarios/estudante/em-analise/em-analise.component';
@@ -27,10 +28,11 @@ import { MotoristaCadastroComponent } from './modulos/usuarios/admin/motorista-c
 import { MotoristasListagemComponent } from './modulos/usuarios/admin/motoristas-listagem/motoristas-listagem.component';
 import { VeiculoCadastroComponent } from './modulos/usuarios/admin/veiculo-cadastro/veiculo-cadastro.component';
 import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-listagem/veiculos-listagem.component';
+import { PainelControleComponent } from './modulos/usuarios/motorista/painel-controle/painel-controle.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -44,6 +46,7 @@ import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-lis
     SegurancaModule,
     EstudanteModule,
     AdminModule,
+    MotoristaModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
@@ -61,10 +64,12 @@ import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-lis
     MotoristaCadastroComponent, 
     MotoristasListagemComponent,
     VeiculoCadastroComponent,
-    VeiculosListagemComponent
+    VeiculosListagemComponent,
+
+    // motorista
+    PainelControleComponent
   ],
   providers: [],
   bootstrap: [AppComponent],
-  
 })
 export class AppModule { }
