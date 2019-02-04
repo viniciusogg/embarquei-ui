@@ -4,8 +4,8 @@
     "theme_color": "#2979FF",
     "background_color": "#2979FF",
     "display": "standalone",
-    "scope": "https://embarquei.app",
-    "start_url": "https://embarquei.app",
+    "scope": "https://viniciusgouveia.github.io/embarquei-ui",
+    "start_url": "https://viniciusgouveia.github.io/embarquei-ui/login/",
     "icons": [
       {
         "src": "assets/icons/Icon-72x72.png",

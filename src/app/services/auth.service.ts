@@ -1,4 +1,4 @@
-import { Administrador } from './../modulos/core/model';
+import { Administrador, Motorista } from './../modulos/core/model';
 import { JwtHelper } from 'angular2-jwt';
 import { Estudante } from '../modulos/core/model';
 import { Injectable } from '@angular/core';
@@ -127,7 +127,7 @@ export class AuthService {
 
           const tipoUsuarioLogado = localStorage.getItem('tipoUsuarioLogado');
 
-          if(tipoUsuarioLogado === 'est')
+          if (tipoUsuarioLogado === 'est')
           {
             this.httpClient.get(`${environment}/estudantes/${idUsuarioLogado}`)
               .toPromise()
@@ -136,12 +136,21 @@ export class AuthService {
               })
               .catch(erro => this.errorHandlerService.handle(erro));
           }
-          else if(tipoUsuarioLogado === 'admin')
+          else if (tipoUsuarioLogado === 'admin')
           {
             this.httpClient.get(`${environment.apiUrl}/administradores/${idUsuarioLogado}`)
               .toPromise()
               .then(response => {
                 this.storageDataService.usuarioLogado = response as Administrador;
+              })
+              .catch(erro => this.errorHandlerService.handle(erro));
+          }
+          else if (tipoUsuarioLogado === 'mot')
+          {
+            this.httpClient.get(`${environment.apiUrl}/motoristas/${idUsuarioLogado}`)
+              .toPromise()
+              .then(response => {
+                this.storageDataService.usuarioLogado = response as Motorista;
               })
               .catch(erro => this.errorHandlerService.handle(erro));
           }

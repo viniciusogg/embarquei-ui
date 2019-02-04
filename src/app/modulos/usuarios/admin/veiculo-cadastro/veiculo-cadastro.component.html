@@ -19,7 +19,7 @@
               <input #imageInput type="file" (change)="onFotoInput($event)" style="display:none;"
                   formControlName="campoFoto">
           </a>
-          <span class="mat-small" style="margin-left: 10px"> {{fotoVeiculo ? '' : 'Adicione uma foto do veículo'}} {{fotoVeiculo?.name | slice:0:20}}{{fotoVeiculo?.name.length > 20 ? '...' : ''}}</span>
+          <span class="mat-small" style="margin-left: 10px"> {{fotoVeiculo ? '' : 'Adicione uma foto do veículo'}} {{fotoVeiculo?.name | slice:0:20}}{{fotoVeiculo?.name?.length > 20 ? '...' : ''}}</span>
         </div>
 
         <mat-form-field appearance="outline" class="spacer-field">

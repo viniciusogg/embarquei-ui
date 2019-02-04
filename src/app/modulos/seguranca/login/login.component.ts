@@ -12,6 +12,7 @@ import { Estudante } from '../../core/model';
 import { UploadService } from '../../../services/upload.service';
 import { MatDialog } from '@angular/material';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { MotoristaService } from './../../../services/motorista.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       private errorHandlerService: ErrorHandlerService, public storageDataService: StorageDataService,
       private estudanteService: EstudanteService, private adminService: AdminService, private jwtHelper: JwtHelperService,
       private routingService: RoutingService, private uploadService: UploadService, private dialog: MatDialog,
-      private activatedRoute: ActivatedRoute)
+      private activatedRoute: ActivatedRoute, private motoristaService: MotoristaService)
   {
     this.createForm();
   }
@@ -60,7 +61,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   ngAfterViewInit()
   {
     setTimeout(() => {
-      if (this.router.url === '/login')
+      if (this.router.url === '/login') //  && this.storageDataService.plataforma !== 'web'
       {
         this.dialog.open(InstalacaoAppDialogComponent, {
           height: '50%', 
@@ -76,13 +77,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   login() {
     this.authService.login(this.loginForm.get('campoNumeroCelular').value, this.loginForm.get('campoSenha').value)
-      // .then()
       .then(() => {
         this.authService.getTipoUsuarioById(localStorage.getItem('idUsuarioLogado'))
           .then(tipoRetornado => {
             localStorage.setItem('tipoUsuarioLogado', tipoRetornado.tipo);
 
-            if(tipoRetornado.tipo === 'est')
+            if (tipoRetornado.tipo === 'est')
             {
               let estudante: Estudante;
 
@@ -104,7 +104,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
                 .then(() => {
                   if(this.storageDataService.usuarioLogado.ativo)
                   {
-                    this.router.navigate(['/checkin']);
+                    this.router.navigate(['/resumoDiario']);
                   }
                   else
                   {
@@ -115,7 +115,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
                   this.errorHandlerService.handle(erro)
                 });
             }
-            else if(tipoRetornado.tipo === 'admin')
+            else if (tipoRetornado.tipo === 'admin')
             {
               this.adminService.getById(localStorage.getItem('idUsuarioLogado'))
                 .then(usuario => {
@@ -129,6 +129,26 @@ export class LoginComponent implements OnInit, AfterViewInit {
                 .catch(erro => {
                   this.errorHandlerService.handle(erro)
                 });
+            }
+            else if (tipoRetornado.tipo === 'mot')
+            {
+              this.motoristaService.getById(localStorage.getItem('idUsuarioLogado'))
+                .then(usuario => {
+                  this.storageDataService.usuarioLogado = usuario;
+                  localStorage.setItem('isUsuarioAtivo', usuario.ativo);
+                  this.routingService.configurarRotas(localStorage.getItem('tipoUsuarioLogado'));
+                })
+                .then(() => {
+                  if (!this.storageDataService.usuarioLogado.ativo)
+                  {
+                    this.router.navigate(['/primeiroAcessoMotorista']);
+                  }
+                  else
+                  {
+                    this.router.navigate(['/painelControle']);
+                  }
+                })
+                .catch(erro => this.errorHandlerService.handle(erro));
             }
           })
           .catch(erro => {

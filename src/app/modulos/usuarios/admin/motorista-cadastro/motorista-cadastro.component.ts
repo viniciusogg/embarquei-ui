@@ -9,6 +9,7 @@ import { InstituicaoEnsinoService } from './../../../../services/instituicao-ens
 import { ErrorHandlerService } from './../../../core/error-handler.service';
 import { MotoristaService } from './../../../../services/motorista.service';
 import { StorageDataService } from './../../../../services/storage-data.service';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-motorista-cadastro',
@@ -150,7 +151,7 @@ export class MotoristaCadastroComponent implements OnInit
     if (novo)
     {
       motorista.foto = new Imagem();
-      motorista.foto.caminhoSistemaArquivos = '/';
+      motorista.foto.caminhoSistemaArquivos = uuid();
     }
     else
     {

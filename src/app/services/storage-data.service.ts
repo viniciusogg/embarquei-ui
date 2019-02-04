@@ -14,11 +14,15 @@ export class StorageDataService {
 
   promptEvent;
 
+  plataforma;
+
   constructor() 
   { 
     window.addEventListener('beforeinstallprompt', event => { 
       this.promptEvent = event; 
-      console.log(event);
+      this.plataforma = this.promptEvent.platforms[0];
+      console.log(this.plataforma);
+      console.log(this.promptEvent);
     });
   }
 
