@@ -103,13 +103,13 @@ export class ToolbarComponent implements OnInit {
   // }
 
   // FECHA A BARRA LATERAL
-  @HostListener('panleft')
-  closeDrawer() 
-  {
-    if (this.existeToken())
-    {
-      this.drawer.close();
-    }
-  }
+//   @HostListener('panleft')
+//   closeDrawer() 
+//   {
+//     if (this.existeToken())
+//     {
+//       this.drawer.close();
+//     }
+//   }
 }
 
