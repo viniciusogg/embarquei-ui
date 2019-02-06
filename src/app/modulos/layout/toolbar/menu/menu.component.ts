@@ -84,25 +84,25 @@ export class MenuComponent implements OnInit, AfterViewInit {//, OnChanges {
   }
 
   opcoesMenuLateralAdmin = [
-    {label: 'Início', icone: 'home', url: '/inicio', id: 'botaoInicio'},
+    // {label: 'Início', icone: 'home', url: '/inicio', id: 'botaoInicio'},
     {label: 'Estudantes', icone: 'school', url: '/estudantes', id: 'botaoEstudantes'},
-    {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
+    // {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
     {label: 'Motoristas', icone: 'people', url: '/motoristas', id: 'botaoCondutores'},
     {label: 'Veículos Estudantis', icone: 'directions_bus', url: '/veiculos', id: 'botaoVeículosEstudantis'},
-    {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
-    {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
+    // {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
+    // {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
   ];
 
   opcoesMenuLateralEmAnalise = [];
 
   opcoesMenuLateralEstudante = [
-    {label: 'Início', icone: 'home', url: '/inicio', id: 'botaoInicio'},
+    {label: 'Início', icone: 'home', url: '/resumoDiario', id: 'botaoInicio'},
     {label: 'Check-in', icone: 'check_circle', url: '/checkin', id: 'botaoCheckin'}, // beenhere
-    {label: 'Perfil', icone: 'account_circle', url: '/estudantes', id: 'botaoEstudantes'},
-    {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
-    {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
-    {label: 'Veículos de transporte', icone: 'directions_bus', url: '/', id: 'botaoVeiculos'},
-    {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
-    {label: 'SOS', icone: 'error_outline', url: '/checkin', id: 'botaoCheckin'},
+    // {label: 'Perfil', icone: 'account_circle', url: '/estudantes', id: 'botaoEstudantes'},
+    // {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
+    // {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
+    // {label: 'Veículos de transporte', icone: 'directions_bus', url: '/', id: 'botaoVeiculos'},
+    // {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
+    // {label: 'SOS', icone: 'error_outline', url: '/checkin', id: 'botaoCheckin'},
   ];
 }
