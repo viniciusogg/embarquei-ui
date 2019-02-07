@@ -235,16 +235,20 @@ export class CheckinComponent implements OnInit, AfterViewInit {
       const dataUltimaAtualizacao = moment(checkin.dataUltimaAtualizacao, 'DD/MM/YYYY');
       const dataAtual = moment(new Date().toLocaleDateString(), 'DD/MM/YYYY');
 
-      if (checkin.status === STATUS_CHECKIN.CONFIRMADO || checkin.status === STATUS_CHECKIN.EMBARCOU 
+      if (checkin.status === STATUS_CHECKIN.EMBARCOU 
         && dataUltimaAtualizacao.isSame(dataAtual))
       {
         this.totalPresencasConfirmadas += 1;
-      }
-      if (checkin.status === STATUS_CHECKIN.EMBARCOU && 
-        dataUltimaAtualizacao.isSame(dataAtual))
+      } // checkin.status === STATUS_CHECKIN.CONFIRMADO ||
+      else if (checkin.status === STATUS_CHECKIN.CONFIRMADO && dataUltimaAtualizacao.isSame(dataAtual))
       {
-        this.quantidadeAguardandoSaida += 1;
+        this.totalPresencasConfirmadas +=1;
       }
+      // else if (checkin.status === STATUS_CHECKIN.EMBARCOU && 
+      //   dataUltimaAtualizacao.isSame(dataAtual))
+      // {
+      //   this.quantidadeAguardandoSaida += 1;
+      // }
     }
     this.quantidadeEmAula = this.totalPresencasConfirmadas - this.quantidadeAguardandoSaida;
   }

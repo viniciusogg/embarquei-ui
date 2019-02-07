@@ -8,7 +8,7 @@
       "updateMode": "prefetch",
       "urls": [
         "/index.html",
-        "/main.3e3d84f9483f90ea64fb.js",
+        "/main.c64c42f5fb4b6c04d0aa.js",
         "/polyfills.7f2534fe85bb73b342af.js",
         "/runtime.b57bf819d5bdce77f1c7.js",
         "/styles.554f3259381ed55de0ef.css"
@@ -82,8 +82,8 @@
     "/assets/road7.jpg": "ea156eacd0558f37a05d53ae6c4b06ca5229b899",
     "/assets/road8.jpg": "7e53d2ed49295b25b85782004759fc5e08b0393f",
     "/assets/road9.jpg": "06e6a2b633154da1355545014be686368b331e2b",
-    "/index.html": "e0160970331604a8bb62a96b92e63c298124f512",
-    "/main.3e3d84f9483f90ea64fb.js": "d817c0d2b1c47d8f50890ed2aa27c4493890c28b",
+    "/index.html": "5e68fe8bfc2e84d11ca71560bb0650e7ad08d411",
+    "/main.c64c42f5fb4b6c04d0aa.js": "5bc89728a1d73a4bfa51bf1bb8ae21131976ee11",
     "/polyfills.7f2534fe85bb73b342af.js": "ce68d153e9b9b6d26b625069c0ee99ae09c6f255",
     "/runtime.b57bf819d5bdce77f1c7.js": "b62956c2192bfe5516d6374e753773901ed50ec5",
     "/styles.554f3259381ed55de0ef.css": "d8ef2ef40ec71714629bbbfce9bb3337f97f0245"
