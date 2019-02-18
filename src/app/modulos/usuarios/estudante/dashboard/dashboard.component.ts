@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StorageDataService } from './../../../../services/storage-data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private storageDataService: StorageDataService) { }
 
-  ngOnInit() {
+  ngOnInit() 
+  {
+    setTimeout(() => {
+      this.storageDataService.tituloBarraSuperior = 'Resumo diário';
+    });
   }
 
 }

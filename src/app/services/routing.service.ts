@@ -17,6 +17,7 @@ import { MotoristasListagemComponent } from '../modulos/usuarios/admin/motorista
 import { VeiculoCadastroComponent } from '../modulos/usuarios/admin/veiculo-cadastro/veiculo-cadastro.component';
 import { VeiculosListagemComponent } from '../modulos/usuarios/admin/veiculos-listagem/veiculos-listagem.component';
 import { PainelControleComponent } from '../modulos/usuarios/motorista/painel-controle/painel-controle.component';
+import { FeedbackComponent } from '../modulos/usuarios/padrao/feedback/feedback.component';
 
 @Injectable({
   providedIn: 'root'
@@ -31,23 +32,27 @@ export class RoutingService {
 
     let isUsuarioAtivo = localStorage.getItem('isUsuarioAtivo');
 
-    if(isUsuarioAtivo === 'false')
+    if (isUsuarioAtivo === 'false')
     {
       // console.log('CONFIGURANDO ROTA EM ANALISE');
       this.router.resetConfig(this.rotaEmAnalise);
     }
-    else if(tipoUsuarioLogado === 'est')
+    else if (tipoUsuarioLogado === 'est')
     {
       // console.log('CONFIGURANDO ROTAS ESTUDANTES');
       this.router.resetConfig(this.rotasEstudante);
     }
-    else if(tipoUsuarioLogado === 'admin')
+    else if (tipoUsuarioLogado === 'admin')
     {
       this.router.resetConfig(this.rotasAdmin);
     }
+    else if (tipoUsuarioLogado === 'mot')
+    {
+      this.router.resetConfig(this.rotasMotorista);
+    }
     this.router.config.push(rotaLogin[0]);
 
-    for(let rota of this.rotasPadrao)
+    for (let rota of this.rotasPadrao)
     {
       this.router.config.push(rota);
     }
@@ -67,10 +72,10 @@ export class RoutingService {
       canActivate: [AuthGuard],
       data: { tiposUsuariosPermitidos: ['est'] }
     },
-    {
-      path: 'emAnalise',
-      component: EmAnaliseComponent
-    }
+    // {
+    //   path: 'emAnalise',
+    //   component: EmAnaliseComponent
+    // }
   ];
 
   rotasPadrao = [
@@ -81,10 +86,20 @@ export class RoutingService {
       path: 'estudante/cadastro',
       component: EstudanteCadastroComponent
     },
+    { 
+      path: 'feedback', 
+      component: FeedbackComponent,
+      canActivate: [AuthGuard],
+      data: {tiposUsuariosPermitidos: ['admin', 'mot', 'est']}
+    },
     { path: '**', redirectTo: 'pagina-nao-encontrada' }
   ];
 
   rotasAdmin = [
+    // {
+    //   path: 'inicio',
+    //   component: 
+    // },
     {
       path: 'estudantes',
       component: EstudantesListagemComponent,
@@ -142,14 +157,14 @@ export class RoutingService {
       canActivate: [AuthGuard],
       data: { tiposUsuariosPermitidos: ['mot'] }
     }
-  ]
+  ];
 
   rotaEmAnalise = [
     {
       path: 'emAnalise', component: EmAnaliseComponent,
       data: { tiposUsuariosPermitidos: ['est'] }
     }
-  ]
+  ];
 
 }
 

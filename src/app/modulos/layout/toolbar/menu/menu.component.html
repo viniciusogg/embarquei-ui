@@ -20,14 +20,23 @@
   <mat-nav-list>
     <mat-list-item [id]="opcao.id" 
         *ngFor="let opcao of (storageDataService?.usuarioLogado?.ativo ? 
-          (getTipoUsuarioLogado() === 'est' ? 
-          opcoesMenuLateralEstudante : opcoesMenuLateralAdmin) : opcoesMenuLateralEmAnalise); index as i; first as primeiraOpcao; last as ultimaOpcao"
+          (getTipoUsuarioLogado() === 'est' ? opcoesMenuLateralEstudante : 
+          (getTipoUsuarioLogado() === 'mot' ? opcoesMenuLateralMotorista : 
+          (getTipoUsuarioLogado() === 'super' ? opcoesMenuLateralSuper : opcoesMenuLateralAdmin))) : 
+          opcoesMenuLateralEmAnalise); last as ultimaOpcao"
         (click)="redirecionar(opcao.url)">
       <mat-icon mat-list-icon>{{opcao.icone}}</mat-icon>
       <a matLine>{{opcao.label}}</a>
-
-      <mat-divider *ngIf="ultimaOpcao"></mat-divider>
     </mat-list-item>
+
+    <mat-divider style="margin: 8px 0;"></mat-divider>
+
+    <mat-list-item id="botaoFeedback" (click)="redirecionar('/feedback')">
+      <mat-icon mat-list-icon>feedback</mat-icon>
+      <a matLine>Feedback</a>
+    </mat-list-item>
+    
+    <mat-divider style="margin: 8px 0;"></mat-divider>
 
     <mat-list-item id="botaoSair" (click)="drawerRef.close(); logout();">
       <a matLine>Sair</a>

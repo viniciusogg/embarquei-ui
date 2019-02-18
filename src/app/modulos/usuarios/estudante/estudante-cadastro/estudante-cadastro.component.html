@@ -5,22 +5,23 @@
       <ng-template matStepperIcon="edit">
         <mat-icon>check</mat-icon>
       </ng-template>
+
       <mat-step [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup" class="form-container" autocomplete="off">
 
-          <h3>Dados pessoais</h3>
+          <h3> Dados pessoais </h3>
 
           <div class="accent-normal">
             <a mat-fab (click)="imageInput.click(); removerFotoCarregada()">
-              <mat-icon>photo_camera</mat-icon>
+              <mat-icon>add_a_photo</mat-icon>
                 <input #imageInput type="file" (change)="onFotoInput($event)" style="display:none;"
                     required formControlName="campoFoto">
             </a>
-            <span class="mat-small" style="margin-left: 10px"> {{fotoEstudante ? '' : 'Adicione uma foto sua'}} {{fotoEstudante?.name | slice:0:20}}{{fotoEstudante?.name?.length > 20 ? '...' : ''}}</span>
+            <span class="mat-small" style="margin-left: 10px"> {{fotoEstudante ? '' : 'Adicione uma foto sua'}} {{fotoEstudante?.name | slice:0:20}}{{fotoEstudante?.name?.length > 20 ? '...' : ''}} *</span>
           </div>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Nome</mat-label>
+            <mat-label> Nome </mat-label>
             <input id="campoNome" matInput placeholder="Primeiro nome" required
                 formControlName="campoNome">
 
@@ -30,7 +31,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Sobrenome</mat-label>
+            <mat-label> Sobrenome </mat-label>
             <input id="campoSobrenome" matInput placeholder="Último sobrenome" required
                 formControlName="campoSobrenome">
 
@@ -40,7 +41,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Número do celular</mat-label>
+            <mat-label> Número do celular </mat-label>
             <input id="campoNumeroCelular" matInput placeholder="Seu número de celular" required
                 formControlName="campoNumeroCelular">
 
@@ -51,8 +52,8 @@
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext [disabled]="firstFormGroup.invalid"
-                class="botao-next" color="accent">CONTINUAR</button>
-            <a [routerLink]="['/login']" mat-button type="button" >VOLTAR</a>
+                class="botao-next" color="accent"> CONTINUAR </button>
+            <a [routerLink]="['/login']" mat-button type="button"> VOLTAR </a>
           </div>
         </form>
       </mat-step>
@@ -60,10 +61,10 @@
       <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup" class="form-container">
 
-          <h3>Seu endereço</h3>
+          <h3> Seu endereço </h3>
           <!-- <span>{{fotoEstudante?.url}}</span> -->
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Cidade</mat-label>
+            <mat-label> Cidade </mat-label>
             <mat-select formControlName="campoCidade" id="campoCidade" [(value)]="cidade" required>
               <mat-option *ngFor="let cidade of cidades" [value]="cidade">
                 {{cidade.nome}}
@@ -76,7 +77,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Logradouro</mat-label>
+            <mat-label> Logradouro </mat-label>
             <input id="campoLogradouro" matInput placeholder="Rua, avenida, etc" required
                 formControlName="campoLogradouro">
 
@@ -86,7 +87,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Bairro</mat-label>
+            <mat-label> Bairro </mat-label>
             <input id="campoBairro" matInput placeholder="Seu bairro" required
                 formControlName="campoBairro">
 
@@ -97,8 +98,8 @@
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext [disabled]="secondFormGroup.invalid"
-                color="accent" class="botao-next" (click)="buscarInstituicoesEnsino()">CONTINUAR</button>
-            <button mat-button matStepperPrevious>VOLTAR</button>
+                color="accent" class="botao-next" (click)="buscarInstituicoesEnsino()"> CONTINUAR </button>
+            <button mat-button matStepperPrevious> VOLTAR </button>
           </div>
         </form>
       </mat-step>
@@ -106,10 +107,10 @@
       <mat-step [stepControl]="thirdFormGroup">
         <form [formGroup]="thirdFormGroup" class="form-container">
 
-          <h3>Dados acadêmicos</h3>
+          <h3> Dados acadêmicos </h3>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Instituição de ensino</mat-label>
+            <mat-label> Instituição de ensino </mat-label>
             <mat-select formControlName="campoInstituicaoEnsino" id="campoInstituicaoEnsino"
                 [(value)]="instituicaoEnsino" required>
               <mat-option *ngFor="let instituicaoEnsino of instituicoesEnsino"
@@ -126,7 +127,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Curso</mat-label>
+            <mat-label> Curso </mat-label>
             <mat-select formControlName="campoCurso" id="campoCurso"
                 [(value)]="curso" required>
               <mat-option *ngFor="let curso of cursos"
@@ -140,29 +141,21 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-card class="espacamento-card" style="width: 86%; margin: auto;">
-            <mat-card-header>
-              <mat-card-title style="text-align: center;"> Comprovante de matrícula </mat-card-title>
-            </mat-card-header>
-
-            <mat-card-content style="text-align: center;" class="accent-normal">
-              <button mat-raised-button color="accent" (click)="comprovanteInput.click(); removerComprovanteCarregado()">
-                ADICIONAR
-              </button>
-
+          <div class="accent-normal">
+            <a mat-fab color="accent" (click)="comprovanteInput.click(); removerComprovanteCarregado()">
+              <mat-icon>insert_drive_file</mat-icon>
               <input #comprovanteInput type="file" (change)="onComprovanteInput($event)" style="display:none;"
                   required formControlName="campoComprovante">
-
-            </mat-card-content>
-            <div style="text-align: center; font-size: 11px">
-              <span>{{comprovanteMatricula ? comprovanteMatricula.name : 'Nenhum comprovante foi adicionado'}}</span>
-            </div>
-          </mat-card>
+            </a>
+            <span class="mat-small" style="margin-left: 10px">
+              {{comprovanteMatricula ? '' : 'Seu comprovante de matrícula *'}} {{comprovanteMatricula?.name | slice:0:20}}{{comprovanteMatricula?.name?.length > 20 ? '...' : ''}}
+            </span>
+          </div>
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button matStepperNext color="accent" class="botao-next"
-                [disabled]="thirdFormGroup.invalid" (click)="buscarPontosParada()">CONTINUAR</button>
-            <button mat-button matStepperPrevious>VOLTAR</button>
+                [disabled]="thirdFormGroup.invalid" (click)="buscarPontosParada()"> CONTINUAR </button>
+            <button mat-button matStepperPrevious> VOLTAR </button>
           </div>
         </form>
       </mat-step>
@@ -170,10 +163,10 @@
       <mat-step [stepControl]="fourthFormGroup">
         <form [formGroup]="fourthFormGroup" class="form-container">
 
-          <h3>Seus pontos de parada</h3>
+          <h3> Seus pontos de parada </h3>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Onde você espera o transporte?</mat-label>
+            <mat-label> Onde você espera o transporte? </mat-label>
             <mat-select formControlName="campoPontoIda" id="campoPontoIda"
                 [(value)]="pontoEspera" required>
               <mat-option *ngFor="let ponto of pontosParadaIda"
@@ -188,7 +181,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Onde você desce?</mat-label>
+            <mat-label> Onde você desce? </mat-label>
             <mat-select formControlName="campoPontoVolta" id="campoPontoVolta"
                 [(value)]="pontoDescida" required>
               <mat-option *ngFor="let pontoDescida of pontosParadaVolta"
@@ -197,7 +190,7 @@
               </mat-option>
             </mat-select>
 
-            <mat-hint>Na volta para o seu município</mat-hint>
+            <mat-hint> Na volta para o seu município </mat-hint>
 
             <mat-error *ngIf="fourthFormGroup.get('campoPontoVolta').hasError('required')">
               O ponto de descida deve ser informado
@@ -206,8 +199,8 @@
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button color="accent" [disabled]="fourthFormGroup.invalid"
-                matStepperNext class="botao-next">PROXIMO</button>
-            <button mat-button matStepperPrevious>VOLTAR</button>
+                matStepperNext class="botao-next"> PROXIMO </button>
+            <button mat-button matStepperPrevious> VOLTAR </button>
           </div>
         </form>
       </mat-step>
@@ -215,10 +208,10 @@
       <mat-step [stepControl]="quintoFormGroup">
         <form [formGroup]="quintoFormGroup" class="form-container">
 
-          <h3>Defina sua senha</h3>
+          <h3> Defina sua senha </h3>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Senha</mat-label>
+            <mat-label> Senha </mat-label>
             <input matInput placeholder="Digite uma senha" type="password" required
                 formControlName="campoNovaSenha">
 
@@ -228,7 +221,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="spacer-field">
-            <mat-label>Confirmação da senha</mat-label>
+            <mat-label> Confirmação da senha </mat-label>
             <input matInput placeholder="Digite a senha novamente" required type="password"
                 formControlName="campoConfirmacaoSenha">
 
@@ -239,13 +232,37 @@
 
           <div class="div-botoes-navegacao accent-normal">
             <button mat-raised-button color="accent" [disabled]="quintoFormGroup.invalid || isSenhasDiferentes()"
-                (click)="salvar()" class="botao-next">CONCLUIR</button>
-            <button mat-button matStepperPrevious>VOLTAR</button>
+                class="botao-next" matStepperNext (click)="imprimirDadosFeedback()"> PRÓXIMO </button>
+            <button mat-button matStepperPrevious> VOLTAR </button>
           </div>
         </form>
       </mat-step>
 
-    </mat-horizontal-stepper>
+      <mat-step>
+        <div class="form-container accent-dark">
 
+          <h3> Seja um usuário beta </h3>
+
+          <p> Um usuário beta testa novas funcionalidades antes que elas sejam 
+              lançadas oficialmente e dá o seu feedback para os desenvolvedores.
+          </p>
+          <p> <strong>Importante: </strong> as novas funcionalidades podem ser menos estáveis do que 
+            as versões posteriores lançadas oficialmente ao público. Isso significa que talvez 
+            alguns recursos não funcionem corretamente quando você utilizá-los.
+          </p>
+
+          <div style="margin: 70px 0">
+            <mat-checkbox [(ngModel)]="isBeta" name="beta" color="accent"
+                class="tamanho-fonte-checkbox"> Quero ser um usuário beta. </mat-checkbox>
+          </div>
+
+          <div class="div-botoes-navegacao accent-normal">
+            <button mat-raised-button color="accent"
+                (click)="salvar()" class="botao-next"> CONCLUIR </button>
+            <button mat-button matStepperPrevious> VOLTAR </button>
+          </div>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
   </mat-card>
 </div>

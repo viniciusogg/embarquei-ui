@@ -27,7 +27,8 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
   fourthFormGroup: FormGroup;
-  quintoFormGroup: FormGroup
+  quintoFormGroup: FormGroup;
+  sextoFormGroup: FormGroup;
 
   cidade = '';
   instituicaoEnsino = '';
@@ -36,6 +37,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
   comprovanteMatricula: File;
   pontoEspera: PontoParada;
   pontoDescida: PontoParada;
+  isBeta = false;
 
   public cidades = new Array<any>();
   public instituicoesEnsino = new Array<any>();
@@ -85,7 +87,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     this.buscarCidades();
     // this.buscarInstituicoesEnsino();
   }
-
+  
   salvar()
   {
     const estudante = this.criarEstudante();
@@ -113,7 +115,8 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     estudante.numeroCelular = this.firstFormGroup.get('campoNumeroCelular').value;
     estudante.senha = this.quintoFormGroup.get('campoConfirmacaoSenha').value;
     estudante.ativo = false;
-    
+    estudante.beta = this.isBeta;
+
     estudante.foto = this.criarFoto();
     estudante.endereco = this.criarEndereco();
     estudante.comprovanteMatricula = this.criarComprovanteMatricula();
@@ -346,5 +349,6 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
 
     this.cursos = instituicao.cursos;
   }
+
 }
 

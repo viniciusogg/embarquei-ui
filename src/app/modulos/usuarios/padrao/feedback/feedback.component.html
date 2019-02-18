@@ -1,0 +1,43 @@
+<div class="container">
+  <form [formGroup]="feedbackForm" autocomplete="off">
+    <mat-card style="height: 100%">
+      <mat-card-header>
+        <!-- <mat-card-title>Detalhes</mat-card-title> -->
+        <mat-card-subtitle>Dê detalhes do que aconteceu.</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="form-container accent-dark">
+        <mat-form-field appearance="outline" class="spacer-field" style="margin-top: 40px;">
+          <mat-label> Tipo de feedback </mat-label>
+          <mat-select placeholder="Tipo de feedback" [(value)]="tipoFeedback" formControlName="campoTipoFeedback" required>
+            <mat-option value="BUG"> Erro encontrado </mat-option>
+            <mat-option value="SUGESTAO"> Sugestão </mat-option>
+          </mat-select>
+  
+          <mat-error *ngIf="feedbackForm.get('campoTipoFeedback').hasError('required')">
+            O tipo de feedback é obrigatório
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="spacer-field">
+          <mat-label>Comentário</mat-label>
+          <textarea matInput id="campoComentario" matInput placeholder="Descreva seu feedback"
+              formControlName="campoComentario" required>
+          </textarea>
+
+          <mat-error *ngIf="feedbackForm.get('campoComentario').hasError('required')">
+            O nome é obrigatório
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="div-botoes-acao">
+      <a mat-stroked-button class="botao-cancelar" [routerLink]="['/']" 
+          type="button">CANCELAR</a>
+      
+      <button mat-raised-button color="accent" (click)="enviar()"
+          [disabled]="!feedbackForm.valid">ENVIAR</button>
+    </div>
+  </form>
+</div>

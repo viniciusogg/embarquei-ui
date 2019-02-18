@@ -239,6 +239,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         && dataUltimaAtualizacao.isSame(dataAtual))
       {
         this.totalPresencasConfirmadas += 1;
+        this.quantidadeAguardandoSaida += 1;
       } // checkin.status === STATUS_CHECKIN.CONFIRMADO ||
       else if (checkin.status === STATUS_CHECKIN.CONFIRMADO && dataUltimaAtualizacao.isSame(dataAtual))
       {
@@ -390,8 +391,8 @@ export class AjudaDialogComponent implements OnInit {
   templateUrl: 'lembrete-dialog/lembrete-dialog.component.html',
   styleUrls: [ 'lembrete-dialog/lembrete-dialog.component.css']
 })
-export class LembreteDialogComponent implements OnInit {
-
+export class LembreteDialogComponent implements OnInit 
+{
   segunda;
   terca;
   quarta;
@@ -461,7 +462,9 @@ export class LembreteDialogComponent implements OnInit {
     }
     this.estudanteService.atualizar(this.estudante.id, this.estudante)
       .then((response) => {
-        this.storageDataService.setUsuarioLogado(response);
+        let linkFoto = this.estudante.linkFoto;
+        this.storageDataService.usuarioLogado = response;
+        this.storageDataService.usuarioLogado.linkFoto = linkFoto;
         this.snackBar.open('Atualizado com sucesso', '', { duration: 3000});
       })
       .catch(erro => this.errorHandlerService.handle(erro));

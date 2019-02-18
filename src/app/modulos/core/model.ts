@@ -1,3 +1,5 @@
+import { database } from "firebase";
+
 export abstract class Usuario {
   id: string;
   nome: string;
@@ -7,6 +9,7 @@ export abstract class Usuario {
   ativo: boolean;
   endereco?: Endereco;
   linkFoto?: string;
+  beta: boolean;
 }
 
 export abstract class Mensageiro extends Usuario {
@@ -151,6 +154,16 @@ export class Imagem extends Arquivo {
 
 }
 
+export class Feedback {
+  id: string;
+  data: Date;
+  comentario: string;
+  detalhesPlataforma: string;
+  idUsuario: string;
+  idMunicipioUsuario: string;
+  tipo: TIPO_FEEDBACK;
+}
+
 export class ComprovanteMatricula extends Arquivo {
   status: STATUS_COMPROVANTE;
   dataEnvio: any;
@@ -201,4 +214,9 @@ export enum STATUS_CHECKIN {
   CONFIRMADO = 'CONFIRMADO',
   EMBARCOU = 'EMBARCOU',
   AGUARDANDO_CONFIRMACAO = 'AGUARDANDO_CONFIRMACAO'
+}
+
+export enum TIPO_FEEDBACK {
+  SUGESTAO = 'SUGESTAO',
+  BUG = 'BUG'
 }

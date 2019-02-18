@@ -121,7 +121,7 @@
     </mat-card>
 
     <div class="div-botoes-acao">
-      <a mat-raised-button class="botao-cancelar" [routerLink]="['/veiculos']">
+      <a mat-stroked-button class="botao-cancelar" [routerLink]="['/veiculos']">
           {{veiculo === null ? 'CANCELAR' : 'VOLTAR'}}</a>
       
       <button mat-raised-button color="accent" (click)="veiculo === null ? salvar() : atualizar()"

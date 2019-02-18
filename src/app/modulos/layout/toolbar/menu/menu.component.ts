@@ -105,4 +105,14 @@ export class MenuComponent implements OnInit, AfterViewInit {//, OnChanges {
     // {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
     // {label: 'SOS', icone: 'error_outline', url: '/checkin', id: 'botaoCheckin'},
   ];
+
+  opcoesMenuLateralMotorista = [
+    {label: 'Início', icone: 'home', url: '/painelControle', id: 'botaoPainelControle'}
+  ];
+
+  opcoesMenuLateralSuper = [
+    {label: 'Início', icone: 'home', url: '/admin/inicio', id: 'botaoAdminInicio'},
+    {label: 'Municípios', icone: 'home', url: '/admin/municipios', id: 'botaoMunicipios'},
+    {label: 'Instituicoes de ensino', icone: 'home', url: 'admin/instituicoes', id: 'botaoInstituicoes'}
+  ];
 }

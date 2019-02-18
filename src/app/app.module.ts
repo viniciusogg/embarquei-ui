@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
@@ -29,18 +30,32 @@ import { MotoristasListagemComponent } from './modulos/usuarios/admin/motoristas
 import { VeiculoCadastroComponent } from './modulos/usuarios/admin/veiculo-cadastro/veiculo-cadastro.component';
 import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-listagem/veiculos-listagem.component';
 import { PainelControleComponent } from './modulos/usuarios/motorista/painel-controle/painel-controle.component';
+import { FeedbackComponent } from './modulos/usuarios/padrao/feedback/feedback.component';
+
+import { MatCardModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule } from '@angular/material';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
+    FeedbackComponent,
   ],
   imports: [
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
     HttpModule,
     HttpClientModule,
+
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
 
     LayoutModule,
     SegurancaModule,
@@ -67,7 +82,10 @@ import { PainelControleComponent } from './modulos/usuarios/motorista/painel-con
     VeiculosListagemComponent,
 
     // motorista
-    PainelControleComponent
+    PainelControleComponent,
+
+    // padrao
+    FeedbackComponent
   ],
   providers: [],
   bootstrap: [AppComponent],
