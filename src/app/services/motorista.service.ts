@@ -59,6 +59,25 @@ export class MotoristaService {
       });
   }
 
+  filtrarPorInstituicaoCidade(idInstituicao, idCidade)
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    };
+    return this.httpClient.get(`${this.motoristaEndpoint}/${idInstituicao}/${idCidade}`, httpOptions)
+      .toPromise()
+      .then(response => 
+      {
+        const motorista = response as Motorista;
+
+        return motorista;
+      });
+  }
+
   getByCidade(): Promise<any>
   {
     const httpOptions = {

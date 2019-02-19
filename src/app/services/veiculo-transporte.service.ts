@@ -80,6 +80,25 @@ export class VeiculoTransporteService
       });
   }
 
+  filtrarPorInstituicaoCidade(idInstituicao, idCidade)
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    };
+    return this.httpClient.get(`${this.veiculoEndPoint}/${idInstituicao}/${idCidade}`, httpOptions)
+      .toPromise()
+      .then(response => 
+      {
+        const veiculo = response as VeiculoTransporte;
+
+        return veiculo;
+      });
+  }
+
   atualizar(veiculo): Promise<VeiculoTransporte>
   {
     const httpOptions = {

@@ -97,13 +97,13 @@ export class MenuComponent implements OnInit, AfterViewInit {//, OnChanges {
 
   opcoesMenuLateralEstudante = [
     {label: 'Início', icone: 'home', url: '/resumoDiario', id: 'botaoInicio'},
-    {label: 'Check-in', icone: 'check_circle', url: '/checkin', id: 'botaoCheckin'}, // beenhere
-    // {label: 'Perfil', icone: 'account_circle', url: '/estudantes', id: 'botaoEstudantes'},
-    // {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
+    // {label: 'Check-in', icone: 'check_circle', url: '/checkin', id: 'botaoCheckin'}, // beenhere
+    {label: 'Perfil', icone: 'account_circle', url: '/estudantes', id: 'botaoEstudantes'},
+    {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
     // {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
     // {label: 'Veículos de transporte', icone: 'directions_bus', url: '/', id: 'botaoVeiculos'},
-    // {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
-    // {label: 'SOS', icone: 'error_outline', url: '/checkin', id: 'botaoCheckin'},
+    {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
+    {label: 'SOS', icone: 'error_outline', url: '/', id: 'botaoCheckin'},
   ];
 
   opcoesMenuLateralMotorista = [
