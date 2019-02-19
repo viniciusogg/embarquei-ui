@@ -18,6 +18,10 @@ import { VeiculoCadastroComponent } from '../modulos/usuarios/admin/veiculo-cada
 import { VeiculosListagemComponent } from '../modulos/usuarios/admin/veiculos-listagem/veiculos-listagem.component';
 import { PainelControleComponent } from '../modulos/usuarios/motorista/painel-controle/painel-controle.component';
 import { FeedbackComponent } from '../modulos/usuarios/padrao/feedback/feedback.component';
+import { ListagemNotificacoesComponent } from '../modulos/usuarios/estudante/notificacao/listagem-notificacoes/listagem-notificacoes.component';
+import { RenovacaoCadastroComponent } from '../modulos/usuarios/estudante/renovacao-cadastro/renovacao-cadastro/renovacao-cadastro.component';
+import { SosComponent } from '../modulos/usuarios/estudante/sos/sos/sos.component';
+import { DetalhesVeiculoComponent } from '../modulos/usuarios/estudante/veiculo-transporte/detalhes-veiculo/detalhes-veiculo.component';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +76,31 @@ export class RoutingService {
       canActivate: [AuthGuard],
       data: { tiposUsuariosPermitidos: ['est'] }
     },
+    {
+      path: 'notificacoes',
+      component: ListagemNotificacoesComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['est'] }
+    },
+    {
+      path: 'renovacaoCadastro',
+      component: RenovacaoCadastroComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['est'] }
+    },
+    {
+      path: 'sos',
+      component: SosComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['est'] }
+    },
+    {
+      path: 'detalhesVeiculo',
+      component: DetalhesVeiculoComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['est'] }
+    },
+
     // {
     //   path: 'emAnalise',
     //   component: EmAnaliseComponent
