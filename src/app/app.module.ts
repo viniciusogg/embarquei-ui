@@ -31,6 +31,10 @@ import { VeiculoCadastroComponent } from './modulos/usuarios/admin/veiculo-cadas
 import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculos-listagem/veiculos-listagem.component';
 import { PainelControleComponent } from './modulos/usuarios/motorista/painel-controle/painel-controle.component';
 import { FeedbackComponent } from './modulos/usuarios/padrao/feedback/feedback.component';
+import { ListagemNotificacoesComponent } from './modulos/usuarios/estudante/listagem-notificacoes/listagem-notificacoes.component';
+import { ListagemSosComponent } from './modulos/usuarios/estudante/listagem-sos/listagem-sos.component';
+import { RenovacaoCadastroComponent } from './modulos/usuarios/estudante/renovacao-cadastro/renovacao-cadastro.component';
+import { DetalhesVeiculoComponent } from './modulos/usuarios/estudante/detalhes-veiculo/detalhes-veiculo.component';
 
 import { MatCardModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
@@ -62,6 +66,7 @@ import { RouterModule } from '@angular/router';
     EstudanteModule,
     AdminModule,
     MotoristaModule,
+
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
@@ -72,6 +77,10 @@ import { RouterModule } from '@angular/router';
     EstudanteCadastroComponent,
     CheckinComponent,
     EmAnaliseComponent,
+    RenovacaoCadastroComponent,
+    ListagemSosComponent,
+    ListagemNotificacoesComponent,
+    DetalhesVeiculoComponent,
 
     // admin
     EstudantesListagemComponent,

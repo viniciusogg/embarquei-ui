@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StorageDataService } from './../../../../services/storage-data.service';
 import { CheckinService } from './../../../../services/checkin.service';
-import { Checkin, VeiculoTransporte, Rota, Motorista, Estudante } from './../../../../modulos/core/model';
+import { Checkin, VeiculoTransporte, Rota, Motorista, Estudante, STATUS_CHECKIN } from './../../../../modulos/core/model';
 import { ErrorHandlerService } from './../../../../modulos/core/error-handler.service';
 import { VeiculoTransporteService } from './../../../../services/veiculo-transporte.service';
 import { RotaService } from './../../../../services/rota.service';
 import { MotoristaService } from './../../../../services/motorista.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dashboard',
@@ -77,15 +78,24 @@ export class DashboardComponent implements OnInit {
       .then((response) => {
         let checkin = response;
 
-        if (checkin.status === 'CONFIRMADO' || checkin.status === 'EMBARCOU') 
-        {
-          this.textoCheckin = 'Presença confirmada';
-        }
-        else if (checkin.status === 'AGUARDANDO_CONFIRMACAO')
+        const dataUltimaAtualizacao = moment(checkin.dataUltimaAtualizacao, 'DD/MM/YYYY'); // HH:mm
+        const dataAtual = moment(new Date().toLocaleDateString(), 'DD/MM/YYYY');
+        
+        // CONFIRMOU A PRESENÇA NO DIA ANTERIOR MAS NÃO CLICOU EM 'EMBARQUEI' (BANCO DESATUALIZADO, SERÁ ATUALIZADO QUANDO O ESTUDANTE ACESSAR A PÁGINA DE LOGIN)
+        if (checkin.status !== STATUS_CHECKIN.AGUARDANDO_CONFIRMACAO 
+          && dataUltimaAtualizacao.isBefore(dataAtual))
         {
           this.textoCheckin = 'Não confirmou presença';
         }
-        // this.checkin = response;
+        else if (checkin.status === STATUS_CHECKIN.CONFIRMADO 
+            || checkin.status === STATUS_CHECKIN.EMBARCOU) 
+        {
+          this.textoCheckin = 'Presença confirmada';
+        }
+        else if (checkin.status === STATUS_CHECKIN.AGUARDANDO_CONFIRMACAO)
+        {
+          this.textoCheckin = 'Não confirmou presença';
+        }
       })
       .catch(erro => console.log(this.errorHandlerService.handle(erro)));
   }
@@ -110,7 +120,7 @@ export class DashboardComponent implements OnInit {
             this.textoVeiculo = 'Van';
           }
           this.textoVeiculo = this.textoVeiculo + ' ' + response.cor + ' ' + response.placa;
-          // this.veiculoTransporte = response;
+          this.veiculoTransporte = response;
         }
       })
       .catch(erro => this.errorHandlerService.handle(erro));

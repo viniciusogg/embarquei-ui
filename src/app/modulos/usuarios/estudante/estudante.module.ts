@@ -17,11 +17,16 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EstudanteCadastroComponent } from './estudante-cadastro/estudante-cadastro.component';
 import { CheckinComponent, AjudaDialogComponent, LembreteDialogComponent } from './checkin/checkin.component';
 import { EmAnaliseComponent } from './em-analise/em-analise.component';
+import { DetalhesVeiculoComponent } from './detalhes-veiculo/detalhes-veiculo.component';
+import { ListagemNotificacoesComponent } from './listagem-notificacoes/listagem-notificacoes.component';
+import { ListagemSosComponent } from './listagem-sos/listagem-sos.component';
+import { RenovacaoCadastroComponent } from './renovacao-cadastro/renovacao-cadastro.component';
 
 @NgModule({
   imports: [
@@ -43,12 +48,17 @@ import { EmAnaliseComponent } from './em-analise/em-analise.component';
     MatCheckboxModule,
     MatDialogModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatChipsModule
   ],
   declarations: [
     DashboardComponent,
     EstudanteCadastroComponent,
     CheckinComponent,
+    DetalhesVeiculoComponent,
+    ListagemNotificacoesComponent,
+    ListagemSosComponent,
+    RenovacaoCadastroComponent,
     AjudaDialogComponent,
     LembreteDialogComponent,
     EmAnaliseComponent

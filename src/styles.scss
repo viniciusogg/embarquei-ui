@@ -19,6 +19,14 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
   @include angular-material-theme($default-theme);
 }
 
+$no-primary: mat-palette($mat-gray, 900);
+$no-accent: mat-palette($mat-gray, 900);
+$no-warn: mat-palette($mat-gray, 900);
+$no-theme: mat-light-theme($no-primary, $no-accent, $no-warn);
+.no-theme {
+  @include angular-material-theme($no-theme);
+}
+
 // html{
 //   font-family: Roboto, "Helvetica Neue", sans-serif;
 // }
@@ -91,6 +99,16 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
   // line-height: 24px;
 }
 
+.card-clicavel {
+  cursor: pointer;
+}
+
+/*------------------- CADASTRO ESTUDANTE -------------------*/
+mat-horizontal-stepper#stepper-cadastro-estudante > div.mat-horizontal-content-container {
+  padding: unset;
+}
+
+
 /*--------------------- CHECKIN -----------------------*/
 #tabGroupCheckin > .mat-tab-header {
   position: fixed !important;
@@ -117,6 +135,25 @@ mat-list#listaPresenca > mat-list-item > div {
   color: #BF360C
 }
 /*--------------------- CHECKIN -----------------------*/
+
+
+
+/*--------------------- SOS --------------------------*/
+#tabGroupSOS > .mat-tab-header {
+  position: fixed !important;
+  width: 100% !important;
+  z-index: 2 !important;
+  box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 
+    0px 3px 4px 0px rgba(0, 0, 0, 0.14), 
+    0px 4px 8px 0px rgba(0, 0, 0, 0.12);
+  // background-color: #2979ff;
+}
+
+#tabGroupSOS > div.mat-tab-body-wrapper {
+  margin-top: 48px;
+}
+/*-------------------- SOS --------------------------*/
+
 
 
 /*------------------------------------------- LOGIN -------------------------------------------*/
@@ -173,6 +210,8 @@ label[aria-owns="campoSenhaLogin"] {
 }
 /*------------------------------------------- LOGIN -------------------------------------------*/
 
+
+
 /*--------------------------------------- STEPPER ---------------------------------------*/
 .mat-step-icon .mat-icon {
   font-size: x-large !important;
@@ -186,12 +225,15 @@ label[aria-owns="campoSenhaLogin"] {
 /*--------------------------------------- STEPPER ---------------------------------------*/
 
 
+
 /*-------------------------------- Tabelas --------------------------------------*/
 /*-------------------------------- Cadastro motorista --------------------------------*/
 app-motorista-cadastro > div > form > mat-card:nth-child(2) > mat-card-content > div > button > span > mat-icon {
   margin: 0px 0px 3px 2px;
 }
 /*-------------------------------- Cadastro motorista --------------------------------*/
+
+
 
 app-veiculo-cadastro > div > form > mat-card:nth-child(2) > mat-card-content > div > button > span > mat-icon {
   margin: 0px 0px 3px 2px;
@@ -221,6 +263,8 @@ app-veiculo-cadastro > div > form > mat-card:nth-child(2) > mat-card-content > d
 }
 /*-------------------------------- Tabelas --------------------------------------*/
 
+
+
 /*-------------------------------- forms admins --------------------------------*/
 .margem-superior-formulario {
   margin-top: 25px !important;
@@ -230,3 +274,24 @@ app-veiculo-cadastro > div > form > mat-card:nth-child(2) > mat-card-content > d
   margin: 8px 0px 0px 10px !important;
 }
 /*-------------------------------- forms admins --------------------------------*/
+
+
+
+/*------------------------------ Imagem veículo --------------------------------*/
+.div-imagem-veiculo {
+  width: 256px;
+  margin: auto;
+}
+
+.imagem-veiculo {
+  width: 256px; 
+  border-radius: 4px;
+}
+
+.sem-imagem {
+  width: 256px !important;
+  // margin: auto !important;
+  // border-radius: 150px;
+  // border: solid 1px darkgray;
+}
+/*------------------------------ Imagem veículo --------------------------------*/

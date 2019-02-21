@@ -1,21 +1,22 @@
 <div class="container">
-  <mat-card class="espacamento-card card-dashboard background-checkin" 
+  <mat-card class="espacamento-card card-clicavel background-checkin" 
       (click)="redirecionar('/checkin')">
     <p class="mat-subheading-1 fonte-card-dashboard"> Check-in </p>
     <p class="mat-headline fonte-card-dashboard"> {{textoCheckin}} </p> 
   </mat-card>
 
-  <mat-card class="espacamento-card card-dashboard background-veiculo">
+  <mat-card class="espacamento-card card-clicavel background-veiculo"
+      (click)="redirecionar('/detalhesVeiculo/'+veiculoTransporte?.id)">
     <p class="mat-subheading-1 fonte-card-dashboard"> Veículo </p>
     <p class="mat-headline fonte-card-dashboard"> {{textoVeiculo}} </p>
   </mat-card>
 
-  <mat-card class="espacamento-card card-dashboard background-rota">
+  <mat-card class="espacamento-card card-clicavel background-rota">
     <p class="mat-subheading-1 fonte-card-dashboard"> Rota </p>
     <p class="mat-headline fonte-card-dashboard"> {{textoRota}} </p>
   </mat-card>
 
-  <mat-card class="espacamento-card card-dashboard background-condutor">
+  <mat-card class="espacamento-card card-clicavel background-condutor">
     <p class="mat-subheading-1 fonte-card-dashboard"> Condutor </p>
     <p class="mat-headline fonte-card-dashboard"> {{textoCondutor}} </p>
   </mat-card>

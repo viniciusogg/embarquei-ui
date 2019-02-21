@@ -99,11 +99,11 @@ export class MenuComponent implements OnInit, AfterViewInit {//, OnChanges {
     {label: 'Início', icone: 'home', url: '/resumoDiario', id: 'botaoInicio'},
     // {label: 'Check-in', icone: 'check_circle', url: '/checkin', id: 'botaoCheckin'}, // beenhere
     {label: 'Perfil', icone: 'account_circle', url: '/estudantes', id: 'botaoEstudantes'},
-    {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
+    {label: 'Notificações', icone: 'notifications', url: '/notificacoes', id: 'botaoNotificacoes'},
     // {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
     // {label: 'Veículos de transporte', icone: 'directions_bus', url: '/', id: 'botaoVeiculos'},
-    {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
-    {label: 'SOS', icone: 'error_outline', url: '/', id: 'botaoCheckin'},
+    {label: 'Renovação de cadastro', icone: 'refresh', url: '/renovacaoCadastro', id: 'botaoRenovacao'},
+    {label: 'SOS', icone: 'error_outline', url: '/sos', id: 'botaoCheckin'},
   ];
 
   opcoesMenuLateralMotorista = [

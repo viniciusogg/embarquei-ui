@@ -119,10 +119,10 @@ export class ListaPresenca {
 
 export class Notificacao {
   id: string;
-  titulo: string;
   descricao: string;
   tipo: TIPO_NOTIFICACAO;
-  dataEnvio: Date;
+  dataEnvio: any;
+  lida: boolean;
 }
 
 export class RenovacaoCadastro {
@@ -196,7 +196,7 @@ export enum TIPO_VEICULO {
 
 export enum TIPO_NOTIFICACAO {
   ATRASO_TRANSPORTE = 'ATRASO_TRANSPORTE',
-  AUSENCIA_TRANSPORTE = 'AUSENCIA_TRANS',
+  AUSENCIA_TRANSPORTE = 'AUSENCIA_TRANSPORTE',
   RENOVACAO_CADASTRO = 'RENOVACAO_CADASTRO',
   MUDANCA_ROTA = 'MUDANCA_ROTA',
   MUDANCA_MOTORISTA = 'MUDANCA_MOTORISTA',

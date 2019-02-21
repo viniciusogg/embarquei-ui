@@ -1,0 +1,46 @@
+<div class="container">
+  <mat-card class="espacamento-card card-clicavel" *ngFor="let notificacao of notificacoes">
+    <mat-card-subtitle>
+      <div style="display: flex;">
+        <!-- <mat-chip-list>
+          <mat-chip color="accent" selected> -->
+          <span>
+            {{notificacao?.tipo === 'ATRASO_TRANSPORTE' ? 'Atraso do veículo' : 
+            (notificacao?.tipo === 'MUDANCA_ROTA' ? 'Mudança de rota' : 
+            (notificacao?.tipo === 'AUSENCIA_TRANSPORTE' ? 'Ausência de transporte' : 
+            (notificacao?.tipo === 'RENOVACAO_CADASTRO' ? 'Renovação de cadastro' : 
+            (notificacao?.tipo === 'MUDANCA_MOTORISTA' ? 'Mudança de motorista' : 
+            (notificacao?.tipo === 'MUDANCA_VEICULO' ? 'Mudança de veículo' : 
+            (notificacao?.tipo === 'CONFIRMACAO_PRESENCA' ? 'Confirmação de presença' : 
+            'Carregando...'))))))}}
+          </span>
+          <!-- </mat-chip>
+        </mat-chip-list> -->
+
+        <span style="flex: 1 1 auto;"></span>
+    
+        <mat-chip-list *ngIf="!notificacao.lida">
+          <mat-chip color="accent" selected>
+            <!-- {{notificacao.dataEnvio}} -->
+            Novo
+          </mat-chip>
+        </mat-chip-list>
+
+        <span *ngIf="notificacao.lida">
+          {{notificacao.dataEnvio}}
+        </span>
+        
+      </div>
+    </mat-card-subtitle>
+  
+    <mat-card-content>
+      {{notificacao.descricao}}
+    </mat-card-content>
+  
+    <!-- <mat-card-actions align="end">
+      <button mat-button color="primary">
+        VISUALIZAR
+      </button>
+    </mat-card-actions> -->
+  </mat-card>
+</div>

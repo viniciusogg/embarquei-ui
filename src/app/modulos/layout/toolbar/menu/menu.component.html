@@ -17,7 +17,7 @@
     </h3>
   </div>
 
-  <mat-nav-list>
+  <mat-nav-list style="margin-bottom: 40px;">
     <mat-list-item [id]="opcao.id" 
         *ngFor="let opcao of (storageDataService?.usuarioLogado?.ativo ? 
           (getTipoUsuarioLogado() === 'est' ? opcoesMenuLateralEstudante : 
