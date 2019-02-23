@@ -3,36 +3,38 @@
     <img mat-card-image [src]="veiculoTransporte?.linkFoto" 
         *ngIf="veiculoTransporte?.linkFoto === undefined || veiculoTransporte?.linkFoto === null ? false : true">
     
-    <div style="display: grid;">
-      <div class="div-imagem-veiculo" 
-          *ngIf="veiculoTransporte?.linkFoto === undefined || veiculoTransporte?.linkFoto === null ? true : false">
-        <img src="assets/bus-light.png" class="sem-imagem">
+    <mat-card-content>
+      <div style="display: grid;">
+        <div class="div-imagem-veiculo" 
+            *ngIf="veiculoTransporte?.linkFoto === undefined || veiculoTransporte?.linkFoto === null ? true : false">
+          <img src="assets/bus-light.png" class="sem-imagem">
+        </div>
+    
+        <div style="margin-top: 25px;">
+          <table style="width:100%">
+            <tr>
+              <th>Placa</th>
+              <th>Tipo</th>
+            </tr>
+            <tr>
+              <td>{{veiculoTransporte?.placa}}</td>
+              <td>
+                {{veiculoTransporte?.tipo === 'ONIBUS' ? 'Ônibus' : 
+                (veiculoTransporte?.tipo === 'VAN' ? 'Van' : 'Carregando...')}}
+              </td>
+            </tr>
+            <div style="margin-top: 15px"></div>
+            <tr>
+              <th>Capacidade</th>
+              <th>Cor</th>
+            </tr>
+            <tr>
+              <td>{{veiculoTransporte?.capacidade}} lugares</td>
+              <td>{{veiculoTransporte?.cor}}</td>
+            </tr>
+          </table> 
+        </div>
       </div>
-  
-      <div style="margin-top: 25px;">
-        <table style="width:100%">
-          <tr>
-            <th>Placa</th>
-            <th>Tipo</th>
-          </tr>
-          <tr>
-            <td>{{veiculoTransporte?.placa}}</td>
-            <td>
-              {{veiculoTransporte?.tipo === 'ONIBUS' ? 'Ônibus' : 
-              (veiculoTransporte?.tipo === 'VAN' ? 'Van' : 'Carregando...')}}
-            </td>
-          </tr>
-          <div style="margin-top: 15px"></div>
-          <tr>
-            <th>Capacidade</th>
-            <th>Cor</th>
-          </tr>
-          <tr>
-            <td>{{veiculoTransporte?.capacidade}} lugares</td>
-            <td>{{veiculoTransporte?.cor}}</td>
-          </tr>
-        </table> 
-      </div>
-    </div>
+    </mat-card-content>
   </mat-card>
 </div>

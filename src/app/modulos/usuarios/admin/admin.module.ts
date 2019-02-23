@@ -2,12 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
 import { FormsModule } from '@angular/forms';
-
-import { EstudantesListagemComponent } from './estudantes-listagem/estudantes-listagem.component';
-import { EstudanteDetalhesComponent } from './estudante-detalhes/estudante-detalhes.component';
-import { MotoristaCadastroComponent } from './motorista-cadastro/motorista-cadastro.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,9 +20,14 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { MotoristasListagemComponent } from './motoristas-listagem/motoristas-listagem.component';
-import { VeiculosListagemComponent } from './veiculos-listagem/veiculos-listagem.component';
-import { VeiculoCadastroComponent } from './veiculo-cadastro/veiculo-cadastro.component';
+
+import { EstudantesListagemComponent } from './estudante/estudantes-listagem/estudantes-listagem.component';
+import { EstudanteDetalhesComponent } from './estudante/estudante-detalhes/estudante-detalhes.component';
+import { MotoristaCadastroComponent } from './motorista/motorista-cadastro/motorista-cadastro.component';
+import { MotoristasListagemComponent } from './motorista/motoristas-listagem/motoristas-listagem.component';
+import { VeiculosListagemComponent } from './veiculo/veiculos-listagem/veiculos-listagem.component';
+import { VeiculoCadastroComponent } from './veiculo/veiculo-cadastro/veiculo-cadastro.component';
+import { RotaCadastroComponent } from './rota/rota-cadastro/rota-cadastro.component';
 
 @NgModule({
   imports: [
@@ -57,7 +57,7 @@ import { VeiculoCadastroComponent } from './veiculo-cadastro/veiculo-cadastro.co
     EstudantesListagemComponent, 
     EstudanteDetalhesComponent, 
     MotoristaCadastroComponent, 
-    MotoristasListagemComponent, VeiculosListagemComponent, VeiculoCadastroComponent
+    MotoristasListagemComponent, VeiculosListagemComponent, VeiculoCadastroComponent, RotaCadastroComponent
   ],
   providers:[],
   entryComponents: [] // DIALOGS AQUI

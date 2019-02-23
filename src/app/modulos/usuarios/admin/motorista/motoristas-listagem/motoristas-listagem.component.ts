@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Motorista } from './../../../../modulos/core/model';
-import { MotoristaService } from './../../../../services/motorista.service';
-import { StorageDataService } from './../../../../services/storage-data.service';
+import { Motorista } from './../../../../../modulos/core/model';
+import { MotoristaService } from './../../../../../services/motorista.service';
+import { StorageDataService } from './../../../../../services/storage-data.service';
 
 @Component({
   selector: 'app-motoristas-listagem',

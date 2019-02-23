@@ -84,13 +84,13 @@ export class MenuComponent implements OnInit, AfterViewInit {//, OnChanges {
   }
 
   opcoesMenuLateralAdmin = [
-    // {label: 'Início', icone: 'home', url: '/inicio', id: 'botaoInicio'},
+    {label: 'Início (em breve)', icone: 'home', url: '/', id: 'botaoInicio'},
     {label: 'Estudantes', icone: 'school', url: '/estudantes', id: 'botaoEstudantes'},
-    // {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
     {label: 'Motoristas', icone: 'people', url: '/motoristas', id: 'botaoCondutores'},
+    {label: 'Rotas', icone: 'place', url: '/rota/cadastro', id: 'botaoRotas'},
     {label: 'Veículos Estudantis', icone: 'directions_bus', url: '/veiculos', id: 'botaoVeículosEstudantis'},
-    // {label: 'Notificações', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
-    // {label: 'Renovação de cadastro', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
+    {label: 'Notificações (em breve)', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
+    {label: 'Renovação de cadastro (em breve)', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
   ];
 
   opcoesMenuLateralEmAnalise = [];

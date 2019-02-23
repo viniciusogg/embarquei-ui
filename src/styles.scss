@@ -19,14 +19,6 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
   @include angular-material-theme($default-theme);
 }
 
-$no-primary: mat-palette($mat-gray, 900);
-$no-accent: mat-palette($mat-gray, 900);
-$no-warn: mat-palette($mat-gray, 900);
-$no-theme: mat-light-theme($no-primary, $no-accent, $no-warn);
-.no-theme {
-  @include angular-material-theme($no-theme);
-}
-
 // html{
 //   font-family: Roboto, "Helvetica Neue", sans-serif;
 // }

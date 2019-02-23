@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
-import { StorageDataService } from './../../../../services/storage-data.service';
-import { AdminService } from '../../../../services/admin.service';
-import { Estudante } from '../../../core/model';
+import { StorageDataService } from './../../../../../services/storage-data.service';
+import { AdminService } from '../../../../../services/admin.service';
+import { Estudante } from '../../../../core/model';
 
 @Component({
   selector: 'app-estudantes-listagem',

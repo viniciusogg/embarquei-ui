@@ -218,5 +218,6 @@ export enum STATUS_CHECKIN {
 
 export enum TIPO_FEEDBACK {
   SUGESTAO = 'SUGESTAO',
-  BUG = 'BUG'
+  BUG = 'BUG',
+  OUTRO = 'OUTRO'
 }

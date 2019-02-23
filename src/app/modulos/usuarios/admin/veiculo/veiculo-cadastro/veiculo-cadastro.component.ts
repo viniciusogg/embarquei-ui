@@ -3,12 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource, MatSnackBar } from '@angular/material';
 
-import { InstituicaoEnsino, TIPO_VEICULO, COLECAO_ARQUIVO, VeiculoTransporte, Imagem } from './../../../core/model';
-import { StorageDataService } from './../../../../services/storage-data.service';
-import { VeiculoTransporteService } from './../../../../services/veiculo-transporte.service';
-import { UploadService } from './../../../../services/upload.service';
-import { ErrorHandlerService } from './../../../core/error-handler.service';
-import { InstituicaoEnsinoService } from './../../../../services/instituicao-ensino.service';
+import { InstituicaoEnsino, TIPO_VEICULO, COLECAO_ARQUIVO, VeiculoTransporte, Imagem } from './../../../../core/model';
+import { StorageDataService } from './../../../../../services/storage-data.service';
+import { VeiculoTransporteService } from './../../../../../services/veiculo-transporte.service';
+import { UploadService } from './../../../../../services/upload.service';
+import { ErrorHandlerService } from './../../../../core/error-handler.service';
+import { InstituicaoEnsinoService } from './../../../../../services/instituicao-ensino.service';
 
 import { v4 as uuid } from 'uuid';
 

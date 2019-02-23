@@ -12,6 +12,7 @@
           <mat-select placeholder="Tipo de feedback" [(value)]="tipoFeedback" formControlName="campoTipoFeedback" required>
             <mat-option value="BUG"> Erro encontrado </mat-option>
             <mat-option value="SUGESTAO"> Sugestão </mat-option>
+            <mat-option value="OUTRO"> Outro </mat-option>
           </mat-select>
   
           <mat-error *ngIf="feedbackForm.get('campoTipoFeedback').hasError('required')">

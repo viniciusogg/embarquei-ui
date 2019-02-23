@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { VeiculoTransporte, TIPO_VEICULO } from './../../../../modulos/core/model';
-import { VeiculoTransporteService } from './../../../../services/veiculo-transporte.service';
-import { StorageDataService } from './../../../../services/storage-data.service';
+import { VeiculoTransporte, TIPO_VEICULO } from './../../../../../modulos/core/model';
+import { VeiculoTransporteService } from './../../../../../services/veiculo-transporte.service';
+import { StorageDataService } from './../../../../../services/storage-data.service';
 
 @Component({
   selector: 'app-veiculos-listagem',

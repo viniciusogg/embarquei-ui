@@ -4,11 +4,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatTableDataSource, MatSnackBar } from '@angular/material';
 
-import { InstituicaoEnsino, Motorista, Cidade, Imagem } from './../../../../modulos/core/model';
-import { InstituicaoEnsinoService } from './../../../../services/instituicao-ensino.service';
-import { ErrorHandlerService } from './../../../core/error-handler.service';
-import { MotoristaService } from './../../../../services/motorista.service';
-import { StorageDataService } from './../../../../services/storage-data.service';
+import { InstituicaoEnsino, Motorista, Cidade, Imagem } from './../../../../../modulos/core/model';
+import { InstituicaoEnsinoService } from './../../../../../services/instituicao-ensino.service';
+import { ErrorHandlerService } from './../../../../core/error-handler.service';
+import { MotoristaService } from './../../../../../services/motorista.service';
+import { StorageDataService } from './../../../../../services/storage-data.service';
 import { v4 as uuid } from 'uuid';
 
 @Component({
@@ -152,10 +152,12 @@ export class MotoristaCadastroComponent implements OnInit
     {
       motorista.foto = new Imagem();
       motorista.foto.caminhoSistemaArquivos = uuid();
+      motorista.ativo = false;
     }
     else
     {
       motorista.id = this.motorista.id;
+      motorista.ativo = this.motorista.ativo;
     }
     return motorista;
   }

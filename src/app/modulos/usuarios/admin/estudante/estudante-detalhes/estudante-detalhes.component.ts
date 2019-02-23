@@ -3,11 +3,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AdminService } from './../../../../services/admin.service';
-import { EstudanteService } from './../../../../services/estudante.service';
-import { Estudante, PontoParada, Endereco, STATUS_COMPROVANTE } from './../../../core/model';
-import { UploadService } from './../../../../services/upload.service';
-import { StorageDataService } from './../../../../services/storage-data.service';
+import { AdminService } from './../../../../../services/admin.service';
+import { EstudanteService } from './../../../../../services/estudante.service';
+import { Estudante, PontoParada, Endereco, STATUS_COMPROVANTE } from './../../../../core/model';
+import { UploadService } from './../../../../../services/upload.service';
+import { StorageDataService } from './../../../../../services/storage-data.service';
 
 @Component({
   selector: 'app-estudante-detalhes',
