@@ -1,0 +1,106 @@
+<div class="accent-dark" style="display: flex; justify-content: space-between;">
+  <h1 mat-dialog-title cdkFocusInitial style="margin-left: 24px">Rota de ida</h1>
+
+  <button style="margin: 0 24px" mat-icon-button 
+      (click)="exibirAjuda()"
+      color="accent" >  <!-- [color]="ajudaVisivel ? '' : 'accent'" -->
+    <mat-icon>help</mat-icon>
+    <!-- <mat-icon>{{ajudaVisivel ? 'close' : 'help'}}</mat-icon> -->
+  </button>
+</div>
+
+<div *ngIf="ajudaVisivel" style="margin: 20px 0">
+
+  <mat-divider style="margin: 0px 24px;"></mat-divider>
+
+  <h3 style="margin-left: 24px" class="mat-body-2">Ajuda</h3>
+
+  <h4 style="margin: 0px 24px; text-align: justify" class="mat-subheading-1">Selecione qualquer parte do mapa para 
+    adicionar pontos de parada do veículo estudantil. Os pontos serão listados abaixo do mapa na ordem em que 
+    forem marcados. Para cada ponto, dê um nome que o identifique. Geralmente o nome é um ponto de referência. 
+    É possível movimentar um ponto pelo mapa segurando e arrastando ele para o local desejado. Você também poderá 
+    remover um ponto apertando o botão <strong>REMOVER</strong> que fica visível quando um ponto de parada é selecionado. 
+    Você pode aumentar ou diminuir o zoom do mapa através dos botões <strong> + </strong> e <strong> - </strong> 
+    localizados no canto inferior direito. É possível também ter uma <strong>visão da rua</strong>, para isso, arraste 
+    o ícone que representa uma pessoa (canto direito, acima dos ícones de zoom) até o local desejado no mapa e então 
+    será exibida uma vista da rua. Isso pode ser útil quando houver dúvida sobre o local do ponto de parada. Quando terminar 
+    de adicionar todos os pontos de parada, aperte o botão <strong>GERAR ROTA</strong>, localizado na parte inferior.
+  </h4>
+
+  <div style="display: flex; justify-content: flex-end;">
+    <button style="margin: 10px 24px;" color="primary" mat-button (click)="exibirAjuda()">ENTENDI</button>
+  </div>
+
+  <mat-divider style="margin: 0px 24px;"></mat-divider>
+</div>
+
+
+  <!-- <agm-map [latitude]="origem.lat" [longitude]="origem.lng" [zoom]="17" 
+      (mapClick)="onChoseLocation($event)">
+
+    <agm-marker [latitude]="pp.lat" [longitude]="pp.lng" [markerDraggable]="true" 
+        (dragEnd)="onDragEndMarker($event)" (markerClick)="onClikMarker($event)" 
+        *ngFor="let pp of pontosParada; let i = index">
+      <agm-info-window [isOpen]="true">
+        <input type="text" placeholder="Nome do ponto">
+      </agm-info-window>
+    </agm-marker> -->
+
+    <!-- <agm-direction *ngIf="false" [origin]="origem" [(waypoints)]="pontosParada" 
+        [destination]="destino">
+    </agm-direction> -->
+  <!-- </agm-map> -->
+  <agm-map (mapClick)="mapClicked($event);"
+      [latitude]="origem.lat"
+      [longitude]="origem.lng"
+      [zoom]="zoom"
+      [disableDefaultUI]="false">
+
+    <agm-marker *ngFor="let m of markers; let i = index"
+        (markerClick)="clickedMarker(m.label, i);"
+        [latitude]="m.lat"
+        [longitude]="m.lng"
+        [label]="m.label"
+        [markerDraggable]="m.draggable"
+        (dragEnd)="markerDragEnd(m, $event)"
+        class="info-window">
+        
+      <agm-info-window [isOpen]="true">
+        <mat-form-field color=primary style="max-width: 153px;">
+          <mat-label>Nome do ponto</mat-label>
+          <textarea matInput value="" cdkTextareaAutosize cdkAutosizeMinRows="1" 
+              cdkAutosizeMaxRows="2" 
+              placeholder="Pode ser uma referência">
+          </textarea>
+        </mat-form-field>
+
+        <div>
+          <button mat-button class="botao-info-window"> <!-- mat-button mat-icon-button -->
+            REMOVER
+          </button>
+          
+          <button mat-button color="primary" class="botao-info-window" style="float:right"> <!-- mat-icon-button mat-button-->
+            SALVAR
+          </button>
+        </div>
+      </agm-info-window>
+    </agm-marker>
+  </agm-map>
+
+<!-- <mat-dialog-content class="mat-typography" style="margin: unset">   -->
+  <div style="margin-top: 20px; margin-left: 24px; margin-right: 24px;" class="mat-typography">
+    <mat-list dense>
+      <h3 mat-subheader>Pontos de parada</h3>
+      <mat-list-item *ngFor="let m of markers; let i = index; last as ultimo">
+        <strong> {{ i+1 }} </strong> {{ m.label }} 
+
+        <mat-divider inset="true" *ngIf="!ultimo"></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </div>
+<!-- </mat-dialog-content> -->
+
+<!-- <mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="primary">SALVAR</button>
+</mat-dialog-actions> -->
+

@@ -20,6 +20,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { EstudantesListagemComponent } from './estudante/estudantes-listagem/estudantes-listagem.component';
 import { EstudanteDetalhesComponent } from './estudante/estudante-detalhes/estudante-detalhes.component';
@@ -27,7 +28,12 @@ import { MotoristaCadastroComponent } from './motorista/motorista-cadastro/motor
 import { MotoristasListagemComponent } from './motorista/motoristas-listagem/motoristas-listagem.component';
 import { VeiculosListagemComponent } from './veiculo/veiculos-listagem/veiculos-listagem.component';
 import { VeiculoCadastroComponent } from './veiculo/veiculo-cadastro/veiculo-cadastro.component';
-import { RotaCadastroComponent } from './rota/rota-cadastro/rota-cadastro.component';
+import { RotaCadastroComponent, MapaDialogComponent } from './rota/rota-cadastro/rota-cadastro.component';
+
+import { AgmCoreModule, MarkerManager, GoogleMapsAPIWrapper } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
+
+// import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   imports: [
@@ -51,15 +57,25 @@ import { RotaCadastroComponent } from './rota/rota-cadastro/rota-cadastro.compon
     MatRadioModule,
     MatCheckboxModule,
     MatGridListModule,
-    TextFieldModule
+    TextFieldModule,
+    MatChipsModule,
+
+    AgmCoreModule,
+    AgmDirectionModule
   ],
   declarations: [
     EstudantesListagemComponent, 
     EstudanteDetalhesComponent, 
     MotoristaCadastroComponent, 
-    MotoristasListagemComponent, VeiculosListagemComponent, VeiculoCadastroComponent, RotaCadastroComponent
+    MotoristasListagemComponent, 
+    VeiculosListagemComponent, 
+    VeiculoCadastroComponent, 
+    RotaCadastroComponent,
+    MapaDialogComponent
   ],
   providers:[],
-  entryComponents: [] // DIALOGS AQUI
+  entryComponents: [
+    MapaDialogComponent
+  ], // DIALOGS AQUI
 })
 export class AdminModule { }

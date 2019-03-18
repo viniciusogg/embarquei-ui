@@ -13,3 +13,8 @@
 .padding-divisor {
   padding: 1px;
 }
+
+.estilo-botao-ajuda {
+  background: #212121;
+  border-radius: 100px;
+}

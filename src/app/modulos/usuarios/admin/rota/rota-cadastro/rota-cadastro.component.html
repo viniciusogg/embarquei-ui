@@ -1,3 +1,190 @@
-<p>
-  rota-cadastro works!
-</p>
+<div class="container accent-dark">
+  <form [formGroup]="rotaForm" autocomplete="off">
+    <mat-card class="espacamento-card">
+      <mat-card-content [class.form-container]="isMobile ? true : false">
+        <mat-form-field appearance="outline" class="spacer-field" style="margin-bottom: 20px;" 
+            [style.width]="isMobile ? '100%' : '80%'">
+          <mat-label>Nome da rota</mat-label>
+          <input id="campoNomeRota" matInput required formControlName="campoNomeRota" 
+              placeholder="Digite um nome que identifique a rota">
+  
+          <mat-hint>
+            Exemplos de nomes: Rota alternativa, acesso ao INSS interditado ou Rota principal etc.
+          </mat-hint>
+  
+          <mat-error *ngIf="rotaForm.get('campoNomeRota').hasError('required')">
+            O nome da rota é obrigatório
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="espacamento-card">
+      <mat-card-header>
+        <mat-card-title> Trajeto de ida </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="margem-superior-formulario" [class.form-container]="isMobile ? true : false">
+        <mat-form-field appearance="outline" [style.width]="isMobile ? '100%' : '268px'">
+          <mat-label>Hora</mat-label>
+          <input id="campoHorarioPartidaIda" matInput placeholder="hh:mm" formControlName="campoHorarioPartidaIda">
+              <!-- [textMask]="{mask: mascaraHora, guide: false}" -->
+
+          <mat-hint>
+            Esse é o horário que o veículo de transporte inicia o trajeto de recolhimento dos alunos, na viagem de ida para a instituição de ensino.
+          </mat-hint>
+
+          <mat-error *ngIf="rotaForm.get('campoHorarioPartidaIda').hasError('minlength') || 
+              rotaForm.get('campoHorarioPartidaIda').hasError('maxlength') || 
+              rotaForm.get('campoHorarioPartidaIda').hasError('validHour') && 
+              !rotaForm.get('campoHorarioPartidaIda').hasError('required')">
+            A hora informada não é válida
+          </mat-error>
+        </mat-form-field>
+
+        <div style="margin-top: 50px;" [style.display]="isMobile ? 'block' : 'flex'">
+          <div style="margin-right: 15px;" [style.text-align]="isMobile ? 'center' : 'unset'">
+            <button type="button" color="primary" mat-stroked-button (click)="abrirMapa()">ADICIONAR PONTOS</button>
+          </div>
+          <div [style.margin-top]="isMobile ? '10px' : '0px'">
+            <span class="mat-small">
+              Aperte <strong>ADICIONAR PONTOS</strong> para cadastrar os pontos de parada 
+              do município onde os alunos deverão esperar o veículo de transporte, na ida para a instituição de ensino
+            </span>
+          </div>
+        </div>
+
+        <mat-list style="margin-top: 20px" dense>
+          <h3 mat-subheader>Pontos de parada</h3>
+          <mat-list-item>INSS</mat-list-item> <!-- *ngFor="let folder of folders" -->
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Escola Jorge de Menezes</mat-list-item>
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Correios</mat-list-item>
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Igreja Matriz</mat-list-item>
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Borracharia, saída da cidade</mat-list-item> 
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="espacamento-card">
+      <mat-card-header>
+        <mat-card-title> Trajeto de volta </mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content class="margem-superior-formulario" [class.form-container]="isMobile ? true : false">
+        <mat-form-field appearance="outline" [style.width]="isMobile ? '100%' : '268px'">
+          <mat-label>Hora</mat-label>
+          <input id="campoHorarioPartidaVolta" matInput placeholder="hh:mm" formControlName="campoHorarioPartidaVolta">
+
+          <mat-hint>
+            Esse é o horário que o veículo de transporte sai da instituição de ensino em 
+            direção ao município de origem.
+          </mat-hint>
+
+          <mat-error *ngIf="rotaForm.get('campoHorarioPartidaVolta').hasError('minlength') || 
+              rotaForm.get('campoHorarioPartidaVolta').hasError('maxlength') || 
+              rotaForm.get('campoHorarioPartidaVolta').hasError('validHour') && 
+              !rotaForm.get('campoHorarioPartidaVolta').hasError('required')">
+            A hora informada não é válida
+          </mat-error>
+        </mat-form-field>
+
+        <div style="margin-top: 50px;" [style.display]="isMobile ? 'block' : 'flex'">
+          <div style="margin-right: 15px;" [style.text-align]="isMobile ? 'center' : 'unset'">
+            <button type="button" color="primary" mat-stroked-button>ADICIONAR PONTOS</button>
+          </div>
+          <div [style.margin-top]="isMobile ? '10px' : '0px'">
+            <span class="mat-small">
+              Aperte <strong>ADICIONAR PONTOS</strong> para cadastrar os pontos de parada 
+              onde os alunos poderão descer quando o veículo de transporte chegar ao município de origem.
+            </span>
+          </div>
+        </div>
+
+        <mat-list style="margin-top: 20px" dense>
+          <h3 mat-subheader>Pontos de parada</h3>
+          <mat-list-item>Borracharia na saída da cidade</mat-list-item> <!-- *ngFor="let folder of folders" -->
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Rodoviária</mat-list-item>
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Escola Etelvino Lins</mat-list-item>
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Praça Vila da Cohab</mat-list-item>
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Igreja Matriz</mat-list-item> 
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Alto do rio branco</mat-list-item> 
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Supermercado Avistão</mat-list-item> 
+          <mat-divider inset="true"></mat-divider>
+          <mat-list-item>Hospital</mat-list-item> 
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="espacamento-card">
+      <mat-card-header>
+        <mat-card-title> Instituições de ensino </mat-card-title>
+
+        <mat-card-subtitle> 
+          Adicione uma ou mais intituições de ensino que fazem parte desta rota. 
+          Para fazer isso, escolha uma instituição abaixo e aperte o botão <strong>+</strong>. 
+        </mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content style="display: flex; flex-wrap: wrap;" class="margem-superior-formulario">
+        <mat-form-field appearance="outline" class="spacer-field">
+          <mat-label>Instituição de ensino</mat-label>
+          <mat-select formControlName="campoInstituicao" [(value)]="instituicaoEnsino" 
+              [disabled]="desabilitarCampoBotaoInstituicoes">
+            <mat-option *ngFor="let instituicao of instituicoesEnsino" [value]="instituicao">
+              {{instituicao.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div>
+          <button type="button" mat-mini-fab color="accent" [disabled]="desabilitarCampoBotaoInstituicoes"
+              class="margem-botao-add-instituicao accent-normal" (click)="adicionarInstituicao()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <table mat-table [dataSource]="dataSourceInstituicoes"
+            #tabelaRef style="width: 100%; margin-top: 10px;">
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef> Nome </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.nome}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef class="coluna-acoes"> Remover dessa lista </th>
+            <td mat-cell *matCellDef="let element" class="coluna-acoes">
+              <button [id]="element.id" mat-icon-button type="button" (click)="removerInstituicao(element)">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div class="msg-tabela-vazia" *ngIf="dataSourceInstituicoes?.data?.length === 0">
+          <span>Não existem dados para exibição</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="div-botoes-acao accent-normal">
+      <a mat-stroked-button class="botao-cancelar" [routerLink]="['/']">CANCELAR</a>
+      
+      <button mat-raised-button color="accent">SALVAR</button>
+    </div>
+  </form>
+</div>

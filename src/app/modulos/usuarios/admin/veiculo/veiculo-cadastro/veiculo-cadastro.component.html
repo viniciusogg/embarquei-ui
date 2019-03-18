@@ -6,12 +6,18 @@
         <mat-card-title> Dados do veículo </mat-card-title>
       </mat-card-header>
 
-      <mat-card-content class="form-container margem-superior-formulario">
+      <!-- <div *ngIf="veiculo !== null && veiculo !== undefined ? true : false" class="div-imagem-veiculo"> -->
+      <img mat-card-image
+          *ngIf="veiculo !== null && veiculo !== undefined ? true : false" 
+          [src]="veiculo?.linkFoto === undefined || veiculo?.linkFoto === null ? 'assets/bus-light.png' : veiculo?.linkFoto"
+          [class.sem-imagem]="veiculo?.linkFoto === undefined || veiculo?.linkFoto === null ? true : false">
+      <!-- </div> -->
 
-        <div *ngIf="veiculo !== null && veiculo !== undefined ? true : false" class="div-imagem-veiculo">
-          <img [src]="veiculo?.linkFoto === undefined || veiculo?.linkFoto === null ? 'assets/bus-light.png' : veiculo?.linkFoto"
+      <mat-card-content class="form-container margem-superior-formulario">
+        <!-- <div *ngIf="veiculo !== null && veiculo !== undefined ? true : false" class="div-imagem-veiculo">
+          <img mat-card-image [src]="veiculo?.linkFoto === undefined || veiculo?.linkFoto === null ? 'assets/bus-light.png' : veiculo?.linkFoto"
               class="imagem-veiculo" [class.sem-imagem]="veiculo?.linkFoto === undefined || veiculo?.linkFoto === null ? true : false">
-        </div>
+        </div> -->
 
         <div class="campo-imagem">
           <a mat-fab (click)="removerFotoCarregada(); imageInput.click();">

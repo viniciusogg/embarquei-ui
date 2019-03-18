@@ -38,6 +38,8 @@ import { ListagemSosComponent } from './modulos/usuarios/estudante/listagem-sos/
 import { RenovacaoCadastroComponent } from './modulos/usuarios/estudante/renovacao-cadastro/renovacao-cadastro.component';
 import { DetalhesVeiculoComponent } from './modulos/usuarios/estudante/detalhes-veiculo/detalhes-veiculo.component';
 import { RotaCadastroComponent } from './modulos/usuarios/admin/rota/rota-cadastro/rota-cadastro.component';
+import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
 
 @NgModule({
   declarations: [
@@ -69,7 +71,12 @@ import { RotaCadastroComponent } from './modulos/usuarios/admin/rota/rota-cadast
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+
+    AgmCoreModule.forRoot({
+      apiKey: environment.mapsKey
+    }),
+    AgmDirectionModule
   ],
   entryComponents: [
     // estudante
