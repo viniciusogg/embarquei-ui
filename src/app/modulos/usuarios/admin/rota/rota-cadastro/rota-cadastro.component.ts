@@ -1,11 +1,13 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatTableDataSource, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { StorageDataService } from './../../../../../services/storage-data.service';
 import { InstituicaoEnsino } from './../../../../../modulos/core/model';
 import { InstituicaoEnsinoService } from './../../../../../services/instituicao-ensino.service';
 import { ErrorHandlerService } from './../../../../../modulos/core/error-handler.service';
+import { v4 as uuid } from 'uuid';
+import { InfoWindow } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-rota-cadastro',
@@ -114,15 +116,16 @@ export class RotaCadastroComponent implements OnInit {
     this.desabilitarCampoBotaoInstituicoes = false;
   }
 
-  abrirMapa()
+  abrirMapa(tipoTrajeto: string)
   {
     this.dialog.open(MapaDialogComponent, {
       height: '95%',
       width: '99%',
       id: 'mapa-dialog',
       maxWidth: '96vw',
+      disableClose: true,
       data: {
-        
+        tipoTrajeto: tipoTrajeto
       }
     });
   }
@@ -135,103 +138,240 @@ export class RotaCadastroComponent implements OnInit {
 })
 export class MapaDialogComponent implements OnInit 
 {
-  origem: any = {lat: -8.069827101202105, lng: -37.268838007335034};
-  
-  pontosParada: any[] =
-  [
-    {location: {lat: -8.071965022877071, lng: -37.266019953147406}, stopover: true},
-    {location: {lat: -8.075388283174085, lng: -37.265974192669546}, stopover: true},
-    {location: {lat: -8.077649280753182, lng: -37.265848917398785}, stopover: true},
-    {location: {lat: -8.069859929768327, lng: -37.26057685795638}, stopover: true}
-  ];
-  destino: any = {lat: -7.90507294536003, lng: -37.12034539147555};  
-  zoom: number = 15;
+  form: FormGroup;
   ajudaVisivel = false;
+  tipoTrajeto = '';
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+  // AGM MAP
+  cidade: any = {lat: -8.069827101202105, lng: -37.268838007335034}; // CIDADE
+  zoom: number = 15;
+  markers: Marker[] = [];
+  
+  // AGM DIRECTION
+  rotaVisivel = false;
+  pontosParada: Waypoint[] = [];
+  pontosParadaAtualizados: any[] = [];
+  origemRota: any = {};  // lat, lng
+  destinoRota: any = {}; // lat, lng
 
-  ngOnInit() {}
+  renderOptions: any = {
+    draggable: true,
+    suppressInfoWindows: true,
+    markerOptions: {
+      // label: {
+      //   text: ' ',
+      //   color: 'white',
+      //   fontWeight: 'bold',
+      //   fontFamily: 'sans-serif'
+      // },
+      icon: {
+        // labelOrigin: {x: 13, y: 14},
+        url: '/assets/icons/map-marker-final.png'
+      }
+    }
+  }
+  optimizeWaypoints = false;
 
-  // onChoseLocation(event) 
-  // {
-  //   console.log(event);
-  // }
-
-  // onDragEndMarker(event)
-  // {
-  //   console.log(event);
-  // }
-
-  // onClikMarker(event)
-  // {
-  //   console.log(event);
-  // }
-  // google maps zoom level
-
-  clickedMarker(label: string, index: number) 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private formBuilder: FormBuilder) 
   {
-    // 
-    console.log(`clicked the marker: ${label || index}`)
+    this.tipoTrajeto = data.tipoTrajeto;
+  }
+
+  ngOnInit() 
+  {
+    this.criarFormulario();
   }
   
   mapClicked(event) 
   {
-    let contador = this.markers.length + 1;
-
-    this.markers.push({
-      lat: event.coords.lat,
-      lng: event.coords.lng,
-      label: '' + contador,
-      draggable: true
-    });
+    if (!this.rotaVisivel)
+    {
+      const ordem = '' + (this.markers.length + 1);
+      const id = uuid();
+  
+      this.markers.push({
+        id: id,
+        lat: event.coords.lat,
+        lng: event.coords.lng,
+        ordem: ordem,
+        draggable: true,
+        infoVisivel: true
+      });
+      this.form.addControl(id, new FormControl('', Validators.required));
+    }
   }
   
-  markerDragEnd(m: marker, $event: MouseEvent) 
+  atualizarNomePonto(m: Marker, event)
+  {
+    const valorCampo: string = this.form.get(m.id).value;
+
+    if (!valorCampo.startsWith(' ') && valorCampo !== '' || event.key === 'Backspace')
+    {
+      m.nome = this.form.get(m.id).value;
+    }
+  }
+
+  removerMarcador(marker: Marker)
+  {
+    this.markers.splice(this.markers.indexOf(marker), 1)[0];
+    this.form.removeControl(marker.id);
+
+    // ATUALIZA LABELS(ORDEM) DENTRO DOS MARCADORES
+    let cont = 0;
+
+    for(let m of this.markers) 
+    {
+      cont++;
+
+      m.ordem = '' + cont;
+    }
+  }
+
+  markerDragEnd(marker: Marker, event) 
   {
     // ATUALIZAR LATITUDE / LONGITUDE
-    // console.log('dragEnd', m, $event);
+    marker.lat = event.coords.lat;
+    marker.lng = event.coords.lng
   }
+
+  gerarTrajeto()
+  {
+    if (this.rotaVisivel) // EDITAR TRAJETO
+    {
+      this.rotaVisivel = false;
+
+      this.markers[0].infoVisivel = false;
+      this.markers[this.markers.length - 1].infoVisivel = false;
+
+      let cont = 2; // DESCONSIDERA A ORIGEM
+
+      // REMOVENDO PONTOS QUE NÃO SÃO DE PARADA
+      for (let ponto of this.pontosParadaAtualizados)
+      {
+        if (!ponto.stepover)
+        {
+          let indice = this.pontosParadaAtualizados.indexOf(ponto);
+          this.pontosParadaAtualizados.splice(indice, 1);
+        }
+      }
+      
+      for (let ponto of this.pontosParadaAtualizados)
+      {
+        if (ponto.location.location)
+        {
+          let marker = this.markers.filter(m => Number.parseInt(m.ordem) === cont)[0];
+
+          marker.lat = ponto.location.location.lat();
+          marker.lng = ponto.location.location.lng();
+          marker.infoVisivel = false;
+
+          // this.form.get(marker.id).setValue(marker.nome);
+        }
+        cont++;
+      }
+    }
+    else
+    {
+      const marcadores: Marker[] = JSON.parse(JSON.stringify(this.markers));
   
+      const origem: Marker = marcadores.shift();
+      const destino: Marker = marcadores.pop(); 
+  
+      this.origemRota = {lat: origem.lat, lng: origem.lng};
+      this.destinoRota = {lat: destino.lat, lng: destino.lng};
+  
+      this.criarPontosParada(marcadores);
+    }
+  }
+
+  private criarPontosParada(marcadores: Marker[])
+  {
+    this.pontosParada = [];
+
+    for (let m of marcadores)
+    {
+      const pontoParada: Waypoint = {
+        location: {
+          lat: m.lat, 
+          lng: m.lng
+        }, 
+        stopover: true
+      };
+      this.pontosParada.push(pontoParada);
+    }
+    this.rotaVisivel = true;
+  }
+
+  // ATUALIZA LOCALIZAÇÃO DOS PONTOS DE PARADA
+  onChange(event)
+  {
+    if (event.request.origin.location)
+    {
+      this.markers[0].lat = event.request.origin.location.lat();
+      this.markers[0].lng = event.request.origin.location.lng();
+    }
+    else
+    {
+      this.markers[0].lat = event.request.origin.lat();
+      this.markers[0].lng = event.request.origin.lng();
+    }
+
+    if (event.request.destination.location)
+    {
+      this.markers[this.markers.length - 1].lat = event.request.destination.location.lat();
+      this.markers[this.markers.length - 1].lng = event.request.destination.location.lng();
+    }
+    else
+    {
+      this.markers[this.markers.length - 1].lat = event.request.destination.lat();
+      this.markers[this.markers.length - 1].lng = event.request.destination.lng();
+    }
+    this.pontosParadaAtualizados = event.request.waypoints;
+  }
+
+  salvar()
+  {
+    if (this.pontosParadaAtualizados)
+    {
+
+    }
+  }
+
   exibirAjuda()
   {
     this.ajudaVisivel = !this.ajudaVisivel;
   }
 
-  markers: marker[] = [
-    // {
-    //   lat: this.origem.lat, 
-    //   lng: this.origem.lng,
-		//   label: 'A',
-		//   draggable: true
-	  // },
-	  // {
-    //   lat: -8.071965022877071, 
-    //   lng: -37.266019953147406,
-		//   label: 'B',
-		//   draggable: true
-	  // },
-	  // {
-    //   lat: -8.075388283174085, 
-    //   lng: -37.265974192669546,
-		//   label: 'C',
-		//   draggable: true
-	  // },
-	  // {
-    //   lat: -8.077649280753182, 
-    //   lng: -37.265848917398785,
-		//   label: 'D',
-		//   draggable: true
-	  // }
-  ]
-
+  criarFormulario()
+  {
+    this.form = this.formBuilder.group({});
+  }
 }
 
-// just an interface for type safety.
-interface marker {
+export class Marker {
+  id: string;
 	lat: number;
 	lng: number;
-	label?: string;
-	draggable: boolean;
+  ordem?: string; // label
+  nome?: string;
+  draggable: boolean;
+  infoVisivel?: boolean;
+}
+
+export class Waypoint {
+  location: Location;
+  stopover: boolean;
+}
+
+export class Location {
+  lat: number;
+  lng: number;
+}
+
+export class MarkerOption {
+  origin: any;
+  destination: any;
+  waypoints: any[] = [];
 }
 
 export function ValidateHour(control: AbstractControl)
