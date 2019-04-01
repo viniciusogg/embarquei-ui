@@ -9,7 +9,7 @@
               placeholder="Digite um nome que identifique a rota">
   
           <mat-hint>
-            Exemplos de nomes: Rota alternativa, acesso ao INSS interditado ou Rota principal etc.
+            Dicas: Rota alternativa - acesso ao INSS interditado, Rota principal etc.
           </mat-hint>
   
           <mat-error *ngIf="rotaForm.get('campoNomeRota').hasError('required')">
@@ -24,14 +24,17 @@
         <mat-card-title> Trajeto de ida </mat-card-title>
       </mat-card-header>
 
-      <mat-card-content class="margem-superior-formulario" [class.form-container]="isMobile ? true : false">
+      <mat-card-content class="margem-superior-formulario" 
+          [class.form-container]="isMobile ? true : false">
         <mat-form-field appearance="outline" [style.width]="isMobile ? '100%' : '268px'">
           <mat-label>Hora</mat-label>
-          <input id="campoHorarioPartidaIda" matInput placeholder="hh:mm" formControlName="campoHorarioPartidaIda">
+          <input id="campoHorarioPartidaIda" matInput placeholder="hh:mm" 
+              formControlName="campoHorarioPartidaIda">
               <!-- [textMask]="{mask: mascaraHora, guide: false}" -->
 
           <mat-hint>
-            Esse é o horário que o veículo de transporte inicia o trajeto de recolhimento dos alunos, na viagem de ida para a instituição de ensino.
+            Horário que o veículo estudantil inicia o trajeto de recolhimento dos alunos, 
+            na viagem de ida para a instituição de ensino.
           </mat-hint>
 
           <mat-error *ngIf="rotaForm.get('campoHorarioPartidaIda').hasError('minlength') || 
@@ -44,12 +47,15 @@
 
         <div style="margin-top: 50px;" [style.display]="isMobile ? 'block' : 'flex'">
           <div style="margin-right: 15px;" [style.text-align]="isMobile ? 'center' : 'unset'">
-            <button type="button" color="primary" mat-stroked-button (click)="abrirMapa('ida')">ADICIONAR PONTOS</button>
+            <button type="button" color="primary" mat-stroked-button (click)="abrirMapa('IDA')">
+              ADICIONAR PONTOS
+            </button>
           </div>
           <div [style.margin-top]="isMobile ? '10px' : '0px'">
             <span class="mat-small">
               Aperte <strong>ADICIONAR PONTOS</strong> para cadastrar os pontos de parada 
-              do município onde os alunos deverão esperar o veículo de transporte, na ida para a instituição de ensino
+              onde os alunos deverão esperar o veículo estudantil, na ida para a 
+              instituição de ensino
             </span>
           </div>
         </div>
@@ -74,13 +80,15 @@
         <mat-card-title> Trajeto de volta </mat-card-title>
       </mat-card-header>
       
-      <mat-card-content class="margem-superior-formulario" [class.form-container]="isMobile ? true : false">
+      <mat-card-content class="margem-superior-formulario" 
+          [class.form-container]="isMobile ? true : false">
         <mat-form-field appearance="outline" [style.width]="isMobile ? '100%' : '268px'">
           <mat-label>Hora</mat-label>
-          <input id="campoHorarioPartidaVolta" matInput placeholder="hh:mm" formControlName="campoHorarioPartidaVolta">
+          <input id="campoHorarioPartidaVolta" matInput placeholder="hh:mm" 
+              formControlName="campoHorarioPartidaVolta">
 
           <mat-hint>
-            Esse é o horário que o veículo de transporte sai da instituição de ensino em 
+            Horário que o veículo estudantil sai da instituição de ensino em 
             direção ao município de origem.
           </mat-hint>
 
@@ -99,7 +107,7 @@
           <div [style.margin-top]="isMobile ? '10px' : '0px'">
             <span class="mat-small">
               Aperte <strong>ADICIONAR PONTOS</strong> para cadastrar os pontos de parada 
-              onde os alunos poderão descer quando o veículo de transporte chegar ao município de origem.
+              onde os alunos poderão descer quando o veículo estudantil voltar ao município de origem.
             </span>
           </div>
         </div>

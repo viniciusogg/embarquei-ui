@@ -57,7 +57,6 @@ export class AdminService {
     return this.httpClient.get(`${this.adminsUrl}/${id}`, httpOptions)
       .toPromise()
       .then(response => {
-
         const administrador = response as Administrador;
 
         return administrador;

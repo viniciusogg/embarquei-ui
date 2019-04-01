@@ -53,7 +53,6 @@ export class FeedbackComponent implements OnInit {
 
     // feedback.data = new Date();
     feedback.detalhesPlataforma = window.navigator.userAgent;
-    feedback.idMunicipioUsuario = this.storageDataService.usuarioLogado.endereco.cidade.id;
     feedback.idUsuario = this.storageDataService.usuarioLogado.id;
 
     return feedback;

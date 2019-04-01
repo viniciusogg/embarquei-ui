@@ -7,13 +7,30 @@ import { Rota } from '../modulos/core/model';
 @Injectable({
   providedIn: 'root'
 })
-export class RotaService {
-
+export class RotaService 
+{
   private rotaEndpoint: string;
 
   constructor(private httpClient: HttpClient, private errorHandlerService: ErrorHandlerService) 
   {
     this.rotaEndpoint = `${environment.apiUrl}/rotas`;
+  }
+
+  cadastrar(rota: Rota)
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    };
+    return this.httpClient.post(`${this.rotaEndpoint}`, httpOptions)
+      .toPromise()
+      .then(response => 
+      {
+        return response;
+      });
   }
 
   filtrarPorInstituicaoCidade(idInstituicao, idCidade)
@@ -34,4 +51,6 @@ export class RotaService {
         return rota;
       });
   }
+
+
 }

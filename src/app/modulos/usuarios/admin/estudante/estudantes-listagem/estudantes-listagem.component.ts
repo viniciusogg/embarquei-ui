@@ -43,12 +43,13 @@ export class EstudantesListagemComponent implements OnInit, AfterViewInit {
   {
     setTimeout(() => {
       this.storageDataService.tituloBarraSuperior = 'Estudantes';
-    })
+    });
+    this.listarEstudantes();
   }
 
   ngAfterViewInit() 
   {
-    this.listarEstudantes();
+  
   }
 
   listarEstudantes() 

@@ -23,7 +23,6 @@ export class CidadeService {
       }),
       withCredentials: true
     };
-
     return this.httpClient.get(this.cidadeUrl, httpOptions).toPromise()
       .then(response => {
 
@@ -43,7 +42,6 @@ export class CidadeService {
       }),
       withCredentials: true
     };
-
     return this.httpClient.get(`${this.cidadeUrl}/comRota`, httpOptions)
       .toPromise()
       .then(response => {
@@ -51,6 +49,21 @@ export class CidadeService {
         const cidades: Cidade[] = response as Cidade[];
 
         return cidades;
-      })
+      });
+  }
+
+  getById(id): Promise<Cidade>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      withCredentials: true
+    }
+    return this.httpClient.get(`${this.cidadeUrl}/${id}`, httpOptions)
+      .toPromise()
+      .then(response => {
+        return response as Cidade;
+      });
   }
 }

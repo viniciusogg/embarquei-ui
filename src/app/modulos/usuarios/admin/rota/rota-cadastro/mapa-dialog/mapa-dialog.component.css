@@ -6,3 +6,7 @@ agm-map {
 .botao-info-window {
     font-size: 10px;
 }
+
+.ponto-sem-nome {
+    color: #F44336;
+}

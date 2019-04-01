@@ -54,11 +54,11 @@ export class PontoParada {
   ordem: number;
   estudantes?: Array<Estudante>;
   trajeto: Trajeto;
+  geolocalizacao: Geolocalizacao;
 }
 
 export class Trajeto {
   id: string;
-  urlMapa?: string;
   tipo: TIPO_TRAJETO
   pontosParada?: Array<PontoParada>;
   horarioTrajeto?: HorarioTrajeto;
@@ -70,6 +70,7 @@ export class Rota {
   nome: string;
   trajetos: Array<Trajeto>;
   instituicoesEnsino: Array<InstituicaoEnsino>;
+  cidade: Cidade;
 }
 
 export class HorarioTrajeto {
@@ -89,6 +90,7 @@ export class InstituicaoEnsino {
   nome: string;
   cursos?: Array<Curso>;
   endereco?: Endereco;
+  geolocalizacao: Geolocalizacao;
 }
 
 export class VeiculoTransporte {
@@ -143,6 +145,7 @@ export class Endereco {
 export class Cidade {
   id: string;
   nome?: string;
+  geolocalizacao?: Geolocalizacao;
 }
 
 export abstract class Arquivo {
@@ -160,7 +163,6 @@ export class Feedback {
   comentario: string;
   detalhesPlataforma: string;
   idUsuario: string;
-  idMunicipioUsuario: string;
   tipo: TIPO_FEEDBACK;
 }
 
@@ -168,6 +170,11 @@ export class ComprovanteMatricula extends Arquivo {
   status: STATUS_COMPROVANTE;
   dataEnvio: any;
   justificativa: string;
+}
+
+export class Geolocalizacao {
+  lat: any;
+  lng: any;
 }
 
 export enum DIA_SEMANA {

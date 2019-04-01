@@ -1,22 +1,25 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { MatTableDataSource, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatTableDataSource, MatDialog, MAT_DIALOG_DATA, MatSnackBar, MatDialogRef } from '@angular/material';
 import { StorageDataService } from './../../../../../services/storage-data.service';
-import { InstituicaoEnsino } from './../../../../../modulos/core/model';
+import { InstituicaoEnsino, Rota, Cidade, Motorista, Trajeto, TIPO_TRAJETO, PontoParada, Geolocalizacao } from './../../../../../modulos/core/model';
 import { InstituicaoEnsinoService } from './../../../../../services/instituicao-ensino.service';
+import { CidadeService } from './../../../../../services/cidade.service';
 import { ErrorHandlerService } from './../../../../../modulos/core/error-handler.service';
 import { v4 as uuid } from 'uuid';
-import { InfoWindow } from '@agm/core/services/google-maps-types';
+import { AdminService } from './../../../../../services/admin.service';
 
 @Component({
   selector: 'app-rota-cadastro',
   templateUrl: './rota-cadastro.component.html',
   styleUrls: ['./rota-cadastro.component.css']
 })
-export class RotaCadastroComponent implements OnInit {
-
+export class RotaCadastroComponent implements OnInit 
+{
   rotaForm: FormGroup;
+  trajetoIda: Trajeto;
+  trajetoVolta: Trajeto;
   isMobile = false;
   dataSourceInstituicoes: MatTableDataSource<InstituicaoEnsino> = new MatTableDataSource();
   displayedColumns = ['nome', 'acoes'];
@@ -27,9 +30,10 @@ export class RotaCadastroComponent implements OnInit {
 
   //   public mascaraHora = [/\d/, /\d/, ':', /\d/, /\d/];
 
-  constructor(private storageDataService: StorageDataService, private formBuilder: FormBuilder,
+  constructor(private storageDataService: StorageDataService, private cidadeService: CidadeService,
     private breakpointObserver: BreakpointObserver, private instituicaoEnsinoService: InstituicaoEnsinoService,
-    private errorHandlerService: ErrorHandlerService, private dialog: MatDialog) 
+    private errorHandlerService: ErrorHandlerService, private dialog: MatDialog, private formBuilder: FormBuilder,
+    private adminService: AdminService) 
   {
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
@@ -45,16 +49,39 @@ export class RotaCadastroComponent implements OnInit {
       }
     });
   }
-
+  
   ngOnInit() 
   {
     setTimeout(() => {
       this.storageDataService.tituloBarraSuperior = 'Cadastro de rota';
     });
     this.criarFormulario();
+    
+    if (localStorage.getItem('tipoUsuarioLogado') === 'admin')
+    {
+      this.adminService.getById(localStorage.getItem('idUsuarioLogado'))
+        .then(response => {
+          this.storageDataService.usuarioLogado = response;
+        })
+        .then(() => {
+          const cidadeId = this.storageDataService.usuarioLogado.endereco.cidade.id;
+      
+          this.cidadeService.getById(cidadeId)
+            .then(response => {
+              this.storageDataService.usuarioLogado.endereco.cidade = response;
+            })
+            .catch(erro => this.errorHandlerService.handle(erro));
+        })
+        .catch(erro => this.errorHandlerService.handle(erro));
+    }
+    else 
+    {
+      // MOTORISTA
+    }
+
   }
 
-  criarFormulario()
+  private criarFormulario()
   {
     this.rotaForm = this.formBuilder.group({
       campoNomeRota: [null, Validators.required],
@@ -118,16 +145,69 @@ export class RotaCadastroComponent implements OnInit {
 
   abrirMapa(tipoTrajeto: string)
   {
-    this.dialog.open(MapaDialogComponent, {
+    const usuarioLogado = this.storageDataService.usuarioLogado;
+
+    const dialogRef = this.dialog.open(MapaDialogComponent, {
       height: '95%',
       width: '99%',
       id: 'mapa-dialog',
       maxWidth: '96vw',
       disableClose: true,
       data: {
-        tipoTrajeto: tipoTrajeto
+        tipoTrajeto: tipoTrajeto,
+        cidade: usuarioLogado.endereco ? 
+            usuarioLogado.endereco.cidade : (usuarioLogado as Motorista).cidade
       }
     });
+    dialogRef.afterClosed().subscribe(result =>
+    {
+      this.adicionarHorariosTrajeto(result);
+    });
+  }
+
+  private adicionarHorariosTrajeto(trajeto)
+  {
+    if (trajeto.tipo === TIPO_TRAJETO.IDA)
+    {
+      this.trajetoIda = trajeto;
+      this.trajetoIda.horarioTrajeto.partida = this.rotaForm.get('campoHorarioPartidaIda').value;
+      // FALTA IMPLEMENTAR O CÁLCULO DE TEMPO DO TRAJETO, DA ORIGEM AO DESTINO, 
+      // LEVANDO EM CONTA OS PONTOS DE PARADA
+      // this.trajetoIda.horarioTrajeto.chegada = this.rotaService.calcularTempo(trajeto);
+    }
+    else if (trajeto.tipo === TIPO_TRAJETO.VOLTA)
+    {
+      this.trajetoVolta = trajeto;
+      this.trajetoVolta.horarioTrajeto.partida = this.rotaForm.get('campoHorarioPartidaVolta').value;
+      // FALTA IMPLEMENTAR O CÁLCULO DE TEMPO DO TRAJETO, DA ORIGEM AO DESTINO, 
+      // LEVANDO EM CONTA OS PONTOS DE PARADA
+      // this.trajetoVolta.horarioTrajeto.chegada = this.rotaService.calcularTempo(trajeto);
+    }
+  }
+
+  private criarRota(): Rota
+  {
+    const usuarioLogado = this.storageDataService.usuarioLogado;
+
+    const trajetos: Trajeto[] = new Array<Trajeto>();
+    trajetos.push(this.trajetoIda);
+    trajetos.push(this.trajetoVolta);
+
+    const rota = new Rota();
+    rota.cidade = usuarioLogado.endereco ? 
+        usuarioLogado.endereco.cidade : (usuarioLogado as Motorista).cidade;
+    rota.nome = this.rotaForm.get('campoNomeRota').value;
+    rota.instituicoesEnsino = this.dataSourceInstituicoes.data;
+    rota.trajetos = trajetos;
+
+    return rota;
+  }
+
+  salvar()
+  {
+    const rota: Rota = this.criarRota();
+
+
   }
 }
 
@@ -143,7 +223,7 @@ export class MapaDialogComponent implements OnInit
   tipoTrajeto = '';
 
   // AGM MAP
-  cidade: any = {lat: -8.069827101202105, lng: -37.268838007335034}; // CIDADE
+  cidade: Cidade;
   zoom: number = 15;
   markers: Marker[] = [];
   
@@ -172,9 +252,14 @@ export class MapaDialogComponent implements OnInit
   }
   optimizeWaypoints = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private formBuilder: FormBuilder) 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private formBuilder: FormBuilder,
+      private snackBar: MatSnackBar, private dialogRef: MatDialogRef<MapaDialogComponent>) 
   {
     this.tipoTrajeto = data.tipoTrajeto;
+    this.cidade = data.cidade;
+    this.cidade.geolocalizacao.lat = new Number(this.cidade.geolocalizacao.lat).valueOf();
+    this.cidade.geolocalizacao.lng = new Number(this.cidade.geolocalizacao.lng).valueOf();
+    // console.log(data.cidade);
   }
 
   ngOnInit() 
@@ -234,27 +319,29 @@ export class MapaDialogComponent implements OnInit
     marker.lng = event.coords.lng
   }
 
+  // FAZ A LIGAÇÃO ENTRE OS MARCADORES/PONTOS DE PARADA GERANDO UM TRAJETO
   gerarTrajeto()
   {
-    if (this.rotaVisivel) // EDITAR TRAJETO
+    // SELECIONOU EDITAR TRAJETO. VOLTA PARA A TELA DE ADIÇÃO DE MARCADORES E EDIÇÃO DE NOME DE PONTOS
+    if (this.rotaVisivel) 
     {
       this.rotaVisivel = false;
 
-      this.markers[0].infoVisivel = false;
-      this.markers[this.markers.length - 1].infoVisivel = false;
+      this.markers[0].infoVisivel = false; // Ocultando infowindow da origem
+      this.markers[this.markers.length - 1].infoVisivel = false; // Ocultando infowindow do destino
 
       let cont = 2; // DESCONSIDERA A ORIGEM
 
       // REMOVENDO PONTOS QUE NÃO SÃO DE PARADA
       for (let ponto of this.pontosParadaAtualizados)
       {
-        if (!ponto.stepover)
+        if (!ponto.stopover)
         {
           let indice = this.pontosParadaAtualizados.indexOf(ponto);
           this.pontosParadaAtualizados.splice(indice, 1);
         }
       }
-      
+      // ATUALIZANDO MARCADORES
       for (let ponto of this.pontosParadaAtualizados)
       {
         if (ponto.location.location)
@@ -264,23 +351,32 @@ export class MapaDialogComponent implements OnInit
           marker.lat = ponto.location.location.lat();
           marker.lng = ponto.location.location.lng();
           marker.infoVisivel = false;
-
-          // this.form.get(marker.id).setValue(marker.nome);
         }
         cont++;
       }
     }
+    // SELECIONOU GERAR TRAJETO. GERA O TRAJETO BASEADO NOS MARCADORES
     else
     {
-      const marcadores: Marker[] = JSON.parse(JSON.stringify(this.markers));
-  
-      const origem: Marker = marcadores.shift();
-      const destino: Marker = marcadores.pop(); 
-  
-      this.origemRota = {lat: origem.lat, lng: origem.lng};
-      this.destinoRota = {lat: destino.lat, lng: destino.lng};
-  
-      this.criarPontosParada(marcadores);
+      if (this.form.invalid)
+      {
+        this.snackBar.open(
+          'Você esqueceu de nomear algum ponto de parada', '', 
+          {panelClass: ['snack-bar-error'], duration: 4500}
+        );
+      }
+      else
+      {
+        const marcadores: Marker[] = JSON.parse(JSON.stringify(this.markers));
+    
+        const origem: Marker = marcadores.shift();
+        const destino: Marker = marcadores.pop(); 
+    
+        this.origemRota = {lat: origem.lat, lng: origem.lng};
+        this.destinoRota = {lat: destino.lat, lng: destino.lng};
+    
+        this.criarPontosParada(marcadores);
+      }
     }
   }
 
@@ -302,9 +398,10 @@ export class MapaDialogComponent implements OnInit
     this.rotaVisivel = true;
   }
 
-  // ATUALIZA LOCALIZAÇÃO DOS PONTOS DE PARADA
+  // ATUALIZA LOCALIZAÇÃO DOS PONTOS DE PARADA QUANDO UM DOS MARCADORES É MOVIMENTADO
   onChange(event)
   {
+    // ATUALIZANDO ORIGEM
     if (event.request.origin.location)
     {
       this.markers[0].lat = event.request.origin.location.lat();
@@ -316,6 +413,7 @@ export class MapaDialogComponent implements OnInit
       this.markers[0].lng = event.request.origin.lng();
     }
 
+    // ATUALIZANDO DESTINO
     if (event.request.destination.location)
     {
       this.markers[this.markers.length - 1].lat = event.request.destination.location.lat();
@@ -326,15 +424,78 @@ export class MapaDialogComponent implements OnInit
       this.markers[this.markers.length - 1].lat = event.request.destination.lat();
       this.markers[this.markers.length - 1].lng = event.request.destination.lng();
     }
-    this.pontosParadaAtualizados = event.request.waypoints;
+    // ATUALIZANDO PONTOS
+    this.pontosParadaAtualizados = event.request.waypoints; 
   }
 
   salvar()
   {
-    if (this.pontosParadaAtualizados)
-    {
+    const trajeto = new Trajeto();
+    trajeto.tipo = [TIPO_TRAJETO.IDA, TIPO_TRAJETO.VOLTA].filter(tipo => tipo === this.tipoTrajeto)[0];
 
+    const pontosParada: PontoParada[] = [];
+
+    // buscando origem/primeiro ponto
+    const primeiroMarcador: Marker = this.markers.filter(marker => marker.ordem === '1')[0];
+
+    // adicionando primeiro ponto
+    const origem: PontoParada = new PontoParada();
+    origem.nome = primeiroMarcador.nome;
+    origem.ordem = Number.parseInt(primeiroMarcador.ordem);
+
+    const geolocalizacaoOrigem = new Geolocalizacao();
+    geolocalizacaoOrigem.lat = primeiroMarcador.lat;
+    geolocalizacaoOrigem.lng = primeiroMarcador.lng;
+
+    origem.geolocalizacao = geolocalizacaoOrigem;
+    origem.trajeto = trajeto;
+
+    pontosParada.push(origem);
+
+    // adicionando pontos de parada intermediários
+    for (let i=0, j=0, ordem=2; i < this.pontosParadaAtualizados.length; i++, ordem++)
+    {
+      let pontoParada = new PontoParada();
+      pontoParada.geolocalizacao = new Geolocalizacao();
+
+      // Não é um ponto de parada
+      if (!this.pontosParadaAtualizados[i].stopover)
+      {
+        pontoParada.nome = '-';
+        pontoParada.geolocalizacao.lat = this.pontosParadaAtualizados[i].location.lat();
+        pontoParada.geolocalizacao.lng = this.pontosParadaAtualizados[i].location.lng();
+      }
+      else
+      {
+        pontoParada.nome = this.markers[j].nome;
+        pontoParada.geolocalizacao.lat = this.pontosParadaAtualizados[i].location.location.lat();
+        pontoParada.geolocalizacao.lng = this.pontosParadaAtualizados[i].location.location.lng();
+        j++;
+      }
+      pontoParada.ordem = ordem;
+      pontoParada.trajeto = trajeto;
     }
+    // buscando destino/último ponto
+    const ultimoMarcador: Marker = this.markers.filter(marker =>
+       Number.parseInt(marker.ordem) === (this.markers.length))[0];
+
+    // adicionando último ponto
+    const destino: PontoParada = new PontoParada();
+    destino.nome = ultimoMarcador.nome;
+    destino.ordem = Number.parseInt(ultimoMarcador.ordem);
+
+    const geolocalizacaoDestino = new Geolocalizacao();
+    geolocalizacaoDestino.lat = ultimoMarcador.lat;
+    geolocalizacaoDestino.lng = ultimoMarcador.lng;
+
+    destino.geolocalizacao = geolocalizacaoDestino;
+    destino.trajeto = trajeto;
+
+    pontosParada.push(destino);
+
+    trajeto.pontosParada = pontosParada;
+
+    this.dialogRef.close(trajeto);// any value parameter
   }
 
   exibirAjuda()

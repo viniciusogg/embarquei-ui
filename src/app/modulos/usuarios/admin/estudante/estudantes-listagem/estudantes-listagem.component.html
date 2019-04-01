@@ -65,7 +65,7 @@
       </table>
 
       <div style="text-align: center; margin-top: 10px;"
-          *ngIf="dataSourceEstudantes?.data?.length === 0">
+          *ngIf="!dataSourceEstudantes?.data">
         <span>Não existem dados para exibição</span>
       </div>
     </div>
