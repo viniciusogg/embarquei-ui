@@ -30,10 +30,9 @@ import { VeiculosListagemComponent } from './veiculo/veiculos-listagem/veiculos-
 import { VeiculoCadastroComponent } from './veiculo/veiculo-cadastro/veiculo-cadastro.component';
 import { RotaCadastroComponent, MapaDialogComponent } from './rota/rota-cadastro/rota-cadastro.component';
 
-import { AgmCoreModule, MarkerManager, GoogleMapsAPIWrapper } from '@agm/core';
+import { TextMaskModule } from 'angular2-text-mask';
+import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
-
-// import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   imports: [
@@ -60,6 +59,7 @@ import { AgmDirectionModule } from 'agm-direction';
     TextFieldModule,
     MatChipsModule,
 
+    TextMaskModule,
     AgmCoreModule,
     AgmDirectionModule
   ],

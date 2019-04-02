@@ -9,6 +9,8 @@ import { CidadeService } from './../../../../../services/cidade.service';
 import { ErrorHandlerService } from './../../../../../modulos/core/error-handler.service';
 import { v4 as uuid } from 'uuid';
 import { AdminService } from './../../../../../services/admin.service';
+import * as moment from 'moment';
+import 'moment/locale/pt-br';
 
 @Component({
   selector: 'app-rota-cadastro',
@@ -28,12 +30,12 @@ export class RotaCadastroComponent implements OnInit
   instituicoesEnsino = new Array<any>();
   desabilitarCampoBotaoInstituicoes = true;
 
-  //   public mascaraHora = [/\d/, /\d/, ':', /\d/, /\d/];
+  public mascaraHora = [/\d/, /\d/, ':', /\d/, /\d/];
 
   constructor(private storageDataService: StorageDataService, private cidadeService: CidadeService,
     private breakpointObserver: BreakpointObserver, private instituicaoEnsinoService: InstituicaoEnsinoService,
     private errorHandlerService: ErrorHandlerService, private dialog: MatDialog, private formBuilder: FormBuilder,
-    private adminService: AdminService) 
+    private adminService: AdminService, private snackBar: MatSnackBar) 
   {
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
@@ -85,8 +87,8 @@ export class RotaCadastroComponent implements OnInit
   {
     this.rotaForm = this.formBuilder.group({
       campoNomeRota: [null, Validators.required],
-      campoHorarioPartidaIda: [null, Validators.required, Validators.minLength(5), ValidateHour, Validators.maxLength(5)],
-      campoHorarioPartidaVolta: [null, Validators.required, Validators.minLength(5), ValidateHour, Validators.maxLength(5)],
+      campoHorarioPartidaIda: ['', [Validators.required, Validators.minLength(5), ValidateHour, Validators.maxLength(5)]],
+      campoHorarioPartidaVolta: ['', [Validators.required, Validators.minLength(5), ValidateHour, Validators.maxLength(5)]],
       campoInstituicao: [null]
     });
   }
@@ -155,6 +157,9 @@ export class RotaCadastroComponent implements OnInit
       disableClose: true,
       data: {
         tipoTrajeto: tipoTrajeto,
+        horaPartida: tipoTrajeto === TIPO_TRAJETO.IDA ? 
+            this.rotaForm.get('campoHorarioPartidaIda').value : 
+            this.rotaForm.get('campoHorarioPartidaVolta').value,
         cidade: usuarioLogado.endereco ? 
             usuarioLogado.endereco.cidade : (usuarioLogado as Motorista).cidade
       }
@@ -209,6 +214,13 @@ export class RotaCadastroComponent implements OnInit
 
 
   }
+
+  exibirMsgErro(msg)
+  {
+    this.snackBar.open(
+      msg, '', {panelClass: ['snack-bar-error'], duration: 4500}
+    );
+  }
 }
 
 @Component({
@@ -221,6 +233,12 @@ export class MapaDialogComponent implements OnInit
   form: FormGroup;
   ajudaVisivel = false;
   tipoTrajeto = '';
+
+  // Dados agregados do trajeto
+  tempo: number;
+  distancia: number;
+  partida: string;
+  chegada: string;
 
   // AGM MAP
   cidade: Cidade;
@@ -252,6 +270,16 @@ export class MapaDialogComponent implements OnInit
   }
   optimizeWaypoints = false;
 
+  // public transitOptions: any = {
+  //   departureTime: new Date(moment().format('L') + ' ' + this.partida),
+  //   modes: ['BUS']
+  // }
+
+  public drivingOptions: any = {
+    departureTime: new Date(moment().format('L') + ' ' + this.partida),
+    trafficModel: "pessimistic"
+  }
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private formBuilder: FormBuilder,
       private snackBar: MatSnackBar, private dialogRef: MatDialogRef<MapaDialogComponent>) 
   {
@@ -259,7 +287,11 @@ export class MapaDialogComponent implements OnInit
     this.cidade = data.cidade;
     this.cidade.geolocalizacao.lat = new Number(this.cidade.geolocalizacao.lat).valueOf();
     this.cidade.geolocalizacao.lng = new Number(this.cidade.geolocalizacao.lng).valueOf();
-    // console.log(data.cidade);
+    this.partida = data.horaPartida;
+    // this.partida = moment(this.partida, 'HH:mm').toString();
+    // console.log('partida:' + this.partida);
+    // const dataAtual = moment().format('L');
+    // console.log(new Date(dataAtual + ' ' + this.horarioTrajeto));
   }
 
   ngOnInit() 
@@ -428,6 +460,64 @@ export class MapaDialogComponent implements OnInit
     this.pontosParadaAtualizados = event.request.waypoints; 
   }
 
+  // CHAMADO QUANDO UMA RESPOSTA É RECEBIDA
+  // event doc https://developers.google.com/maps/documentation/directions/intro#DirectionsResponses
+  onResponse(event)
+  {// console.log(event);
+    const legs: any[] = event.routes[0].legs;
+
+    let metros: number = 0;
+    let segundos: number = 0;
+
+    for (let leg of legs)
+    {
+      metros += leg.distance.value;
+      segundos += leg.duration.value;
+    }
+    const quilometros = metros / 1000;
+    // const minutos = Math.floor(segundos / 60);
+
+    this.tempo = Math.floor(segundos / 60);
+    this.distancia = Number.parseFloat(quilometros.toFixed(1));
+    this.chegada = this.somarHora(this.partida, this.tempo);
+
+    // console.log('minutos-floor: ' + this.tempo);
+    // console.log('minutos-round:' + Math.round(segundos / 60));
+    // console.log('quilometros: ' + quilometros.toFixed(1));
+  }
+
+  // partida: 20:00 
+  // minutos: 05h37 = 337 minutos
+  // soma = 01:37  
+  
+  // Retorna minutos ou horas se houverem mais de 60 minutos
+  // minutos = tempo total do trajeto
+  private somarHora(partida: string, minutos: number): string
+  {
+    const arrayPartida = partida.split(':');
+
+    let hora = Number.parseInt(arrayPartida[0]);
+    let minuto = Number.parseInt(arrayPartida[1]);
+
+    if (minutos >= 60)
+    {
+      hora += minutos / 60;
+      minuto += minutos % 60;
+    }
+    else
+    {
+      minuto += minutos;
+    }
+
+    if (hora > 23)
+    {
+      hora -= 24;
+    }
+    // console.log('soma hora: ' + hora);
+    // console.log('soma minuto: ' + minuto);
+    return hora.toString() + ':' + minuto.toString();
+  }
+
   salvar()
   {
     const trajeto = new Trajeto();
@@ -552,3 +642,27 @@ export function ValidateHour(control: AbstractControl)
   }
   return null;
 }
+
+/*
+export interface leg
+{
+  "distance" : {
+    "text" : "35.9 mi",
+    "value" : 57824 ----> METROS
+  },
+  "duration" : {
+    "text" : "51 mins",
+    "value" : 3062 ---->  SEGUNDOS
+  },
+  "end_address" : "Universal Studios Blvd, Los Angeles, CA 90068, USA",
+  "end_location" : {
+    "lat" : 34.1330949,
+    "lng" : -118.3524442
+  },
+  "start_address" : "Disneyland (Harbor Blvd.), S Harbor Blvd, Anaheim, CA 92802, USA",
+  "start_location" : {
+    "lat" : 33.8098177,
+    "lng" : -117.9154353
+  }
+}
+*/

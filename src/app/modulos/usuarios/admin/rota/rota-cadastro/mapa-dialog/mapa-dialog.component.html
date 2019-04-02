@@ -127,7 +127,9 @@
 
   <agm-direction *ngIf="rotaVisivel" [origin]="origemRota" [optimizeWaypoints]="optimizeWaypoints"
       [waypoints]="pontosParada" [destination]="destinoRota" (onChange)="onChange($event)"
-      [renderOptions]="renderOptions">
+      [renderOptions]="renderOptions" (onResponse)="onResponse($event)"
+      [drivingOptions]="drivingOptions">
+      <!-- [transitOptions]="transitOptions"> -->
   </agm-direction>
 </agm-map>
 
@@ -136,6 +138,44 @@
       style="margin: 0px 10px" (click)="gerarTrajeto()">
     {{rotaVisivel ? 'EDITAR PONTOS' : 'GERAR TRAJETO'}}
   </button>
+</div>
+
+<div style="display: flex; justify-content: space-between; margin: 24px;">
+  <div class="label-dados-rota">
+    <div>
+      <span class="mat-small">TEMPO</span>
+    </div>
+    <div>
+      <span class="mat-body-strong">{{tempo}} min</span>
+    </div>
+  </div>
+
+  <div class="label-dados-rota">
+    <div>
+      <span class="mat-small">DISTÂNCIA</span>
+    </div>
+    <div>
+      <span class="mat-body-strong">{{distancia}} km</span>
+    </div>
+  </div>
+
+  <div class="label-dados-rota">
+    <div>
+      <span class="mat-small">PARTIDA</span>
+    </div>
+    <div>
+      <span class="mat-body-strong">{{partida}}</span>
+    </div>
+  </div>
+
+  <div class="label-dados-rota">
+    <div>
+      <span class="mat-small">CHEGADA</span>
+    </div>
+    <div>
+      <span class="mat-body-strong">{{chegada}}</span>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="markers.length >= 1" class="mat-typography"

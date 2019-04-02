@@ -1,7 +1,7 @@
-<div class="container accent-dark">
+<div class="container">
   <form [formGroup]="rotaForm" autocomplete="off">
     <mat-card class="espacamento-card">
-      <mat-card-content [class.form-container]="isMobile ? true : false">
+      <mat-card-content class="accent-dark" [class.form-container]="isMobile ? true : false">
         <mat-form-field appearance="outline" class="spacer-field" style="margin-bottom: 20px;" 
             [style.width]="isMobile ? '100%' : '80%'">
           <mat-label>Nome da rota</mat-label>
@@ -24,13 +24,13 @@
         <mat-card-title> Trajeto de ida </mat-card-title>
       </mat-card-header>
 
-      <mat-card-content class="margem-superior-formulario" 
+      <mat-card-content class="margem-superior-formulario accent-dark" 
           [class.form-container]="isMobile ? true : false">
         <mat-form-field appearance="outline" [style.width]="isMobile ? '100%' : '268px'">
           <mat-label>Hora</mat-label>
           <input id="campoHorarioPartidaIda" matInput placeholder="hh:mm" 
-              formControlName="campoHorarioPartidaIda">
-              <!-- [textMask]="{mask: mascaraHora, guide: false}" -->
+              formControlName="campoHorarioPartidaIda" required
+              [textMask]="{mask: mascaraHora, guide: false}">
 
           <mat-hint>
             Horário que o veículo estudantil inicia o trajeto de recolhimento dos alunos, 
@@ -41,13 +41,19 @@
               rotaForm.get('campoHorarioPartidaIda').hasError('maxlength') || 
               rotaForm.get('campoHorarioPartidaIda').hasError('validHour') && 
               !rotaForm.get('campoHorarioPartidaIda').hasError('required')">
-            A hora informada não é válida
+            A hora informada não é válida. Exemplo de hora válida: 08:05
+          </mat-error>
+
+          <mat-error *ngIf="rotaForm.get('campoHorarioPartidaIda').hasError('required')">
+            A hora é obrigatória
           </mat-error>
         </mat-form-field>
 
         <div style="margin-top: 50px;" [style.display]="isMobile ? 'block' : 'flex'">
           <div style="margin-right: 15px;" [style.text-align]="isMobile ? 'center' : 'unset'">
-            <button type="button" color="primary" mat-stroked-button (click)="abrirMapa('IDA')">
+            <button type="button" color="primary" mat-stroked-button 
+                (click)="!rotaForm.get('campoHorarioPartidaIda').invalid ? abrirMapa('IDA') : 
+                    exibirMsgErro('Você esqueceu de informar a hora de partida do trajeto de ida.')">
               ADICIONAR PONTOS
             </button>
           </div>
@@ -80,12 +86,13 @@
         <mat-card-title> Trajeto de volta </mat-card-title>
       </mat-card-header>
       
-      <mat-card-content class="margem-superior-formulario" 
+      <mat-card-content class="margem-superior-formulario accent-dark" 
           [class.form-container]="isMobile ? true : false">
         <mat-form-field appearance="outline" [style.width]="isMobile ? '100%' : '268px'">
           <mat-label>Hora</mat-label>
           <input id="campoHorarioPartidaVolta" matInput placeholder="hh:mm" 
-              formControlName="campoHorarioPartidaVolta">
+              formControlName="campoHorarioPartidaVolta" required
+              [textMask]="{mask: mascaraHora, guide: false}">
 
           <mat-hint>
             Horário que o veículo estudantil sai da instituição de ensino em 
@@ -96,13 +103,21 @@
               rotaForm.get('campoHorarioPartidaVolta').hasError('maxlength') || 
               rotaForm.get('campoHorarioPartidaVolta').hasError('validHour') && 
               !rotaForm.get('campoHorarioPartidaVolta').hasError('required')">
-            A hora informada não é válida
+            A hora informada não é válida. Exemplo de hora válida: 14:25
+          </mat-error>
+
+          <mat-error *ngIf="rotaForm.get('campoHorarioPartidaVolta').hasError('required')">
+            A hora é obrigatória
           </mat-error>
         </mat-form-field>
 
         <div style="margin-top: 50px;" [style.display]="isMobile ? 'block' : 'flex'">
           <div style="margin-right: 15px;" [style.text-align]="isMobile ? 'center' : 'unset'">
-            <button type="button" color="primary" mat-stroked-button>ADICIONAR PONTOS</button> <!-- (click)="abrirMapa('volta')" -->
+            <button type="button" color="primary" mat-stroked-button
+                (click)="!rotaForm.get('campoHorarioPartidaVolta').invalid ? abrirMapa('VOLTA') : 
+                    'Você esqueceu de informar a hora de partida do trajeto de volta.'">
+              ADICIONAR PONTOS
+            </button> <!--  -->
           </div>
           <div [style.margin-top]="isMobile ? '10px' : '0px'">
             <span class="mat-small">
@@ -143,7 +158,8 @@
         </mat-card-subtitle>
       </mat-card-header>
       
-      <mat-card-content style="display: flex; flex-wrap: wrap;" class="margem-superior-formulario">
+      <mat-card-content style="display: flex; flex-wrap: wrap;" 
+          class="margem-superior-formulario accent-dark">
         <mat-form-field appearance="outline" class="spacer-field">
           <mat-label>Instituição de ensino</mat-label>
           <mat-select formControlName="campoInstituicao" [(value)]="instituicaoEnsino" 
