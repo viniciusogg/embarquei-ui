@@ -152,7 +152,7 @@
                   [class.status-presenca-confirmada]="formatarStatusCheckin(checkin) !== 'AGUARDANDO_CONFIRMACAO' ? 
                   (checkin.status === 'CONFIRMADO' ? true : false) : false"> 
                 {{ formatarStatusCheckin(checkin) === 'AGUARDANDO_CONFIRMACAO' ? 'Não confirmou presença' : 
-                (checkin.status === 'CONFIRMADO' ? 'Presença confirmada' : 
+                (checkin.status === 'CONFIRMADO' ? (quantidadeAguardandoSaida > 0 ? 'Em aula' : 'Presença confirmada') : 
                 (checkin.status === 'EMBARCOU' ? 'Aguardando viagem de volta' : 'Não confirmou presença') ) }} 
               </p>
               <mat-divider [inset]="true" *ngIf="!last"></mat-divider>

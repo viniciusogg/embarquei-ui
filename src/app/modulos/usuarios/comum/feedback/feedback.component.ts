@@ -12,8 +12,8 @@ import { ErrorHandlerService } from './../../../../modulos/core/error-handler.se
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.css']
 })
-export class FeedbackComponent implements OnInit {
-
+export class FeedbackComponent implements OnInit 
+{
   feedbackForm: FormGroup;
 
   constructor(private storageDataService: StorageDataService, private formBuilder: FormBuilder,

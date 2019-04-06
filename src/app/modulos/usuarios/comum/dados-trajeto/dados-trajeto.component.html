@@ -1,0 +1,81 @@
+<div *ngIf="chegada !== undefined">
+  <mat-divider style="margin: 20px 10px 0px 10px;"></mat-divider> <!-- margin: 20px 10px 0px 10px; -->
+
+  <div class="accent-dark"> <!--style="display: flow-root;"-->
+    <button mat-icon-button color="accent" style="float: right; margin: 2px 4px 0px 0px;"
+        (click)="exibirAjuda()" type="button">
+      <mat-icon>help</mat-icon> <!--'help_outline'-->
+    </button>
+  </div>
+
+  <div *ngIf="chegada !== undefined" style="display: flex; justify-content: space-between; margin: 24px 10px;">
+    <div class="label-dados-trajeto">
+      <div>
+        <span class="mat-small">DISTÂNCIA</span>
+      </div>
+      <div>
+        <span class="mat-body-strong">{{distancia}} km</span>
+      </div>
+    </div>
+
+    <div class="label-dados-trajeto">
+      <div>
+        <span class="mat-small">TEMPO</span>
+      </div>
+      <div>
+        <span class="mat-body-strong">{{ tempoTotalTrajeto }} {{ tempoTotalTrajeto.includes(':') ? 'h' : 'min'}}</span>
+      </div>
+    </div>
+
+    <div class="label-dados-trajeto">
+      <div>
+        <span class="mat-small">PARTIDA</span>
+      </div>
+      <div>
+        <span class="mat-body-strong">{{partida}} h</span>
+      </div>
+    </div>
+
+    <div class="label-dados-trajeto">
+      <div>
+        <span class="mat-small">CHEGADA</span>
+      </div>
+      <div>
+        <span class="mat-body-strong">{{chegada}} h</span>
+      </div>
+    </div>
+  </div>
+
+  <mat-divider *ngIf="ajudaVisivel" style="margin: 0px 10px;"></mat-divider>
+
+  <div *ngIf="ajudaVisivel">
+
+    <h3 style="margin-left: 24px" class="mat-body-2">Ajuda</h3>
+
+    <div style="margin: 0px 24px; text-align: justify"> <!-- class="mat-subheading-1" -->
+      <p class="mat-body">
+        <strong> Distância: </strong> é a quantidade de quilômetros entre o primeiro e o último ponto.
+      </p>
+
+      <p class="mat-body">
+        <strong> Tempo: </strong> é uma estimativa da duração da viagem do primeiro ao último ponto.
+      </p>
+
+      <p class="mat-body">
+        <strong>Partida:</strong> é a hora que o veículo estudantil sai do primeiro ponto.
+      </p>
+
+      <p class="mat-body">
+        <strong>Chegada:</strong> é a hora prevista que o veículo estudantil chega ao último ponto.
+      </p>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end;">
+      <button style="margin: 10px 24px;" mat-button 
+          (click)="exibirAjuda()">
+        ENTENDI
+      </button>
+    </div>
+  </div>
+  <mat-divider style="margin: 0px 10px;"></mat-divider>
+</div>

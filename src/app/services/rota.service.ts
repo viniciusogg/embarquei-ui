@@ -24,12 +24,50 @@ export class RotaService
         'Content-Type': 'application/json'
       }),
       withCredentials: true
-    };
+    }
     return this.httpClient.post(`${this.rotaEndpoint}`, httpOptions)
       .toPromise()
       .then(response => 
       {
         return response;
+      });
+  }
+
+  buscarRotasPorCidade(cidadeId)
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Controll-Allow-headers': 'Content-Type',
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    }
+    return this.httpClient.get(`${this.rotaEndpoint}/${cidadeId}`, httpOptions)
+      .toPromise()
+      .then(response => 
+      {
+        const rotas = response as Rota[];
+
+        return rotas;
+      });
+  }
+
+  buscarRotaPorId(id)
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    }
+    return this.httpClient.get(`${this.rotaEndpoint}/${id}`, httpOptions)
+      .toPromise()
+      .then(response => 
+      {
+        const rota = response as Rota;
+
+        return rota;
       });
   }
 
@@ -41,16 +79,15 @@ export class RotaService
         'Content-Type': 'application/json'
       }),
       withCredentials: true
-    };
+    }
     return this.httpClient.get(`${this.rotaEndpoint}/${idInstituicao}/${idCidade}`, httpOptions)
       .toPromise()
       .then(response => 
       {
-        const rota = response as Rota;
+        const rota = response as Rota[];
 
         return rota;
       });
   }
-
 
 }

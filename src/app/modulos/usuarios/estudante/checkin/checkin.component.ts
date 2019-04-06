@@ -15,6 +15,7 @@ import { UploadService } from './../../../../services/upload.service';
 import { STATUS_CHECKIN, Checkin, Estudante, DIA_SEMANA, ListaPresenca } from './../../../core/model';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
+import { AjudaDialog } from '../../comum/ajuda-dialog/ajuda-dialog';
 
 @Component({
   selector: 'app-checkin',
@@ -279,15 +280,15 @@ export class CheckinComponent implements OnInit, AfterViewInit {
     }*/
   }
 
-  abrirAjuda(ajuda: string)
+  abrirAjuda(tipoAjuda: string)
   {
-    this.dialog.open(AjudaDialogComponent, {
-      height: ajuda === 'checkboxEstaNoPonto' ? '75%' : (ajuda === 'quantidadeEmAula' ||
-        ajuda === 'quantidadeAguardandoSaida' ? '71%' : 
-        (ajuda === 'totalPresencasConfirmadas' ? '48%' : '90%') ), 
+    this.dialog.open(AjudaCheckinDialogComponent, {
+      height: tipoAjuda === 'checkboxEstaNoPonto' ? '75%' : (tipoAjuda === 'quantidadeEmAula' ||
+        tipoAjuda === 'quantidadeAguardandoSaida' ? '71%' : 
+        (tipoAjuda === 'totalPresencasConfirmadas' ? '48%' : '90%') ), 
       width: '99%',
       data: {
-        ajuda: ajuda,
+        tipoAjuda: tipoAjuda,
       }
     });
   }
@@ -305,36 +306,27 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
 
 @Component({
-  selector: 'app-ajuda-dialog',
-  templateUrl: 'ajuda-dialog/ajuda-dialog.component.html',
-  styleUrls: [ 'ajuda-dialog/ajuda-dialog.component.css']
+  selector: 'app-ajuda-checkin-dialog',
+  templateUrl: './../../comum/ajuda-dialog/ajuda-dialog.component.html',
+  styleUrls: [ './../../comum/ajuda-dialog/ajuda-dialog.component.css']
 })
-export class AjudaDialogComponent implements OnInit {
-
-  ajuda: string;
-  textoAjuda: SafeHtml;
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private sanitizer: DomSanitizer)
-  {
-    this.ajuda = data.ajuda;
-  }
-
-  ngOnInit()
-  {
-    this.carregarTextoAjuda();
-  }
-
+export class AjudaCheckinDialogComponent extends AjudaDialog 
+{
   carregarTextoAjuda()
   {
-    if (this.ajuda === 'checkboxEstaNoPonto')
+    if (this.tipoAjuda === 'checkboxEstaNoPonto')
     {
+      this.textoTitulo = 'Estou no meu ponto';
+
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong>1.</strong> Quando você marca a opção <strong>Estou no meu ponto</strong> ' +
         'significa que você está esperando o ônibus no seu ponto. </p> <p> <strong>2.</strong> Quando esta opção está marcada, você só ' +
         'deve apertar o botão <strong>CONFIRMAR</strong> quando o ônibus chegar no seu ponto.</p> <p> <strong>3.</strong> Ao fazer isso, você ' +
         'ajuda outros estudantes à visualizar por quais pontos o ônibus já passou.</p>');
     }
-    else if (this.ajuda === 'botaoEmbarquei')
+    else if (this.tipoAjuda === 'botaoEmbarquei')
     {
+      this.textoTitulo = 'Botão EMBARQUEI';
+
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> O botão <strong>EMBARQUEI</strong> deve ser apertado quando você ' +
         'estiver indo em direção ou ao entrar no seu ônibus, na viagem de volta para o seu município. </p> <p> <strong>ATENÇÃO</strong>, quando ' +
         'você aperta este botão, seu nome é marcado como <strong>aguardando viagem de volta</strong> na lista de presença do ônibus, indicando que você se ' + 
@@ -344,8 +336,10 @@ export class AjudaDialogComponent implements OnInit {
         '<p> Caso você aperte o botão por acidente, você pode desfazer esta ação apertando o botão <strong>DESFAZER</strong> que ficará ' + 
         'visível apenas por alguns segundos na parte inferior da tela. </p>');
     }
-    else if (this.ajuda === 'desistir')
+    else if (this.tipoAjuda === 'desistir')
     {
+      this.textoTitulo = 'Botao DESISTIR';
+
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Se você confirmou sua preseça com antecedencia, ' +
         'você poderá cancelar apertando a opção <strong>DESISTIR</strong>. Você deve apertar esse botão se: </p> ' +
         '<p> ' +
@@ -353,34 +347,42 @@ export class AjudaDialogComponent implements OnInit {
           '<strong>2.</strong> Você não for voltar para o seu município utilizando o veículo estudantil. <br>' +
           '<strong>3.</strong> Você desistir de ir para a aula de última hora etc.' +
         '</p> ' +
-        '<p> É essencial que, em caso de ocorrência de alguma dessas situações descritas, você lembre ' +
+        '<p> É essencial que, em caso de ocorrência de alguma destas situações descritas, você lembre ' +
         'de <strong>DESISTIR</strong> da viagem, do contrário, seu nome ficará na lista ' +
         'de presença do ônibus, fazendo com que, na volta para o município, o motorista espere ' + 
         'indeterminadamente por uma pessoa que não utilizou o transporte. </p>');
     }
-    else if (this.ajuda === 'botaoConfirmar')
+    else if (this.tipoAjuda === 'botaoConfirmar')
     {
+      this.textoTitulo = 'Botão CONFIRMAR';
+
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong> CONFIRMAR </strong> sua presença não ' + 
         'significa que o veículo de transporte vai te esperar caso você não esteja no seu ponto quando ele passar por lá.</p> ' + 
         '<p> Ao <strong> CONFIRMAR </strong> sua presença, você apenas garante que não será esquecido(a) na volta para casa, portanto, atenção ao ' + 
         'horário de partida para não perder o transporte na ida para a instituição de ensino. </p>');
     }
-    else if (this.ajuda === 'totalPresencasConfirmadas')
+    else if (this.tipoAjuda === 'totalPresencasConfirmadas')
     {
+      this.textoTitulo = 'Confirmaram presença';
+
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong> Presença confirmada </strong> <br> é a quantidade de estudantes que pretendem utilizar o transporte ' + 
         'estudantil hoje. </p>');
     }
-    else if (this.ajuda === 'quantidadeAguardandoSaida') 
+    else if (this.tipoAjuda === 'quantidadeAguardandoSaida') 
     {
+      this.textoTitulo = 'Aguardando a saída do veículo';
+
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong> Estudante aguardando </strong> <br> é a quantidade de estudantes que já estão no veículo estudantil aguardando ' + 
         'a viagem de volta para casa. </p> <p> Estudantes prontos para voltar ao município de origem tem status igual à <span class="status-aguardando-volta"> Aguardando viagem ' + 
         'de volta </span> na lista de estudantes. </p>');
     }
-    else if (this.ajuda === 'quantidadeEmAula')
+    else if (this.tipoAjuda === 'quantidadeEmAula')
     {
+      this.textoTitulo = 'Ainda em aula';
+
       this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> <strong>Estudante em aula</strong> <br> é a quantidade de estudantes que estão assistindo aula na instituição de ensino. </p>' + 
         '<p> <strong>1.</strong> O veículo estudantil voltará ao município de origem quando não houverem mais estudantes em aula. </p> <p> <strong>2.</strong> Estudantes em aula tem status igual à ' +
-        '<span class="status-presenca-confirmada"> Presença confirmada </span> na lista de estudantes. </p>')
+        '<span class="status-presenca-confirmada"> Em aula </span> na lista de estudantes. </p>')
     }
   }
 }

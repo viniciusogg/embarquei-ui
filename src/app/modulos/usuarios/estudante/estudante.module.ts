@@ -21,7 +21,7 @@ import { MatChipsModule } from '@angular/material/chips';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EstudanteCadastroComponent } from './estudante-cadastro/estudante-cadastro.component';
-import { CheckinComponent, AjudaDialogComponent, LembreteDialogComponent } from './checkin/checkin.component';
+import { CheckinComponent, AjudaCheckinDialogComponent, LembreteDialogComponent } from './checkin/checkin.component';
 import { EmAnaliseComponent } from './em-analise/em-analise.component';
 import { DetalhesVeiculoComponent } from './detalhes-veiculo/detalhes-veiculo.component';
 import { ListagemNotificacoesComponent } from './listagem-notificacoes/listagem-notificacoes.component';
@@ -59,12 +59,12 @@ import { RenovacaoCadastroComponent } from './renovacao-cadastro/renovacao-cadas
     ListagemNotificacoesComponent,
     ListagemSosComponent,
     RenovacaoCadastroComponent,
-    AjudaDialogComponent,
+    AjudaCheckinDialogComponent,
     LembreteDialogComponent,
     EmAnaliseComponent
   ],
   entryComponents: [
-    AjudaDialogComponent,
+    AjudaCheckinDialogComponent,
     LembreteDialogComponent
   ],
 })

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatTableDataSource, MatDialog, MAT_DIALOG_DATA, MatSnackBar, MatDialogRef } from '@angular/material';
 import { StorageDataService } from './../../../../../services/storage-data.service';
-import { InstituicaoEnsino, Rota, Cidade, Motorista, Trajeto, TIPO_TRAJETO, PontoParada, Geolocalizacao } from './../../../../../modulos/core/model';
+import { InstituicaoEnsino, Rota, Cidade, Motorista, Trajeto, TIPO_TRAJETO, PontoParada, Geolocalizacao, HorarioTrajeto } from './../../../../../modulos/core/model';
 import { InstituicaoEnsinoService } from './../../../../../services/instituicao-ensino.service';
 import { CidadeService } from './../../../../../services/cidade.service';
 import { ErrorHandlerService } from './../../../../../modulos/core/error-handler.service';
@@ -11,6 +11,7 @@ import { v4 as uuid } from 'uuid';
 import { AdminService } from './../../../../../services/admin.service';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
+import { AjudaDialog } from '../../../comum/ajuda-dialog/ajuda-dialog';
 
 @Component({
   selector: 'app-rota-cadastro',
@@ -59,7 +60,7 @@ export class RotaCadastroComponent implements OnInit
     });
     this.criarFormulario();
     
-    if (localStorage.getItem('tipoUsuarioLogado') === 'admin')
+    if (!this.storageDataService.usuarioLogado)
     {
       this.adminService.getById(localStorage.getItem('idUsuarioLogado'))
         .then(response => {
@@ -76,11 +77,6 @@ export class RotaCadastroComponent implements OnInit
         })
         .catch(erro => this.errorHandlerService.handle(erro));
     }
-    else 
-    {
-      // MOTORISTA
-    }
-
   }
 
   private criarFormulario()
@@ -160,33 +156,29 @@ export class RotaCadastroComponent implements OnInit
         horaPartida: tipoTrajeto === TIPO_TRAJETO.IDA ? 
             this.rotaForm.get('campoHorarioPartidaIda').value : 
             this.rotaForm.get('campoHorarioPartidaVolta').value,
-        cidade: usuarioLogado.endereco ? 
-            usuarioLogado.endereco.cidade : (usuarioLogado as Motorista).cidade
+        geolocalizacao: tipoTrajeto === TIPO_TRAJETO.IDA ? usuarioLogado.endereco.cidade.geolocalizacao : 
+            this.trajetoIda.pontosParada[this.trajetoIda.pontosParada.length - 1].geolocalizacao
       }
     });
     dialogRef.afterClosed().subscribe(result =>
-    {
+    {console.log(result);
       this.adicionarHorariosTrajeto(result);
     });
   }
 
-  private adicionarHorariosTrajeto(trajeto)
+  private adicionarHorariosTrajeto(trajeto: Trajeto)
   {
     if (trajeto.tipo === TIPO_TRAJETO.IDA)
     {
       this.trajetoIda = trajeto;
       this.trajetoIda.horarioTrajeto.partida = this.rotaForm.get('campoHorarioPartidaIda').value;
-      // FALTA IMPLEMENTAR O CÁLCULO DE TEMPO DO TRAJETO, DA ORIGEM AO DESTINO, 
-      // LEVANDO EM CONTA OS PONTOS DE PARADA
-      // this.trajetoIda.horarioTrajeto.chegada = this.rotaService.calcularTempo(trajeto);
+      this.trajetoIda.horarioTrajeto.chegada = trajeto.horarioTrajeto.chegada;
     }
     else if (trajeto.tipo === TIPO_TRAJETO.VOLTA)
     {
       this.trajetoVolta = trajeto;
       this.trajetoVolta.horarioTrajeto.partida = this.rotaForm.get('campoHorarioPartidaVolta').value;
-      // FALTA IMPLEMENTAR O CÁLCULO DE TEMPO DO TRAJETO, DA ORIGEM AO DESTINO, 
-      // LEVANDO EM CONTA OS PONTOS DE PARADA
-      // this.trajetoVolta.horarioTrajeto.chegada = this.rotaService.calcularTempo(trajeto);
+      this.trajetoVolta.horarioTrajeto.chegada = trajeto.horarioTrajeto.chegada;
     }
   }
 
@@ -221,7 +213,19 @@ export class RotaCadastroComponent implements OnInit
       msg, '', {panelClass: ['snack-bar-error'], duration: 4500}
     );
   }
+
+  abrirAjuda(tipoAjuda: string)
+  {
+    this.dialog.open(AjudaRotaDialogComponent, {
+      height: tipoAjuda === 'trajetoIda' || tipoAjuda === 'trajetoVolta' ? '50%' : '90%', 
+      width: '99%',
+      data: {
+        tipoAjuda: tipoAjuda,
+      }
+    });
+  }
 }
+
 
 @Component({
   selector: 'app-mapa-dialog',
@@ -235,13 +239,13 @@ export class MapaDialogComponent implements OnInit
   tipoTrajeto = '';
 
   // Dados agregados do trajeto
-  tempo: number;
+  tempoTotalTrajeto: string;
   distancia: number;
   partida: string;
   chegada: string;
 
   // AGM MAP
-  cidade: Cidade;
+  geolocalizacaoMapa: Geolocalizacao;
   zoom: number = 15;
   markers: Marker[] = [];
   
@@ -269,34 +273,34 @@ export class MapaDialogComponent implements OnInit
     }
   }
   optimizeWaypoints = false;
-
-  // public transitOptions: any = {
-  //   departureTime: new Date(moment().format('L') + ' ' + this.partida),
-  //   modes: ['BUS']
-  // }
-
-  public drivingOptions: any = {
-    departureTime: new Date(moment().format('L') + ' ' + this.partida),
-    trafficModel: "pessimistic"
-  }
+  transitOptions: any;
+  drivingOptions: any;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private formBuilder: FormBuilder,
       private snackBar: MatSnackBar, private dialogRef: MatDialogRef<MapaDialogComponent>) 
-  {
-    this.tipoTrajeto = data.tipoTrajeto;
-    this.cidade = data.cidade;
-    this.cidade.geolocalizacao.lat = new Number(this.cidade.geolocalizacao.lat).valueOf();
-    this.cidade.geolocalizacao.lng = new Number(this.cidade.geolocalizacao.lng).valueOf();
-    this.partida = data.horaPartida;
-    // this.partida = moment(this.partida, 'HH:mm').toString();
-    // console.log('partida:' + this.partida);
-    // const dataAtual = moment().format('L');
-    // console.log(new Date(dataAtual + ' ' + this.horarioTrajeto));
-  }
+  {}
 
   ngOnInit() 
   {
     this.criarFormulario();
+
+    this.tipoTrajeto = this.data.tipoTrajeto;
+    this.geolocalizacaoMapa = this.data.geolocalizacao;
+    this.geolocalizacaoMapa.lat = new Number(this.geolocalizacaoMapa.lat).valueOf();
+    this.geolocalizacaoMapa.lng = new Number(this.geolocalizacaoMapa.lng).valueOf();
+    this.partida = this.data.horaPartida;
+
+    const departureTime = moment(moment(new Date()).add(1, 'days').format('L').toString() + ' ' + this.partida, 'DD/MM/YYYY HH:mm:ss').toDate();
+    
+    this.transitOptions = {
+      departureTime: departureTime,
+      modes: ['BUS']
+    }
+
+    this.drivingOptions = {
+      departureTime: departureTime,
+      trafficModel: "pessimistic"
+    }
   }
   
   mapClicked(event) 
@@ -375,11 +379,12 @@ export class MapaDialogComponent implements OnInit
       }
       // ATUALIZANDO MARCADORES
       for (let ponto of this.pontosParadaAtualizados)
-      {
+      {console.log('ponto:'); console.log(ponto);
         if (ponto.location.location)
         {
           let marker = this.markers.filter(m => Number.parseInt(m.ordem) === cont)[0];
-
+          console.log('marker:'); console.log(marker);
+          console.log('ordem:'); console.log(cont);
           marker.lat = ponto.location.location.lat();
           marker.lng = ponto.location.location.lng();
           marker.infoVisivel = false;
@@ -458,12 +463,15 @@ export class MapaDialogComponent implements OnInit
     }
     // ATUALIZANDO PONTOS
     this.pontosParadaAtualizados = event.request.waypoints; 
+
+    // ATUALIZA DISTANCIA, TEMPO DE VIAGEM E HORA DE CHEGADA
+    this.atualizarInformacoesTrajeto(event);
   }
 
   // CHAMADO QUANDO UMA RESPOSTA É RECEBIDA
   // event doc https://developers.google.com/maps/documentation/directions/intro#DirectionsResponses
-  onResponse(event)
-  {// console.log(event);
+  private atualizarInformacoesTrajeto(event)
+  {
     const legs: any[] = event.routes[0].legs;
 
     let metros: number = 0;
@@ -475,53 +483,87 @@ export class MapaDialogComponent implements OnInit
       segundos += leg.duration.value;
     }
     const quilometros = metros / 1000;
-    // const minutos = Math.floor(segundos / 60);
 
-    this.tempo = Math.floor(segundos / 60);
+    this.tempoTotalTrajeto = this.formatarTempoTotalTrajeto(segundos);
     this.distancia = Number.parseFloat(quilometros.toFixed(1));
-    this.chegada = this.somarHora(this.partida, this.tempo);
-
-    // console.log('minutos-floor: ' + this.tempo);
-    // console.log('minutos-round:' + Math.round(segundos / 60));
-    // console.log('quilometros: ' + quilometros.toFixed(1));
+    this.chegada = this.calcularHoraChegada(this.partida, this.tempoTotalTrajeto);
   }
 
-  // partida: 20:00 
-  // minutos: 05h37 = 337 minutos
-  // soma = 01:37  
-  
+  private calcularTotalMinutosTrajeto(segundos): number
+  {
+    let totalMinutosTrajeto = Math.floor(segundos / 60);
+
+    // adiciona 1 minuto para cada ponto de parada menos a origem e o destino
+    totalMinutosTrajeto += this.markers.length - 2;
+
+    return totalMinutosTrajeto;
+  }
+
   // Retorna minutos ou horas se houverem mais de 60 minutos
   // minutos = tempo total do trajeto
-  private somarHora(partida: string, minutos: number): string
+  private calcularHoraChegada(partida: string, tempoTotalTrajeto: string): string
   {
     const arrayPartida = partida.split(':');
+    
+    let horaPartida: any = Number.parseInt(arrayPartida[0]);
+    let minutoPartida: any = Number.parseInt(arrayPartida[1]);
+    
+    const arrayTempoTotalTrajeto = tempoTotalTrajeto.split(':');
 
-    let hora = Number.parseInt(arrayPartida[0]);
-    let minuto = Number.parseInt(arrayPartida[1]);
-
-    if (minutos >= 60)
+    if (arrayTempoTotalTrajeto.length > 1)
     {
-      hora += minutos / 60;
-      minuto += minutos % 60;
+      let horaTempoTotal: any = Number.parseInt(arrayTempoTotalTrajeto[0]);
+      let minutoTempoTotal: any = Number.parseInt(arrayTempoTotalTrajeto[1]);
+
+      horaPartida += horaTempoTotal;
+      minutoPartida += minutoTempoTotal
     }
     else
     {
-      minuto += minutos;
+      minutoPartida += Number.parseInt(arrayTempoTotalTrajeto[0]);
     }
-
-    if (hora > 23)
+    if (horaPartida > 23)
     {
-      hora -= 24;
+      horaPartida -= 24;
     }
-    // console.log('soma hora: ' + hora);
-    // console.log('soma minuto: ' + minuto);
-    return hora.toString() + ':' + minuto.toString();
+    if (minutoPartida.toString().length === 1)
+    {
+      minutoPartida = '0' + minutoPartida.toString();
+    }
+    return horaPartida.toString() + ':' + minutoPartida.toString();
+  }
+
+  formatarTempoTotalTrajeto(segundos): string
+  {
+    const totalMinutosTrajeto = this.calcularTotalMinutosTrajeto(segundos)
+
+    let hora: number = 0;
+    let minutos: any = 0;
+
+    if (totalMinutosTrajeto >= 60)
+    {
+      hora += totalMinutosTrajeto / 60;
+      minutos += totalMinutosTrajeto % 60;
+
+      if (minutos.toString().length === 1)
+      {
+        minutos = '0' + minutos.toString();
+      }
+      return hora.toFixed(0) + ':' + minutos.toString();
+    }
+    return totalMinutosTrajeto.toString();
   }
 
   salvar()
   {
     const trajeto = new Trajeto();
     trajeto.tipo = [TIPO_TRAJETO.IDA, TIPO_TRAJETO.VOLTA].filter(tipo => tipo === this.tipoTrajeto)[0];
+    
+    const horarioTrajeto = new HorarioTrajeto();
+    horarioTrajeto.partida = this.partida;
+    horarioTrajeto.chegada = this.chegada;
+
+    trajeto.horarioTrajeto = horarioTrajeto;
 
     const pontosParada: PontoParada[] = [];
 
@@ -538,12 +580,12 @@ export class MapaDialogComponent implements OnInit
     geolocalizacaoOrigem.lng = primeiroMarcador.lng;
 
     origem.geolocalizacao = geolocalizacaoOrigem;
-    origem.trajeto = trajeto;
+    // origem.trajeto = trajeto;
 
     pontosParada.push(origem);
 
     // adicionando pontos de parada intermediários
-    for (let i=0, j=0, ordem=2; i < this.pontosParadaAtualizados.length; i++, ordem++)
+    for (let i=0, j=1, ordem=2; i < this.pontosParadaAtualizados.length; i++, ordem++)
     {
       let pontoParada = new PontoParada();
       pontoParada.geolocalizacao = new Geolocalizacao();
@@ -563,7 +605,8 @@ export class MapaDialogComponent implements OnInit
         j++;
       }
       pontoParada.ordem = ordem;
-      pontoParada.trajeto = trajeto;
+      // pontoParada.trajeto = trajeto;
+      pontosParada.push(pontoParada);
     }
     // buscando destino/último ponto
     const ultimoMarcador: Marker = this.markers.filter(marker =>
@@ -579,7 +622,7 @@ export class MapaDialogComponent implements OnInit
     geolocalizacaoDestino.lng = ultimoMarcador.lng;
 
     destino.geolocalizacao = geolocalizacaoDestino;
-    destino.trajeto = trajeto;
+    // destino.trajeto = trajeto;
 
     pontosParada.push(destino);
 
@@ -596,6 +639,33 @@ export class MapaDialogComponent implements OnInit
   criarFormulario()
   {
     this.form = this.formBuilder.group({});
+  }
+}
+
+
+@Component({
+  selector: 'app-ajuda-rota-dialog',
+  templateUrl: './../../../comum/ajuda-dialog/ajuda-dialog.component.html',
+  styleUrls: [ './../../../comum/ajuda-dialog/ajuda-dialog.component.css']
+})
+export class AjudaRotaDialogComponent extends AjudaDialog
+{
+  carregarTextoAjuda()
+  {
+    if (this.tipoAjuda === 'trajetoIda')
+    {
+      this.textoTitulo = 'Trajeto de ida'
+
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> ADICIONAR PONTOS </strong> para cadastrar os pontos de parada ' +
+        'onde os alunos deverão <strong>esperar</strong> o veículo estudantil, na viagem de <strong>ida</strong> para a instituição de ensino. </p>');
+    }
+    else if (this.tipoAjuda === 'trajetoVolta')
+    {
+      this.textoTitulo = 'Trajeto de volta';
+
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> ADICIONAR PONTOS </strong> para cadastrar os pontos de parada ' + 
+        'onde os alunos poderão <strong>descer</strong> quando o veículo estudantil <strong>voltar</strong> ao município de origem. </p>');
+    }
   }
 }
 
@@ -642,6 +712,8 @@ export function ValidateHour(control: AbstractControl)
   }
   return null;
 }
+
+
 
 /*
 export interface leg

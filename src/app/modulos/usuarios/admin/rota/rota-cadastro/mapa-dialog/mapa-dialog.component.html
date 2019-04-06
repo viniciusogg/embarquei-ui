@@ -1,5 +1,5 @@
 <div class="accent-dark" style="display: flex; justify-content: space-between;">
-  <h1 mat-dialog-title cdkFocusInitial style="margin-left: 24px">{{tipoTrajeto === 'ida' ? 'Trajeto de ida' : 'Trajeto de volta'}}</h1> <!--  -->
+  <h1 mat-dialog-title cdkFocusInitial style="margin-left: 24px">{{tipoTrajeto === 'IDA' ? 'Trajeto de ida' : 'Trajeto de volta'}}</h1> <!--  -->
 
   <button style="margin: 0 24px" mat-icon-button 
       (click)="exibirAjuda()"
@@ -82,8 +82,8 @@
 </div>
 
 <agm-map (mapClick)="mapClicked($event);"
-    [latitude]="cidade.geolocalizacao.lat"
-    [longitude]="cidade.geolocalizacao.lng"
+    [latitude]="geolocalizacaoMapa.lat"
+    [longitude]="geolocalizacaoMapa.lng"
     [zoom]="zoom"
     [disableDefaultUI]="false">
 
@@ -127,55 +127,24 @@
 
   <agm-direction *ngIf="rotaVisivel" [origin]="origemRota" [optimizeWaypoints]="optimizeWaypoints"
       [waypoints]="pontosParada" [destination]="destinoRota" (onChange)="onChange($event)"
-      [renderOptions]="renderOptions" (onResponse)="onResponse($event)"
+      [renderOptions]="renderOptions" 
       [drivingOptions]="drivingOptions">
-      <!-- [transitOptions]="transitOptions"> -->
+      <!-- [transitOptions]="transitOptions" -->
   </agm-direction>
 </agm-map>
+
+<app-dados-trajeto
+    [distancia]="distancia" 
+    [tempoTotalTrajeto]="tempoTotalTrajeto" 
+    [partida]="partida" 
+    [chegada]="chegada">
+</app-dados-trajeto>
 
 <div *ngIf="markers.length >= 2" style="text-align: center; margin-top: 20px;">
   <button mat-stroked-button color="primary" type="button"
       style="margin: 0px 10px" (click)="gerarTrajeto()">
     {{rotaVisivel ? 'EDITAR PONTOS' : 'GERAR TRAJETO'}}
   </button>
-</div>
-
-<div style="display: flex; justify-content: space-between; margin: 24px;">
-  <div class="label-dados-rota">
-    <div>
-      <span class="mat-small">TEMPO</span>
-    </div>
-    <div>
-      <span class="mat-body-strong">{{tempo}} min</span>
-    </div>
-  </div>
-
-  <div class="label-dados-rota">
-    <div>
-      <span class="mat-small">DISTÂNCIA</span>
-    </div>
-    <div>
-      <span class="mat-body-strong">{{distancia}} km</span>
-    </div>
-  </div>
-
-  <div class="label-dados-rota">
-    <div>
-      <span class="mat-small">PARTIDA</span>
-    </div>
-    <div>
-      <span class="mat-body-strong">{{partida}}</span>
-    </div>
-  </div>
-
-  <div class="label-dados-rota">
-    <div>
-      <span class="mat-small">CHEGADA</span>
-    </div>
-    <div>
-      <span class="mat-body-strong">{{chegada}}</span>
-    </div>
-  </div>
 </div>
 
 <div *ngIf="markers.length >= 1" class="mat-typography"

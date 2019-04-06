@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ShareModule } from '../comum/share.module';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,7 +29,7 @@ import { MotoristaCadastroComponent } from './motorista/motorista-cadastro/motor
 import { MotoristasListagemComponent } from './motorista/motoristas-listagem/motoristas-listagem.component';
 import { VeiculosListagemComponent } from './veiculo/veiculos-listagem/veiculos-listagem.component';
 import { VeiculoCadastroComponent } from './veiculo/veiculo-cadastro/veiculo-cadastro.component';
-import { RotaCadastroComponent, MapaDialogComponent } from './rota/rota-cadastro/rota-cadastro.component';
+import { RotaCadastroComponent, MapaDialogComponent, AjudaRotaDialogComponent } from './rota/rota-cadastro/rota-cadastro.component';
 
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from '@agm/core';
@@ -40,6 +41,8 @@ import { AgmDirectionModule } from 'agm-direction';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+
+    ShareModule,
 
     MatButtonModule,
     MatInputModule,
@@ -71,11 +74,13 @@ import { AgmDirectionModule } from 'agm-direction';
     VeiculosListagemComponent, 
     VeiculoCadastroComponent, 
     RotaCadastroComponent,
-    MapaDialogComponent
+    MapaDialogComponent,
+    AjudaRotaDialogComponent,
   ],
   providers:[],
   entryComponents: [
-    MapaDialogComponent
+    MapaDialogComponent,
+    AjudaRotaDialogComponent
   ], // DIALOGS AQUI
 })
 export class AdminModule { }

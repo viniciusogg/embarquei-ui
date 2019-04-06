@@ -17,8 +17,8 @@ import { isUndefined, isNull } from 'util';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent implements OnInit, AfterViewInit {//, OnChanges {
-
+export class MenuComponent implements OnInit, AfterViewInit 
+{//, OnChanges {
   @Input() drawerRef: MatDrawer;
 
   // linkFoto: string = null;

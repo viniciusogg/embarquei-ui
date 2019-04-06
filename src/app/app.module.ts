@@ -19,6 +19,11 @@ import { SegurancaModule } from './modulos/seguranca/seguranca.module';
 import { EstudanteModule } from './modulos/usuarios/estudante/estudante.module';
 import { AdminModule } from './modulos/usuarios/admin/admin.module';
 import { MotoristaModule } from './modulos/usuarios/motorista/motorista.module';
+import { ShareModule } from './modulos/usuarios/comum/share.module';
+
+import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
+
 import { MatCardModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule } from '@angular/material';
 
 import { EstudantesListagemComponent } from './modulos/usuarios/admin/estudante/estudantes-listagem/estudantes-listagem.component';
@@ -33,18 +38,16 @@ import { VeiculoCadastroComponent } from './modulos/usuarios/admin/veiculo/veicu
 import { VeiculosListagemComponent } from './modulos/usuarios/admin/veiculo/veiculos-listagem/veiculos-listagem.component';
 import { PainelControleComponent } from './modulos/usuarios/motorista/painel-controle/painel-controle.component';
 import { FeedbackComponent } from './modulos/usuarios/comum/feedback/feedback.component';
+import { DadosTrajetoComponent } from './modulos/usuarios/comum/dados-trajeto/dados-trajeto.component';
 import { ListagemNotificacoesComponent } from './modulos/usuarios/estudante/listagem-notificacoes/listagem-notificacoes.component';
 import { ListagemSosComponent } from './modulos/usuarios/estudante/listagem-sos/listagem-sos.component';
 import { RenovacaoCadastroComponent } from './modulos/usuarios/estudante/renovacao-cadastro/renovacao-cadastro.component';
 import { DetalhesVeiculoComponent } from './modulos/usuarios/estudante/detalhes-veiculo/detalhes-veiculo.component';
 import { RotaCadastroComponent } from './modulos/usuarios/admin/rota/rota-cadastro/rota-cadastro.component';
-import { AgmCoreModule } from '@agm/core';
-import { AgmDirectionModule } from 'agm-direction';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    FeedbackComponent,
+    AppComponent
   ],
   imports: [
     AppRoutingModule,
@@ -54,20 +57,22 @@ import { AgmDirectionModule } from 'agm-direction';
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
-    HttpModule,
-    HttpClientModule,
+    // HttpModule,
+    // HttpClientModule,
 
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
+    // MatCardModule,
+    // MatButtonModule,
+    // MatFormFieldModule,
+    // MatSelectModule,
+    // MatInputModule,
 
     LayoutModule,
     SegurancaModule,
     EstudanteModule,
     AdminModule,
     MotoristaModule,
+
+    ShareModule,
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
@@ -77,6 +82,9 @@ import { AgmDirectionModule } from 'agm-direction';
       apiKey: environment.mapsKey
     }),
     AgmDirectionModule
+  ],
+  exports: [
+    ShareModule
   ],
   entryComponents: [
     // estudante
@@ -101,8 +109,9 @@ import { AgmDirectionModule } from 'agm-direction';
     // motorista
     PainelControleComponent,
 
-    // padrao
-    FeedbackComponent
+    // comum
+    FeedbackComponent,
+    DadosTrajetoComponent
   ],
   providers: [],
   bootstrap: [AppComponent],

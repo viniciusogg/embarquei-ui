@@ -75,8 +75,8 @@ export class Rota {
 
 export class HorarioTrajeto {
   id: string;
-  partida: Date;
-  chegada: Date;
+  partida: any; // datetime=HH:mm
+  chegada: any; // datetime=HH:mm
 }
 
 export class Curso {
