@@ -23,6 +23,7 @@ import { RenovacaoCadastroComponent } from '../modulos/usuarios/estudante/renova
 import { ListagemSosComponent } from '../modulos/usuarios/estudante/listagem-sos/listagem-sos.component';
 import { DetalhesVeiculoComponent } from '../modulos/usuarios/estudante/detalhes-veiculo/detalhes-veiculo.component';
 import { RotaCadastroComponent } from '../modulos/usuarios/admin/rota/rota-cadastro/rota-cadastro.component';
+import { RotasListagemComponent } from '../modulos/usuarios/admin/rota/rotas-listagem/rotas-listagem.component';
 
 @Injectable({
   providedIn: 'root'
@@ -180,6 +181,18 @@ export class RoutingService {
     },
     {
       path: 'rota/cadastro',
+      component: RotaCadastroComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['admin'] }
+    },
+    {
+      path: 'rotas',
+      component: RotasListagemComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['admin'] }
+    },
+    {
+      path: 'rotas/:id',
       component: RotaCadastroComponent,
       canActivate: [AuthGuard],
       data: { tiposUsuariosPermitidos: ['admin'] }

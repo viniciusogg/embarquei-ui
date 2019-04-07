@@ -34,6 +34,7 @@ import { RotaCadastroComponent, MapaDialogComponent, AjudaRotaDialogComponent } 
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
+import { RotasListagemComponent } from './rota/rotas-listagem/rotas-listagem.component';
 
 @NgModule({
   imports: [
@@ -76,6 +77,7 @@ import { AgmDirectionModule } from 'agm-direction';
     RotaCadastroComponent,
     MapaDialogComponent,
     AjudaRotaDialogComponent,
+    RotasListagemComponent,
   ],
   providers:[],
   entryComponents: [

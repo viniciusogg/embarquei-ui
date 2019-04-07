@@ -3,6 +3,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { ErrorHandlerService } from '../modulos/core/error-handler.service';
 import { environment } from './../../environments/environment';
 import { Rota } from '../modulos/core/model';
+import { AdminService } from './admin.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class RotaService
 {
   private rotaEndpoint: string;
 
-  constructor(private httpClient: HttpClient, private errorHandlerService: ErrorHandlerService) 
+  constructor(private httpClient: HttpClient, private errorHandlerService: ErrorHandlerService, private adminService: AdminService) 
   {
     this.rotaEndpoint = `${environment.apiUrl}/rotas`;
   }
@@ -33,7 +34,7 @@ export class RotaService
       });
   }
 
-  buscarRotasPorCidade(cidadeId)
+  buscarRotasPorCidade()
   {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -42,13 +43,17 @@ export class RotaService
       }),
       withCredentials: true
     }
-    return this.httpClient.get(`${this.rotaEndpoint}/${cidadeId}`, httpOptions)
-      .toPromise()
-      .then(response => 
+    return this.adminService.getById(localStorage.getItem('idUsuarioLogado'))
+      .then(usuario => 
       {
-        const rotas = response as Rota[];
+        return this.httpClient.get(`${this.rotaEndpoint}/cidade/${usuario.endereco.cidade.id}`, httpOptions)
+          .toPromise()
+          .then(response => 
+          {
+            const rotas = response as Rota[];
 
-        return rotas;
+            return rotas;
+          });
       });
   }
 

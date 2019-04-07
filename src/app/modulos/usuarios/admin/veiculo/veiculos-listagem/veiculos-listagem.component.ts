@@ -56,10 +56,10 @@ export class VeiculosListagemComponent implements OnInit {
       this.storageDataService.tituloBarraSuperior = 'Veículos';
     });
 
-    this.listarMotoristas();
+    this.listarVeiculos();
   }
 
-  listarMotoristas() 
+  listarVeiculos() 
   {
     this.veiculoTransporteService.getByCidade()
       .then(response => 

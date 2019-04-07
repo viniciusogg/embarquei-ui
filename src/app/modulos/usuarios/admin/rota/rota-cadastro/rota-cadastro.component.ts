@@ -2,13 +2,17 @@ import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatTableDataSource, MatDialog, MAT_DIALOG_DATA, MatSnackBar, MatDialogRef } from '@angular/material';
-import { StorageDataService } from './../../../../../services/storage-data.service';
+import { ActivatedRoute } from '@angular/router';
 import { InstituicaoEnsino, Rota, Cidade, Motorista, Trajeto, TIPO_TRAJETO, PontoParada, Geolocalizacao, HorarioTrajeto } from './../../../../../modulos/core/model';
+
 import { InstituicaoEnsinoService } from './../../../../../services/instituicao-ensino.service';
+import { StorageDataService } from './../../../../../services/storage-data.service';
 import { CidadeService } from './../../../../../services/cidade.service';
 import { ErrorHandlerService } from './../../../../../modulos/core/error-handler.service';
-import { v4 as uuid } from 'uuid';
 import { AdminService } from './../../../../../services/admin.service';
+import { RotaService } from './../../../../../services/rota.service';
+
+import { v4 as uuid } from 'uuid';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import { AjudaDialog } from '../../../comum/ajuda-dialog/ajuda-dialog';
@@ -23,6 +27,7 @@ export class RotaCadastroComponent implements OnInit
   rotaForm: FormGroup;
   trajetoIda: Trajeto;
   trajetoVolta: Trajeto;
+  rota: Rota;
   isMobile = false;
   dataSourceInstituicoes: MatTableDataSource<InstituicaoEnsino> = new MatTableDataSource();
   displayedColumns = ['nome', 'acoes'];
@@ -36,7 +41,8 @@ export class RotaCadastroComponent implements OnInit
   constructor(private storageDataService: StorageDataService, private cidadeService: CidadeService,
     private breakpointObserver: BreakpointObserver, private instituicaoEnsinoService: InstituicaoEnsinoService,
     private errorHandlerService: ErrorHandlerService, private dialog: MatDialog, private formBuilder: FormBuilder,
-    private adminService: AdminService, private snackBar: MatSnackBar) 
+    private adminService: AdminService, private snackBar: MatSnackBar, private activatedRoute: ActivatedRoute,
+    private rotaService: RotaService) 
   {
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
@@ -58,6 +64,21 @@ export class RotaCadastroComponent implements OnInit
     setTimeout(() => {
       this.storageDataService.tituloBarraSuperior = 'Cadastro de rota';
     });
+    const idRota = this.activatedRoute.snapshot.params['id'];
+
+    if (idRota)
+    {
+      setTimeout(() => {
+        this.storageDataService.tituloBarraSuperior = 'Atualização de rota';
+      });
+      this.carregarRota(idRota);
+    }
+    else 
+    {
+      setTimeout(() => {
+        this.storageDataService.tituloBarraSuperior = 'Cadastro de veículo';
+      });
+    }
     this.criarFormulario();
     
     if (!this.storageDataService.usuarioLogado)
@@ -89,9 +110,35 @@ export class RotaCadastroComponent implements OnInit
     });
   }
   
+  carregarRota(idRota)
+  {
+    this.rotaService.buscarRotaPorId(idRota)
+      .then((response) => {
+        this.rota = response;
+
+        this.trajetoIda = this.rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA)[0];
+        this.trajetoVolta = this.rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA)[0];
+
+        this.configurarFormulario(this.rota);
+
+        this.dataSourceInstituicoes.data = this.rota.instituicoesEnsino;
+      })
+      .catch(erro => this.errorHandlerService.handle(erro));
+  }
+
+  private configurarFormulario(rota: Rota)
+  {
+    this.rotaForm.setValue({
+      campoNomeRota: rota.nome,
+      campoHorarioPartidaIda: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA)[0].horarioTrajeto.partida,
+      campoHorarioPartidaVolta: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA)[0].horarioTrajeto.partida,
+      campoInstituicao: null,
+    });
+  }
+
   buscarInstituicoesEnsino()
   {
-    this.instituicaoEnsinoService.getSemVeiculoAssociado()
+    this.instituicaoEnsinoService.getAll()
       .then(response => {
         if (!(response) || response.length === 0)
         {

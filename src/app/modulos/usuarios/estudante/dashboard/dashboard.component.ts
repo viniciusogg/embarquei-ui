@@ -40,24 +40,26 @@ export class DashboardComponent implements OnInit {
       const idInstituicao = estudante.curso.instituicaoEnsino.id;
       const idCidade = estudante.endereco.cidade.id;
   
-      this.rotaService.filtrarPorInstituicaoCidade(idInstituicao, idCidade)
-        .then((response) => 
-        {
-          if (!response.id)
-          {
-            this.textoRota = 'Rota indisponível';
-          }
-          else 
-          {
-            this.textoRota = response.nome;
-          }
-        })
-        .catch(erro => this.errorHandlerService.handle(erro));
+      // this.rotaService.filtrarPorInstituicaoCidade(idInstituicao, idCidade)
+      //   .then((response) => 
+      //   {
+      //     if (!response.id)
+      //     {
+      //       this.textoRota = 'Rota indisponível';
+      //     }
+      //     else 
+      //     {
+      //       this.textoRota = response.nome;
+      //     }
+      //   })
+      //   .catch(erro => this.errorHandlerService.handle(erro));
+
+      this.textoRota = 'Nomde da rota';
 
       this.getCheckin();
       this.getVeiculo(idInstituicao, idCidade);
       this.getMotorista(idInstituicao, idCidade);
-      this.getRota(idInstituicao, idCidade);
+      // this.getRota(idInstituicao, idCidade);
     }, 3000);
 
     setTimeout(() => {
@@ -128,19 +130,19 @@ export class DashboardComponent implements OnInit {
 
   getRota(idInstituicao, idCidade)
   {
-    this.rotaService.filtrarPorInstituicaoCidade(idInstituicao, idCidade)
-      .then((response) => 
-      {
-        if (!response.id)
-        {
-          this.textoRota = 'Indisponível';
-        }
-        else 
-        {
-          this.textoRota = response.nome;
-        }
-      })
-      .catch(erro => this.errorHandlerService.handle(erro));
+    // this.rotaService.filtrarPorInstituicaoCidade(idInstituicao, idCidade)
+    //   .then((response) => 
+    //   {
+    //     if (!response.id)
+    //     {
+    //       this.textoRota = 'Indisponível';
+    //     }
+    //     else 
+    //     {
+    //       this.textoRota = response.nome;
+    //     }
+    //   })
+    //   .catch(erro => this.errorHandlerService.handle(erro));
   }
 
   getMotorista(idInstituicao, idCidade)

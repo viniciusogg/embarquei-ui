@@ -44,6 +44,7 @@ import { ListagemSosComponent } from './modulos/usuarios/estudante/listagem-sos/
 import { RenovacaoCadastroComponent } from './modulos/usuarios/estudante/renovacao-cadastro/renovacao-cadastro.component';
 import { DetalhesVeiculoComponent } from './modulos/usuarios/estudante/detalhes-veiculo/detalhes-veiculo.component';
 import { RotaCadastroComponent } from './modulos/usuarios/admin/rota/rota-cadastro/rota-cadastro.component';
+import { RotasListagemComponent } from './modulos/usuarios/admin/rota/rotas-listagem/rotas-listagem.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { RotaCadastroComponent } from './modulos/usuarios/admin/rota/rota-cadast
     VeiculoCadastroComponent,
     VeiculosListagemComponent,
     RotaCadastroComponent,
+    RotasListagemComponent,
 
     // motorista
     PainelControleComponent,
