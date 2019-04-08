@@ -120,9 +120,9 @@ export class EstudanteDetalhesComponent implements OnInit, AfterViewInit
 
     const dados = JSON.stringify(
       {
-        "ativo": ativo,
-        "justificativaComprovante": justificativaComprovante,
-        "statusComprovante": statusComprovante
+        ativo: ativo,
+        justificativaComprovante: justificativaComprovante,
+        statusComprovante: statusComprovante
       });
 
     this.adminService.atualizarStatusEstudante(this.estudante.id, dados)

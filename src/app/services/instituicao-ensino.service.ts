@@ -34,7 +34,7 @@ export class InstituicaoEnsinoService {
         });
   }
 
-  getAll(): Promise<any>
+  getAll(): Promise<any[]>
   {
     const httpOptions = {
       headers: new HttpHeaders(
@@ -42,17 +42,12 @@ export class InstituicaoEnsinoService {
         'Content-Type': 'application/x-www-form-urlencoded'
       }),
       withCredentials: true
-    };
-
+    }
     return this.httpClient.get(this.instituicaoUrl, httpOptions).toPromise()
       .then(response => {
-
-        const resultado = {
-          instituicoes: response
-        };
-        return resultado;
-      })
-      .catch(erro => this.errorHandlerService.handle(erro));
+        const instituicoes = response as InstituicaoEnsino[];
+        return instituicoes;
+      });
   }
 
   // Retorna instituições que não tem motoristas da cidade do usuário logado

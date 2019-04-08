@@ -68,16 +68,18 @@ export class AdminService {
   {
     const httpOptions = {
       headers: new HttpHeaders({
+        'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
       }),
       withCredentials: true
     };
-
     const body = dados;
 
     return this.httpClient.put(`${this.estudantesUrl}/ativo/${id}`, body, httpOptions)
       .toPromise()
-      .then()
+      .then(response => {
+        return response;
+      })
       .catch(erro => this.errorHandlerService.handle(erro));
   }
 

@@ -72,9 +72,10 @@
 
         <mat-list style="margin-top: 20px" dense *ngIf="trajetoIda !== undefined">
           <h3 mat-subheader>Pontos de parada</h3>
-          <mat-list-item *ngFor="let ponto of trajetoIda?.pontosParada; last as ultimo">
+          <mat-list-item *ngFor="let ponto of trajetoIda?.pontosParada; last as ultimo"
+              [style.display]="ponto?.nome !== '-' ? 'unset' : 'none'">
             <span *ngIf="ponto?.nome !== '-'"> 
-              <strong class="mat-body-2"> {{ ponto?.ordem }} </strong> 
+              <!-- <strong class="mat-body-2"> {{ ponto?.ordem }} </strong>  -->
               {{ ponto?.nome }} 
             </span>
             <mat-divider inset="true" *ngIf="!ultimo"></mat-divider>
@@ -143,10 +144,10 @@
 
         <mat-list style="margin-top: 20px" dense *ngIf="trajetoVolta !== undefined">
           <h3 mat-subheader>Pontos de parada</h3>
-          <mat-list-item *ngFor="let ponto of trajetoVolta?.pontosParada; last as ultimo" 
+          <mat-list-item *ngFor="let ponto of trajetoVolta?.pontosParada; last as ultimo;" 
               [style.display]="ponto?.nome !== '-' ? 'unset' : 'none'">
             <span> 
-              <strong class="mat-body-2"> {{ ponto?.ordem }} </strong> 
+              <!-- <strong class="mat-body-2"> {{ ponto?.orde }} </strong> -->
               {{ ponto?.nome }} 
             </span>
             <mat-divider inset="true" *ngIf="!ultimo"></mat-divider>
@@ -169,14 +170,18 @@
         <mat-form-field appearance="outline"> <!-- class="spacer-field" -->
           <mat-label>Instituição de ensino</mat-label>
           <mat-select formControlName="campoInstituicao" [(value)]="instituicaoEnsino" 
-              [disabled]="desabilitarCampoBotaoInstituicoes">
+              [disabled]="desabilitarCampoBotaoInstituicoes" required>
             <mat-option *ngFor="let instituicao of instituicoesEnsino" [value]="instituicao">
               {{instituicao.nome}}
             </mat-option>
           </mat-select>
+
+          <mat-error *ngIf="rotaForm.get('campoInstituicao').hasError('required')">
+            Adicione pelo menos uma instituição
+          </mat-error>
         </mat-form-field>
 
-        <div>
+        <div class="accent-normal">
           <button type="button" mat-mini-fab color="accent" [disabled]="desabilitarCampoBotaoInstituicoes"
               class="margem-botao-add-instituicao accent-normal" (click)="adicionarInstituicao()">
             <mat-icon>add</mat-icon>

@@ -98,6 +98,7 @@ export class RotaCadastroComponent implements OnInit
         })
         .catch(erro => this.errorHandlerService.handle(erro));
     }
+    this.buscarInstituicoesEnsino();
   }
 
   private criarFormulario()
@@ -106,7 +107,7 @@ export class RotaCadastroComponent implements OnInit
       campoNomeRota: [null, Validators.required],
       campoHorarioPartidaIda: ['', [Validators.required, Validators.minLength(5), ValidateHour, Validators.maxLength(5)]],
       campoHorarioPartidaVolta: ['', [Validators.required, Validators.minLength(5), ValidateHour, Validators.maxLength(5)]],
-      campoInstituicao: [null]
+      campoInstituicao: [null, Validators.required]
     });
   }
   
@@ -117,7 +118,10 @@ export class RotaCadastroComponent implements OnInit
         this.rota = response;
 
         this.trajetoIda = this.rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA)[0];
+        this.trajetoIda.pontosParada = this.ordenarPontos(this.trajetoIda.pontosParada);
+
         this.trajetoVolta = this.rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA)[0];
+        this.trajetoVolta.pontosParada = this.ordenarPontos(this.trajetoVolta.pontosParada);
 
         this.configurarFormulario(this.rota);
 
@@ -188,10 +192,30 @@ export class RotaCadastroComponent implements OnInit
     this.desabilitarCampoBotaoInstituicoes = false;
   }
 
+  private ordenarPontos(pontosParada: PontoParada[])
+  {
+    pontosParada.sort((n1, n2) => n1.ordem - n2.ordem);
+
+    return pontosParada;
+  }
+
   abrirMapa(tipoTrajeto: string)
   {
     const usuarioLogado = this.storageDataService.usuarioLogado;
+    
+    let trajeto: Trajeto;
+    let horaPartida: any = tipoTrajeto === TIPO_TRAJETO.IDA ? 
+        this.rotaForm.get('campoHorarioPartidaIda').value : 
+        this.rotaForm.get('campoHorarioPartidaVolta').value;
+    let geolocalizacao: any = tipoTrajeto === TIPO_TRAJETO.IDA ? usuarioLogado.endereco.cidade.geolocalizacao : 
+        this.trajetoIda.pontosParada[this.trajetoIda.pontosParada.length - 1].geolocalizacao;
 
+    if (this.rota)
+    {
+      trajeto = tipoTrajeto === TIPO_TRAJETO.IDA ? 
+          this.rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA)[0] :
+          this.rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA)[0];
+    }
     const dialogRef = this.dialog.open(MapaDialogComponent, {
       height: '95%',
       width: '99%',
@@ -200,16 +224,18 @@ export class RotaCadastroComponent implements OnInit
       disableClose: true,
       data: {
         tipoTrajeto: tipoTrajeto,
-        horaPartida: tipoTrajeto === TIPO_TRAJETO.IDA ? 
-            this.rotaForm.get('campoHorarioPartidaIda').value : 
-            this.rotaForm.get('campoHorarioPartidaVolta').value,
-        geolocalizacao: tipoTrajeto === TIPO_TRAJETO.IDA ? usuarioLogado.endereco.cidade.geolocalizacao : 
-            this.trajetoIda.pontosParada[this.trajetoIda.pontosParada.length - 1].geolocalizacao
+        trajeto: trajeto,
+        horaPartida: horaPartida,
+        geolocalizacao: geolocalizacao
       }
     });
     dialogRef.afterClosed().subscribe(result =>
-    {console.log(result);
-      this.adicionarHorariosTrajeto(result);
+    {
+      if (result)
+      {
+        console.log(result);
+        this.adicionarHorariosTrajeto(result);
+      }
     });
   }
 
@@ -284,6 +310,7 @@ export class MapaDialogComponent implements OnInit
   form: FormGroup;
   ajudaVisivel = false;
   tipoTrajeto = '';
+  trajeto: Trajeto;
 
   // Dados agregados do trajeto
   tempoTotalTrajeto: string;
@@ -343,10 +370,13 @@ export class MapaDialogComponent implements OnInit
       departureTime: departureTime,
       modes: ['BUS']
     }
-
     this.drivingOptions = {
       departureTime: departureTime,
       trafficModel: "pessimistic"
+    }
+    if (this.data.trajeto)
+    {
+      this.carregarTrajeto();
     }
   }
   
@@ -412,9 +442,7 @@ export class MapaDialogComponent implements OnInit
 
       this.markers[0].infoVisivel = false; // Ocultando infowindow da origem
       this.markers[this.markers.length - 1].infoVisivel = false; // Ocultando infowindow do destino
-
-      let cont = 2; // DESCONSIDERA A ORIGEM
-
+      
       // REMOVENDO PONTOS QUE NÃO SÃO DE PARADA
       for (let ponto of this.pontosParadaAtualizados)
       {
@@ -425,18 +453,19 @@ export class MapaDialogComponent implements OnInit
         }
       }
       // ATUALIZANDO MARCADORES
-      for (let ponto of this.pontosParadaAtualizados)
-      {console.log('ponto:'); console.log(ponto);
-        if (ponto.location.location)
+      for (let i = 0, cont = 1; i < this.pontosParadaAtualizados.length; i++, cont++)
+      {
+        if (this.pontosParadaAtualizados[i].location.location)
         {
-          let marker = this.markers.filter(m => Number.parseInt(m.ordem) === cont)[0];
-          console.log('marker:'); console.log(marker);
-          console.log('ordem:'); console.log(cont);
-          marker.lat = ponto.location.location.lat();
-          marker.lng = ponto.location.location.lng();
-          marker.infoVisivel = false;
+          let marker = this.markers[cont];
+
+          if (marker.nome !== '-')
+          {
+            marker.lat = this.pontosParadaAtualizados[i].location.location.lat();
+            marker.lng = this.pontosParadaAtualizados[i].location.location.lng();
+            marker.infoVisivel = false;
+          }
         }
-        cont++;
       }
     }
     // SELECIONOU GERAR TRAJETO. GERA O TRAJETO BASEADO NOS MARCADORES
@@ -450,7 +479,7 @@ export class MapaDialogComponent implements OnInit
         );
       }
       else
-      {
+      { // Fazendo uma cópia do array
         const marcadores: Marker[] = JSON.parse(JSON.stringify(this.markers));
     
         const origem: Marker = marcadores.shift();
@@ -686,6 +715,76 @@ export class MapaDialogComponent implements OnInit
   criarFormulario()
   {
     this.form = this.formBuilder.group({});
+  }
+
+  // EDIÇÃO DE ROTA
+  private carregarTrajeto()
+  {
+    const pontosParada: PontoParada[] = JSON.parse(JSON.stringify(this.data.trajeto.pontosParada));
+        
+    const destino: PontoParada = pontosParada.pop(); 
+    const origem: PontoParada = pontosParada.shift();
+
+    this.origemRota = {lat: Number.parseFloat(origem.geolocalizacao.lat), lng: Number.parseFloat(origem.geolocalizacao.lng)};
+    this.destinoRota = {lat: Number.parseFloat(destino.geolocalizacao.lat), lng: Number.parseFloat(destino.geolocalizacao.lng)};
+
+    // adicionando origem
+    const idCampoOrigem = uuid();
+    this.form.addControl(idCampoOrigem, new FormControl(origem.nome, Validators.required));
+
+    this.markers.push({
+      id: idCampoOrigem,
+      lat: Number.parseFloat(origem.geolocalizacao.lat),
+      lng: Number.parseFloat(origem.geolocalizacao.lng),
+      ordem: origem.ordem.toString(),
+      draggable: true,
+      infoVisivel: false,
+      nome: origem.nome
+    });
+    let contador = 2;
+
+    for (let p of pontosParada)
+    {
+      const pontoParada: Waypoint = {
+        location: {
+          lat: Number.parseFloat(p.geolocalizacao.lat), 
+          lng: Number.parseFloat(p.geolocalizacao.lng)
+        }, 
+        stopover: p.nome !== '-'
+      };
+      this.pontosParada.push(pontoParada);
+
+      if (p.nome !== '-')
+      {
+        const id = uuid();
+        this.form.addControl(id, new FormControl(p.nome, Validators.required));
+  
+        this.markers.push({
+          id: id,
+          lat: Number.parseFloat(p.geolocalizacao.lat),
+          lng: Number.parseFloat(p.geolocalizacao.lng),
+          ordem: contador.toString(),
+          draggable: true,
+          infoVisivel: false,
+          nome: p.nome
+        });
+        contador++;
+      }
+    }
+    // adicionando destino
+    const idCampoDestino = uuid();
+    this.form.addControl(idCampoDestino, new FormControl(destino.nome, Validators.required));
+
+    this.markers.push({
+      id: idCampoDestino,
+      lat: Number.parseFloat(destino.geolocalizacao.lat),
+      lng: Number.parseFloat(destino.geolocalizacao.lng),
+      ordem: (contador++).toString(),
+      draggable: true,
+      infoVisivel: false,
+      nome: destino.nome
+    });
+    this.rotaVisivel = true;
   }
 }
 

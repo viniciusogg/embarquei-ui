@@ -9,7 +9,7 @@ $default-warn: mat-palette($mat-red);
 $default-theme: mat-light-theme($default-primary, $default-accent, $default-warn);
 @include angular-material-theme($default-theme);
 
-$dark-accent:  mat-palette($mat-yellow, 700);
+$dark-accent:  mat-palette($mat-yellow, 700); // $mat-yellow, 700
 $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-warn);
 .accent-dark {
   @include angular-material-theme($accent-dark-theme);
