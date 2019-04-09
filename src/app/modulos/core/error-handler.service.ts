@@ -17,10 +17,6 @@ export class ErrorHandlerService {
     {
       msg = errorResponse;
     }
-    // else if (errorResponse instanceof NotAuthenticatedError) {
-    //   msg = 'Sua sessão expirou';
-    //   this.router.navigate(['/login']);
-    // }
     else if (errorResponse instanceof Response && errorResponse.status >= 400
         && errorResponse.status <= 499)
     {
@@ -32,7 +28,6 @@ export class ErrorHandlerService {
       {
         msg = 'Você não tem permissão para executar esta ação';
       }
-
       try
       {
         errors = errorResponse;
@@ -47,12 +42,15 @@ export class ErrorHandlerService {
     {
       msg = errorResponse.error['userError'];
     }
-    else {
+    else 
+    {
       msg = 'Erro ao processar serviço remoto. Tente novamente.';
       console.error('Ocorreu um erro', errorResponse);
     }
-
-    this.snackBar.open(msg, '', {panelClass: ['snack-bar-error'], duration: 4000});
+    if (msg)
+    {
+      this.snackBar.open(msg, '', {panelClass: ['snack-bar-error'], duration: 4000});
+    }
   }
 
 }

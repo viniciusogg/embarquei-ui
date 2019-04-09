@@ -80,7 +80,7 @@ export class ToolbarComponent implements OnInit {
     {
       return '#2979FF';
     }
-    return 'unset';
+    // return 'initial';
   }
 
   abrirLembreteDialog()

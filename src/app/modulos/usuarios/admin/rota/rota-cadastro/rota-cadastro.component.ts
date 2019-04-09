@@ -438,35 +438,33 @@ export class MapaDialogComponent implements OnInit
     // SELECIONOU EDITAR TRAJETO. VOLTA PARA A TELA DE ADIÇÃO DE MARCADORES E EDIÇÃO DE NOME DE PONTOS
     if (this.rotaVisivel) 
     {
-      this.rotaVisivel = false;
-
       this.markers[0].infoVisivel = false; // Ocultando infowindow da origem
       this.markers[this.markers.length - 1].infoVisivel = false; // Ocultando infowindow do destino
       
       // REMOVENDO PONTOS QUE NÃO SÃO DE PARADA
-      for (let ponto of this.pontosParadaAtualizados)
+      for (let i = this.pontosParadaAtualizados.length - 1; i >= 0; i--)
       {
-        if (!ponto.stopover)
+        if (!this.pontosParadaAtualizados[i].stopover)
         {
-          let indice = this.pontosParadaAtualizados.indexOf(ponto);
-          this.pontosParadaAtualizados.splice(indice, 1);
+          this.pontosParadaAtualizados.splice(i, 1);
         }
-      }
+      }console.log(this.pontosParadaAtualizados);
       // ATUALIZANDO MARCADORES
       for (let i = 0, cont = 1; i < this.pontosParadaAtualizados.length; i++, cont++)
       {
-        if (this.pontosParadaAtualizados[i].location.location)
-        {
-          let marker = this.markers[cont];
+        let marker = this.markers[cont];
 
+        if (this.pontosParadaAtualizados[i] !== null)
+        {
           if (marker.nome !== '-')
           {
             marker.lat = this.pontosParadaAtualizados[i].location.location.lat();
             marker.lng = this.pontosParadaAtualizados[i].location.location.lng();
-            marker.infoVisivel = false;
           }
+          marker.infoVisivel = false;
         }
       }
+      this.rotaVisivel = false;
     }
     // SELECIONOU GERAR TRAJETO. GERA O TRAJETO BASEADO NOS MARCADORES
     else
@@ -632,17 +630,85 @@ export class MapaDialogComponent implements OnInit
 
   salvar()
   {
+    let trajeto: Trajeto = this.criarInstanciaTrajeto();
+
+    const pontosParada: PontoParada[] = [];
+
+    let origem: PontoParada = this.criarInstanciaOrigem();
+
+    pontosParada.push(origem);
+
+    try
+    {
+      // adicionando pontos de parada intermediários
+      for (let i=0, j=1, ordem=2; i < this.pontosParadaAtualizados.length; i++, ordem++)
+      {
+        let pontoParada = new PontoParada();
+        pontoParada.geolocalizacao = new Geolocalizacao();
+
+        // Não é um ponto de parada
+        if (!this.pontosParadaAtualizados[i].stopover)
+        {
+          pontoParada.nome = '-';
+          pontoParada.geolocalizacao.lat = this.pontosParadaAtualizados[i].location.lat;
+          pontoParada.geolocalizacao.lng = this.pontosParadaAtualizados[i].location.lng;
+        }
+        else
+        {
+          pontoParada.nome = this.markers[j].nome;
+          pontoParada.geolocalizacao.lat = this.pontosParadaAtualizados[i].location.location.lat;
+          pontoParada.geolocalizacao.lng = this.pontosParadaAtualizados[i].location.location.lng;
+          j++;
+        }
+        pontoParada.ordem = ordem;
+        // pontoParada.trajeto = trajeto;
+        pontosParada.push(pontoParada);
+      }
+      let destino: PontoParada = this.criarInstanciaDestino();
+
+      pontosParada.push(destino);
+
+      trajeto.pontosParada = pontosParada;
+
+      this.dialogRef.close(trajeto);// any value parameter
+    }
+    catch(erro)
+    {
+      console.log(erro);
+      const snackBarRef = this.snackBar
+        .open('Ops, um erro ocorreu, aperte RECARREGAR e se necessário, refaça os ajustes.', 
+            'RECARREGAR', {panelClass: ['snack-bar-error'], duration: 60000}
+      );
+      snackBarRef.onAction().subscribe(() => {
+        const marcadores: Marker[] = JSON.parse(JSON.stringify(this.markers));
+    
+        const origem: Marker = marcadores.shift();
+        const destino: Marker = marcadores.pop(); 
+    
+        this.origemRota = {lat: origem.lat, lng: origem.lng};
+        this.destinoRota = {lat: destino.lat, lng: destino.lng};
+    
+        this.criarPontosParada(marcadores);
+      });
+    }
+  }
+
+  private criarInstanciaTrajeto(): Trajeto
+  {
     const trajeto = new Trajeto();
     trajeto.tipo = [TIPO_TRAJETO.IDA, TIPO_TRAJETO.VOLTA].filter(tipo => tipo === this.tipoTrajeto)[0];
     
     const horarioTrajeto = new HorarioTrajeto();
     horarioTrajeto.partida = this.partida;
     horarioTrajeto.chegada = this.chegada;
-
+    
     trajeto.horarioTrajeto = horarioTrajeto;
+    
+    return trajeto;
+  }
 
-    const pontosParada: PontoParada[] = [];
-
+  private criarInstanciaOrigem(): PontoParada
+  {
     // buscando origem/primeiro ponto
     const primeiroMarcador: Marker = this.markers.filter(marker => marker.ordem === '1')[0];
 
@@ -656,55 +722,30 @@ export class MapaDialogComponent implements OnInit
     geolocalizacaoOrigem.lng = primeiroMarcador.lng;
 
     origem.geolocalizacao = geolocalizacaoOrigem;
-    // origem.trajeto = trajeto;
 
-    pontosParada.push(origem);
+    return origem;
+  }
 
-    // adicionando pontos de parada intermediários
-    for (let i=0, j=1, ordem=2; i < this.pontosParadaAtualizados.length; i++, ordem++)
-    {
-      let pontoParada = new PontoParada();
-      pontoParada.geolocalizacao = new Geolocalizacao();
-
-      // Não é um ponto de parada
-      if (!this.pontosParadaAtualizados[i].stopover)
-      {
-        pontoParada.nome = '-';
-        pontoParada.geolocalizacao.lat = this.pontosParadaAtualizados[i].location.lat();
-        pontoParada.geolocalizacao.lng = this.pontosParadaAtualizados[i].location.lng();
-      }
-      else
-      {
-        pontoParada.nome = this.markers[j].nome;
-        pontoParada.geolocalizacao.lat = this.pontosParadaAtualizados[i].location.location.lat();
-        pontoParada.geolocalizacao.lng = this.pontosParadaAtualizados[i].location.location.lng();
-        j++;
-      }
-      pontoParada.ordem = ordem;
-      // pontoParada.trajeto = trajeto;
-      pontosParada.push(pontoParada);
-    }
+  // Último ponto de parada adicionado
+  private criarInstanciaDestino(): PontoParada
+  {
     // buscando destino/último ponto
-    const ultimoMarcador: Marker = this.markers.filter(marker =>
-       Number.parseInt(marker.ordem) === (this.markers.length))[0];
+    // const ultimoMarcador: Marker = this.markers.filter(marker =>
+    //   Number.parseInt(marker.ordem) === (this.markers.length))[0];
+    const ultimoMarcador: Marker = this.markers[this.markers.length - 1];
 
     // adicionando último ponto
     const destino: PontoParada = new PontoParada();
     destino.nome = ultimoMarcador.nome;
-    destino.ordem = Number.parseInt(ultimoMarcador.ordem);
+    destino.ordem = this.pontosParadaAtualizados.length + 2; // +1 da origem e +1 do destino
 
     const geolocalizacaoDestino = new Geolocalizacao();
     geolocalizacaoDestino.lat = ultimoMarcador.lat;
     geolocalizacaoDestino.lng = ultimoMarcador.lng;
 
     destino.geolocalizacao = geolocalizacaoDestino;
-    // destino.trajeto = trajeto;
 
-    pontosParada.push(destino);
-
-    trajeto.pontosParada = pontosParada;
-
-    this.dialogRef.close(trajeto);// any value parameter
+    return destino;
   }
 
   exibirAjuda()
