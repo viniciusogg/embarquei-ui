@@ -97,13 +97,14 @@
         class="info-window">
 
       <agm-info-window [isOpen]="m.infoVisivel">
-        <mat-form-field color=primary required style="width: 100%; margin-bottom: 15px">
+        <mat-form-field required style="width: 100%; margin-bottom: 15px">
           <mat-label>Nome do ponto</mat-label>
           <textarea matInput [value]="m.nome ? m.nome : ''"
               cdkTextareaAutosize cdkAutosizeMinRows="1" 
               cdkAutosizeMaxRows="2" [formControlName]="m.id"
               placeholder="Pode ser uma referência"
-              (keyup)="atualizarNomePonto(m, $event)">
+              (keyup)="atualizarNomePonto(m, $event)"
+              style="color:#212121">
           </textarea>
 
           <mat-hint class="mat-small">
@@ -113,10 +114,14 @@
           <mat-error class="mat-small" *ngIf="form.get(m.id).hasError('required')">
             O nome é obrigatório
           </mat-error>
+
+          <mat-error class="mat-small" *ngIf="form.get(m.id).hasError('invalidName')">
+            Nome inválido
+          </mat-error>
         </mat-form-field>
 
-        <div>
-          <button style="margin-left: 45px;" color="primary" mat-button 
+        <div class="info-window-theme">
+          <button style="margin-left: 45px;" mat-button color="primary"
               type="button" (click)="removerMarcador(m)">
             EXCLUIR
           </button>

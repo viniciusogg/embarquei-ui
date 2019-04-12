@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatTableDataSource, MatDialog, MAT_DIALOG_DATA, MatSnackBar, MatDialogRef } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { InstituicaoEnsino, Rota, Cidade, Motorista, Trajeto, TIPO_TRAJETO, PontoParada, Geolocalizacao, HorarioTrajeto } from './../../../../../modulos/core/model';
 
 import { InstituicaoEnsinoService } from './../../../../../services/instituicao-ensino.service';
@@ -12,10 +12,13 @@ import { ErrorHandlerService } from './../../../../../modulos/core/error-handler
 import { AdminService } from './../../../../../services/admin.service';
 import { RotaService } from './../../../../../services/rota.service';
 
+import { AjudaDialog } from '../../../comum/ajuda-dialog/ajuda-dialog';
+import { ManipuladorTempo } from './../../../comum/manipulador-tempo';
+import { ValidadorHora } from '../../../comum/validadores-personalizados/validador-hora';
+import { ValidadorNomePonto } from '../../../comum/validadores-personalizados/validador-nome-ponto';
 import { v4 as uuid } from 'uuid';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
-import { AjudaDialog } from '../../../comum/ajuda-dialog/ajuda-dialog';
 
 @Component({
   selector: 'app-rota-cadastro',
@@ -32,8 +35,8 @@ export class RotaCadastroComponent implements OnInit
   dataSourceInstituicoes: MatTableDataSource<InstituicaoEnsino> = new MatTableDataSource();
   displayedColumns = ['nome', 'acoes'];
 
-  instituicaoEnsino = '';
-  instituicoesEnsino = new Array<any>();
+  instituicaoEnsino: InstituicaoEnsino;
+  instituicoesEnsino = new Array<InstituicaoEnsino>();
   desabilitarCampoBotaoInstituicoes = true;
 
   public mascaraHora = [/\d/, /\d/, ':', /\d/, /\d/];
@@ -42,7 +45,7 @@ export class RotaCadastroComponent implements OnInit
     private breakpointObserver: BreakpointObserver, private instituicaoEnsinoService: InstituicaoEnsinoService,
     private errorHandlerService: ErrorHandlerService, private dialog: MatDialog, private formBuilder: FormBuilder,
     private adminService: AdminService, private snackBar: MatSnackBar, private activatedRoute: ActivatedRoute,
-    private rotaService: RotaService) 
+    private rotaService: RotaService, private router: Router) 
   {
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
@@ -61,9 +64,6 @@ export class RotaCadastroComponent implements OnInit
   
   ngOnInit() 
   {
-    setTimeout(() => {
-      this.storageDataService.tituloBarraSuperior = 'Cadastro de rota';
-    });
     const idRota = this.activatedRoute.snapshot.params['id'];
 
     if (idRota)
@@ -105,9 +105,9 @@ export class RotaCadastroComponent implements OnInit
   {
     this.rotaForm = this.formBuilder.group({
       campoNomeRota: [null, Validators.required],
-      campoHorarioPartidaIda: ['', [Validators.required, Validators.minLength(5), ValidateHour, Validators.maxLength(5)]],
-      campoHorarioPartidaVolta: ['', [Validators.required, Validators.minLength(5), ValidateHour, Validators.maxLength(5)]],
-      campoInstituicao: [null, Validators.required]
+      campoHorarioPartidaIda: ['', [Validators.required, Validators.minLength(5), ValidadorHora.validateHour, Validators.maxLength(5)]],
+      campoHorarioPartidaVolta: ['', [Validators.required, Validators.minLength(5), ValidadorHora.validateHour, Validators.maxLength(5)]],
+      campoInstituicao: [null]
     });
   }
   
@@ -123,6 +123,7 @@ export class RotaCadastroComponent implements OnInit
         this.trajetoVolta = this.rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA)[0];
         this.trajetoVolta.pontosParada = this.ordenarPontos(this.trajetoVolta.pontosParada);
 
+        this.instituicaoEnsino = this.rota.instituicoesEnsino[0];
         this.configurarFormulario(this.rota);
 
         this.dataSourceInstituicoes.data = this.rota.instituicoesEnsino;
@@ -136,7 +137,7 @@ export class RotaCadastroComponent implements OnInit
       campoNomeRota: rota.nome,
       campoHorarioPartidaIda: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA)[0].horarioTrajeto.partida,
       campoHorarioPartidaVolta: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA)[0].horarioTrajeto.partida,
-      campoInstituicao: null,
+      campoInstituicao: rota.instituicoesEnsino[0],
     });
   }
 
@@ -229,14 +230,25 @@ export class RotaCadastroComponent implements OnInit
         geolocalizacao: geolocalizacao
       }
     });
-    dialogRef.afterClosed().subscribe(result =>
-    {
-      if (result)
+    dialogRef.afterClosed()
+      .toPromise()
+      .then(result => //{ .subscribe(result =>
       {
-        console.log(result);
-        this.adicionarHorariosTrajeto(result);
-      }
-    });
+        if (result)
+        {
+          console.log(result);
+          this.adicionarHorariosTrajeto(result);
+
+          if (result.tipo === 'IDA')
+          {
+            this.trajetoIda = result;
+          }
+          else
+          {
+            this.trajetoVolta = result;
+          }
+        }
+      });
   }
 
   private adicionarHorariosTrajeto(trajeto: Trajeto)
@@ -264,8 +276,7 @@ export class RotaCadastroComponent implements OnInit
     trajetos.push(this.trajetoVolta);
 
     const rota = new Rota();
-    rota.cidade = usuarioLogado.endereco ? 
-        usuarioLogado.endereco.cidade : (usuarioLogado as Motorista).cidade;
+    rota.cidade = usuarioLogado.endereco.cidade;
     rota.nome = this.rotaForm.get('campoNomeRota').value;
     rota.instituicoesEnsino = this.dataSourceInstituicoes.data;
     rota.trajetos = trajetos;
@@ -277,7 +288,29 @@ export class RotaCadastroComponent implements OnInit
   {
     const rota: Rota = this.criarRota();
 
+    this.rotaService.cadastrar(rota)
+      .then(() => 
+      {
+        this.router.navigate(['/rotas']);
 
+        this.snackBar.open('Rota criada com sucesso', '', { duration: 3500});
+      })
+      .catch(erro => this.errorHandlerService.handle(erro));
+  }
+
+  atualizar()
+  {
+    const rota: Rota = this.criarRota();
+    rota.id = this.rota.id;
+
+    return this.rotaService.atualizar(rota)
+      .then(response => 
+      {
+        this.snackBar.open('Atualizada com sucesso', '', { duration: 3500 });
+
+        return response;
+      })
+      .catch(erro => this.errorHandlerService.handle(erro))
   }
 
   exibirMsgErro(msg)
@@ -296,6 +329,32 @@ export class RotaCadastroComponent implements OnInit
         tipoAjuda: tipoAjuda,
       }
     });
+  }
+
+  atualizarHorario(velhoHorarioPartidaTrajeto, velhoHorarioChegadaTrajeto, 
+      novoHorarioPartidaTrajeto, quantidadePontosParada, trajeto: Trajeto)
+  {
+    if (velhoHorarioPartidaTrajeto && novoHorarioPartidaTrajeto)
+    {
+      if (novoHorarioPartidaTrajeto !== velhoHorarioPartidaTrajeto)
+      {
+        let segundosVelhoHorarioPartida: number = ManipuladorTempo.converterTempoTotalTrajetoParaSegundos(velhoHorarioPartidaTrajeto);
+        let segundosVelhoHorarioChegada: number = ManipuladorTempo.converterTempoTotalTrajetoParaSegundos(velhoHorarioChegadaTrajeto);
+        let segundosNovoHorarioPartida: number = ManipuladorTempo.converterTempoTotalTrajetoParaSegundos(novoHorarioPartidaTrajeto);
+        let novoHorarioChegada: string;
+
+        if (segundosNovoHorarioPartida > segundosVelhoHorarioPartida)
+        {
+          novoHorarioChegada = ManipuladorTempo.formatarTempoTotalTrajeto(Math.abs(Number(JSON.parse(JSON.stringify(segundosVelhoHorarioChegada))).valueOf() + Math.abs(segundosVelhoHorarioPartida - segundosNovoHorarioPartida)), quantidadePontosParada);
+        }
+        else// if (segundosNovoHorarioPartida < segundosVelhoHorarioPartida)
+        {
+          novoHorarioChegada = ManipuladorTempo.formatarTempoTotalTrajeto(Math.abs(Number(JSON.parse(JSON.stringify(segundosVelhoHorarioChegada))).valueOf() - Math.abs(segundosVelhoHorarioPartida - segundosNovoHorarioPartida)), quantidadePontosParada);
+        }
+        trajeto.horarioTrajeto.partida = novoHorarioPartidaTrajeto;
+        trajeto.horarioTrajeto.chegada = novoHorarioChegada;
+      }
+    }
   }
 }
 
@@ -382,20 +441,30 @@ export class MapaDialogComponent implements OnInit
   
   mapClicked(event) 
   {
-    if (!this.rotaVisivel)
+    if (this.markers.length > 22)
     {
-      const ordem = '' + (this.markers.length + 1);
-      const id = uuid();
-  
-      this.markers.push({
-        id: id,
-        lat: event.coords.lat,
-        lng: event.coords.lng,
-        ordem: ordem,
-        draggable: true,
-        infoVisivel: true
-      });
-      this.form.addControl(id, new FormControl('', Validators.required));
+      this.snackBar.open(
+        'Você atingiu o limite de 23 pontos/ajutes.', '', 
+        {panelClass: ['snack-bar-error'], duration: 4500}
+      );
+    }
+    else
+    {
+      if (!this.rotaVisivel)
+      {
+        const ordem = '' + (this.markers.length + 1);
+        const id = uuid();
+    
+        this.markers.push({
+          id: id,
+          lat: event.coords.lat,
+          lng: event.coords.lng,
+          ordem: ordem,
+          draggable: true,
+          infoVisivel: true
+        });
+        this.form.addControl(id, new FormControl('', [Validators.required, ValidadorNomePonto.validateName]));
+      }
     }
   }
   
@@ -413,6 +482,8 @@ export class MapaDialogComponent implements OnInit
   {
     this.markers.splice(this.markers.indexOf(marker), 1)[0];
     this.form.removeControl(marker.id);
+
+    ManipuladorTempo.decrementarTempoTotalTrajeto(ManipuladorTempo.converterTempoTotalTrajetoParaSegundos(this.tempoTotalTrajeto));
 
     // ATUALIZA LABELS(ORDEM) DENTRO DOS MARCADORES
     let cont = 0;
@@ -537,6 +608,7 @@ export class MapaDialogComponent implements OnInit
     }
     // ATUALIZANDO PONTOS
     this.pontosParadaAtualizados = event.request.waypoints; 
+    console.log(event.request.waypoints);
 
     // ATUALIZA DISTANCIA, TEMPO DE VIAGEM E HORA DE CHEGADA
     this.atualizarInformacoesTrajeto(event);
@@ -558,139 +630,9 @@ export class MapaDialogComponent implements OnInit
     }
     const quilometros = metros / 1000;
 
-    this.tempoTotalTrajeto = this.formatarTempoTotalTrajeto(segundos);
+    this.tempoTotalTrajeto = ManipuladorTempo.formatarTempoTotalTrajeto(segundos, this.markers.length);
     this.distancia = Number.parseFloat(quilometros.toFixed(1));
-    this.chegada = this.calcularHoraChegada(this.partida, this.tempoTotalTrajeto);
-  }
-
-  private calcularTotalMinutosTrajeto(segundos): number
-  {
-    let totalMinutosTrajeto = Math.floor(segundos / 60);
-
-    // adiciona 1 minuto para cada ponto de parada menos a origem e o destino
-    totalMinutosTrajeto += this.markers.length - 2;
-
-    return totalMinutosTrajeto;
-  }
-
-  // Retorna minutos ou horas se houverem mais de 60 minutos
-  // minutos = tempo total do trajeto
-  private calcularHoraChegada(partida: string, tempoTotalTrajeto: string): string
-  {
-    const arrayPartida = partida.split(':');
-    
-    let horaPartida: any = Number.parseInt(arrayPartida[0]);
-    let minutoPartida: any = Number.parseInt(arrayPartida[1]);
-    
-    const arrayTempoTotalTrajeto = tempoTotalTrajeto.split(':');
-
-    if (arrayTempoTotalTrajeto.length > 1)
-    {
-      let horaTempoTotal: any = Number.parseInt(arrayTempoTotalTrajeto[0]);
-      let minutoTempoTotal: any = Number.parseInt(arrayTempoTotalTrajeto[1]);
-
-      horaPartida += horaTempoTotal;
-      minutoPartida += minutoTempoTotal
-    }
-    else
-    {
-      minutoPartida += Number.parseInt(arrayTempoTotalTrajeto[0]);
-    }
-    if (horaPartida > 23)
-    {
-      horaPartida -= 24;
-    }
-    if (minutoPartida.toString().length === 1)
-    {
-      minutoPartida = '0' + minutoPartida.toString();
-    }
-    return horaPartida.toString() + ':' + minutoPartida.toString();
-  }
-
-  formatarTempoTotalTrajeto(segundos): string
-  {
-    const totalMinutosTrajeto = this.calcularTotalMinutosTrajeto(segundos)
-
-    let hora: number = 0;
-    let minutos: any = 0;
-
-    if (totalMinutosTrajeto >= 60)
-    {
-      hora += totalMinutosTrajeto / 60;
-      minutos += totalMinutosTrajeto % 60;
-
-      if (minutos.toString().length === 1)
-      {
-        minutos = '0' + minutos.toString();
-      }
-      return hora.toFixed(0) + ':' + minutos.toString();
-    }
-    return totalMinutosTrajeto.toString();
-  }
-
-  salvar()
-  {
-    let trajeto: Trajeto = this.criarInstanciaTrajeto();
-
-    const pontosParada: PontoParada[] = [];
-
-    let origem: PontoParada = this.criarInstanciaOrigem();
-
-    pontosParada.push(origem);
-
-    try
-    {
-      // adicionando pontos de parada intermediários
-      for (let i=0, j=1, ordem=2; i < this.pontosParadaAtualizados.length; i++, ordem++)
-      {
-        let pontoParada = new PontoParada();
-        pontoParada.geolocalizacao = new Geolocalizacao();
-
-        // Não é um ponto de parada
-        if (!this.pontosParadaAtualizados[i].stopover)
-        {
-          pontoParada.nome = '-';
-          pontoParada.geolocalizacao.lat = this.pontosParadaAtualizados[i].location.lat;
-          pontoParada.geolocalizacao.lng = this.pontosParadaAtualizados[i].location.lng;
-        }
-        else
-        {
-          pontoParada.nome = this.markers[j].nome;
-          pontoParada.geolocalizacao.lat = this.pontosParadaAtualizados[i].location.location.lat;
-          pontoParada.geolocalizacao.lng = this.pontosParadaAtualizados[i].location.location.lng;
-          j++;
-        }
-        pontoParada.ordem = ordem;
-        // pontoParada.trajeto = trajeto;
-        pontosParada.push(pontoParada);
-      }
-      let destino: PontoParada = this.criarInstanciaDestino();
-
-      pontosParada.push(destino);
-
-      trajeto.pontosParada = pontosParada;
-
-      this.dialogRef.close(trajeto);// any value parameter
-    }
-    catch(erro)
-    {
-      console.log(erro);
-      const snackBarRef = this.snackBar
-        .open('Ops, um erro ocorreu, aperte RECARREGAR e se necessário, refaça os ajustes.', 
-            'RECARREGAR', {panelClass: ['snack-bar-error'], duration: 60000}
-      );
-      snackBarRef.onAction().subscribe(() => {
-        const marcadores: Marker[] = JSON.parse(JSON.stringify(this.markers));
-    
-        const origem: Marker = marcadores.shift();
-        const destino: Marker = marcadores.pop(); 
-    
-        this.origemRota = {lat: origem.lat, lng: origem.lng};
-        this.destinoRota = {lat: destino.lat, lng: destino.lng};
-    
-        this.criarPontosParada(marcadores);
-      });
-    }
+    this.chegada = ManipuladorTempo.calcularHoraChegada(this.partida, this.tempoTotalTrajeto);
   }
 
   private criarInstanciaTrajeto(): Trajeto
@@ -758,6 +700,70 @@ export class MapaDialogComponent implements OnInit
     this.form = this.formBuilder.group({});
   }
 
+  salvar()
+  {
+    let trajeto: Trajeto = this.criarInstanciaTrajeto();
+
+    const pontosParada: PontoParada[] = [];
+
+    let origem: PontoParada = this.criarInstanciaOrigem();
+
+    pontosParada.push(origem);
+
+    try
+    {console.log(this.pontosParadaAtualizados);
+      // adicionando pontos de parada intermediários
+      for (let i=0, j=1, ordem=2; i < this.pontosParadaAtualizados.length; i++, ordem++)
+      {
+        let pontoParada = new PontoParada();
+        pontoParada.geolocalizacao = new Geolocalizacao();
+
+        // Não é um ponto de parada
+        if (!this.pontosParadaAtualizados[i].stopover)
+        {
+          pontoParada.nome = '-';
+          pontoParada.geolocalizacao.lat = this.pontosParadaAtualizados[i].location.lat();
+          pontoParada.geolocalizacao.lng = this.pontosParadaAtualizados[i].location.lng();
+        }
+        else
+        {
+          pontoParada.nome = this.markers[j].nome;
+          pontoParada.geolocalizacao.lat = this.pontosParadaAtualizados[i].location.location.lat();
+          pontoParada.geolocalizacao.lng = this.pontosParadaAtualizados[i].location.location.lng();
+          j++;
+        }
+        pontoParada.ordem = ordem;
+        pontosParada.push(pontoParada);
+      }
+      let destino: PontoParada = this.criarInstanciaDestino();
+
+      pontosParada.push(destino);
+
+      trajeto.pontosParada = pontosParada;
+
+      this.dialogRef.close(trajeto);// any value parameter
+    }
+    catch(erro)
+    {
+      console.log(erro);
+      const snackBarRef = this.snackBar
+        .open('Ops, um erro ocorreu, aperte RECARREGAR e se necessário, refaça os ajustes.', 
+            'RECARREGAR', {panelClass: ['snack-bar-error'], duration: 60000}
+      );
+      snackBarRef.onAction().subscribe(() => {
+        const marcadores: Marker[] = JSON.parse(JSON.stringify(this.markers));
+    
+        const origem: Marker = marcadores.shift();
+        const destino: Marker = marcadores.pop(); 
+    
+        this.origemRota = {lat: origem.lat, lng: origem.lng};
+        this.destinoRota = {lat: destino.lat, lng: destino.lng};
+    
+        this.criarPontosParada(marcadores);
+      });
+    }
+  }
+
   // EDIÇÃO DE ROTA
   private carregarTrajeto()
   {
@@ -798,7 +804,7 @@ export class MapaDialogComponent implements OnInit
       if (p.nome !== '-')
       {
         const id = uuid();
-        this.form.addControl(id, new FormControl(p.nome, Validators.required));
+        this.form.addControl(id, new FormControl(p.nome, [Validators.required, ValidadorNomePonto.validateName]));
   
         this.markers.push({
           id: id,
@@ -856,7 +862,7 @@ export class AjudaRotaDialogComponent extends AjudaDialog
   }
 }
 
-export class Marker {
+export interface Marker {
   id: string;
 	lat: number;
 	lng: number;
@@ -866,39 +872,23 @@ export class Marker {
   infoVisivel?: boolean;
 }
 
-export class Waypoint {
+export interface Waypoint {
   location: Location;
   stopover: boolean;
 }
 
-export class Location {
+export interface Location {
   lat: number;
   lng: number;
 }
 
-export class MarkerOption {
+export interface MarkerOption {
   origin: any;
   destination: any;
-  waypoints: any[] = [];
+  waypoints: any[];
 }
 
-export function ValidateHour(control: AbstractControl)
-{
-  const valorCampoHora = control.value;
 
-  const time = valorCampoHora.split(':');
-
-  const hour: number = time[0];
-  const minutes: number = time[1];
-
-  if (hour > 23) {
-    return { validHour: true};
-  }
-  if (minutes > 59){
-    return { validHour: true};
-  }
-  return null;
-}
 
 
 

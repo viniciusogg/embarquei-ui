@@ -17,7 +17,7 @@ export class RotaService
     this.rotaEndpoint = `${environment.apiUrl}/rotas`;
   }
 
-  cadastrar(rota: Rota)
+  cadastrar(rota: Rota): Promise<any>
   {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -26,11 +26,32 @@ export class RotaService
       }),
       withCredentials: true
     }
-    return this.httpClient.post(`${this.rotaEndpoint}`, httpOptions)
+    const body: any = JSON.stringify(rota);
+
+    return this.httpClient.post(this.rotaEndpoint, body, httpOptions)
       .toPromise()
       .then(response => 
       {
         return response;
+      });
+  }
+
+  atualizar(rota: Rota): Promise<Rota>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    }
+    const body: any = JSON.stringify(rota);
+
+    return this.httpClient.put(`${this.rotaEndpoint}/${rota.id}`, body, httpOptions)
+      .toPromise()
+      .then(response => 
+      {
+        return response as Rota;
       });
   }
 

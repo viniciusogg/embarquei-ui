@@ -30,11 +30,12 @@ import { MotoristasListagemComponent } from './motorista/motoristas-listagem/mot
 import { VeiculosListagemComponent } from './veiculo/veiculos-listagem/veiculos-listagem.component';
 import { VeiculoCadastroComponent } from './veiculo/veiculo-cadastro/veiculo-cadastro.component';
 import { RotaCadastroComponent, MapaDialogComponent, AjudaRotaDialogComponent } from './rota/rota-cadastro/rota-cadastro.component';
+import { RotasListagemComponent } from './rota/rotas-listagem/rotas-listagem.component';
 
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
-import { RotasListagemComponent } from './rota/rotas-listagem/rotas-listagem.component';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { RotasListagemComponent } from './rota/rotas-listagem/rotas-listagem.com
 
     TextMaskModule,
     AgmCoreModule,
-    AgmDirectionModule
+    AgmDirectionModule,
+    AgmSnazzyInfoWindowModule
   ],
   declarations: [
     EstudantesListagemComponent, 

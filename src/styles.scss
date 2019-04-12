@@ -9,9 +9,13 @@ $default-accent:  mat-palette($mat-yellow, 600);
 $default-warn: mat-palette($mat-red);
 $default-theme: mat-light-theme($default-primary, $default-accent, $default-warn);
 
-$dark-primary: mat-palette($mat-gray, 300);
+$dark-primary: mat-palette($mat-gray, 300, 900);
 $dark-accent:  mat-palette($mat-yellow, 600);
 $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $default-warn);
+
+$info-window-primary: mat-palette($mat-gray, 800);
+$info-window-accent: mat-palette($mat-gray, 900);
+$info-window-theme: mat-light-theme($info-window-primary, $info-window-accent, $default-warn);
 
 @include angular-material-theme($dark-theme);
 
@@ -24,6 +28,14 @@ $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $default-warn);
 // .accent-normal {
 //   @include angular-material-theme($default-theme);
 // }
+
+div.agm-info-window-content {
+  @include angular-material-theme($info-window-theme);
+}
+
+.info-window-theme {
+  @include angular-material-theme($info-window-theme);
+}
 
 .accent-dark {
   @include angular-material-theme($dark-theme);
@@ -60,7 +72,7 @@ $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $default-warn);
 
 .mat-snack-bar-container {
   min-width: 304px !important;
-  border-radius: 2px 2px 0px 0px !important;
+  // border-radius: 2px 2px 0px 0px !important;
 }
 
 #titulo-dialog {

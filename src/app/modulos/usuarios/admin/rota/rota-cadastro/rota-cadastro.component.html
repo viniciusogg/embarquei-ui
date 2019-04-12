@@ -30,7 +30,12 @@
           <mat-label>Hora</mat-label>
           <input id="campoHorarioPartidaIda" matInput placeholder="hh:mm" 
               formControlName="campoHorarioPartidaIda" required
-              [textMask]="{mask: mascaraHora, guide: false}">
+              [textMask]="{mask: mascaraHora, guide: false}"
+              (blur)="atualizarHorario(trajetoIda?.horarioTrajeto.partida, 
+                  trajetoIda?.horarioTrajeto.chegada, 
+                  rotaForm.get('campoHorarioPartidaIda').value, 
+                  trajetoIda?.pontosParada.length,
+                  trajetoIda)">
 
           <mat-hint>
             <!-- Horário que o veículo estudantil inicia o trajeto de recolhimento dos alunos, 
@@ -43,7 +48,7 @@
 
           <mat-error *ngIf="rotaForm.get('campoHorarioPartidaIda').hasError('minlength') || 
               rotaForm.get('campoHorarioPartidaIda').hasError('maxlength') || 
-              rotaForm.get('campoHorarioPartidaIda').hasError('validHour') && 
+              rotaForm.get('campoHorarioPartidaIda').hasError('invalidHour') && 
               !rotaForm.get('campoHorarioPartidaIda').hasError('required')">
             A hora informada não é válida. Exemplo de hora válida: 08:05
           </mat-error>
@@ -95,7 +100,12 @@
           <mat-label>Hora</mat-label>
           <input id="campoHorarioPartidaVolta" matInput placeholder="hh:mm" 
               formControlName="campoHorarioPartidaVolta" required
-              [textMask]="{mask: mascaraHora, guide: false}">
+              [textMask]="{mask: mascaraHora, guide: false}"
+              (blur)="atualizarHorario(trajetoVolta?.horarioTrajeto.partida, 
+                  trajetoVolta?.horarioTrajeto.chegada, 
+                  rotaForm.get('campoHorarioPartidaVolta').value, 
+                  trajetoVolta?.pontosParada.length,
+                  trajetoVolta)">
 
           <mat-hint>
             <!-- Horário que o veículo estudantil sai da instituição de ensino em 
@@ -113,7 +123,7 @@
 
           <mat-error *ngIf="rotaForm.get('campoHorarioPartidaVolta').hasError('minlength') || 
               rotaForm.get('campoHorarioPartidaVolta').hasError('maxlength') || 
-              rotaForm.get('campoHorarioPartidaVolta').hasError('validHour') && 
+              rotaForm.get('campoHorarioPartidaVolta').hasError('invalidHour') && 
               !rotaForm.get('campoHorarioPartidaVolta').hasError('required')">
             A hora informada não é válida. Exemplo de hora válida: 14:25
           </mat-error>
@@ -175,10 +185,6 @@
               {{instituicao.nome}}
             </mat-option>
           </mat-select>
-
-          <mat-error *ngIf="rotaForm.get('campoInstituicao').hasError('required')">
-            Adicione pelo menos uma instituição
-          </mat-error>
         </mat-form-field>
 
         <div class="accent-normal">
@@ -219,7 +225,14 @@
     <div class="div-botoes-acao accent-normal">
       <a mat-stroked-button class="botao-cancelar" [routerLink]="['/rotas']">CANCELAR</a>
       
-      <button mat-raised-button color="accent">SALVAR</button>
+      <button mat-raised-button color="accent" 
+          (click)="dataSourceInstituicoes.data.length === 0 ? exibirMsgErro('Adicione pelo menos uma instituição') : 
+            (trajetoIda === undefined || trajetoIda.pontosParada.length === 0 ? exibirMsgErro('Adicione os pontos de parada do trajeto de ida.') : 
+            (trajetoVolta === undefined || trajetoVolta.pontosParada.length === 0 ? exibirMsgErro('Adicione os pontos de parada do trajeto de volta.') : 
+            (rotaForm.invalid ? exibirMsgErro('Alguns campos estão inválidos, corrija - os e tente salvar novamente.') : 
+            (rota ? atualizar() : salvar()))))">
+        {{rota ? 'ATUALIZAR' : 'SALVAR'}}
+      </button>
     </div>
   </form>
 </div>

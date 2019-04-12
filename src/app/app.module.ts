@@ -23,8 +23,7 @@ import { ShareModule } from './modulos/usuarios/comum/share.module';
 
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
-
-import { MatCardModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule } from '@angular/material';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 import { EstudantesListagemComponent } from './modulos/usuarios/admin/estudante/estudantes-listagem/estudantes-listagem.component';
 import { EmAnaliseComponent } from './modulos/usuarios/estudante/em-analise/em-analise.component';
@@ -82,7 +81,8 @@ import { RotasListagemComponent } from './modulos/usuarios/admin/rota/rotas-list
     AgmCoreModule.forRoot({
       apiKey: environment.mapsKey
     }),
-    AgmDirectionModule
+    AgmDirectionModule,
+    AgmSnazzyInfoWindowModule
   ],
   exports: [
     ShareModule

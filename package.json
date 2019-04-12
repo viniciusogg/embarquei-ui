@@ -13,6 +13,7 @@
   "private": true,
   "dependencies": {
     "@agm/core": "^1.0.0-beta.5",
+    "@agm/snazzy-info-window": "^1.0.0-beta.5",
     "@angular/animations": "7.0.0",
     "@angular/cdk": "^7.0.0",
     "@angular/common": "7.0.0",
@@ -42,6 +43,7 @@
     "ngx-cookie-service": "^1.0.10",
     "rxjs": "6.2.0",
     "rxjs-compat": "6.2.0",
+    "snazzy-info-window": "^1.1.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
