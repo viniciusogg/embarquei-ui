@@ -22,6 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { EstudantesListagemComponent } from './estudante/estudantes-listagem/estudantes-listagem.component';
 import { EstudanteDetalhesComponent } from './estudante/estudante-detalhes/estudante-detalhes.component';
@@ -63,6 +64,7 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
     MatGridListModule,
     TextFieldModule,
     MatChipsModule,
+    MatTabsModule,
 
     TextMaskModule,
     AgmCoreModule,

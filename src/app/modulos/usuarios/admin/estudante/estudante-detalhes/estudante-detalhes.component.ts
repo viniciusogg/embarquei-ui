@@ -17,8 +17,8 @@ import { StorageDataService } from './../../../../../services/storage-data.servi
 export class EstudanteDetalhesComponent implements OnInit, AfterViewInit 
 {
   estudante: Estudante = new Estudante();
-  pontoIda: PontoParada = new PontoParada();
-  pontoVolta: PontoParada = new PontoParada();
+  // pontoIda: PontoParada = new PontoParada();
+  // pontoVolta: PontoParada = new PontoParada();
   endereco: Endereco = new Endereco();
   
   comprovanteMatriculaLink: string;
@@ -91,17 +91,17 @@ export class EstudanteDetalhesComponent implements OnInit, AfterViewInit
             this.fotoLink = response;
           })
 
-        for(let ponto of this.estudante.pontosParada)
-        {
-          if(ponto.trajeto.tipo === 'IDA')
-          {
-            this.pontoIda = ponto;
-          }
-          else
-          {
-            this.pontoVolta = ponto;
-          }
-        }
+        // for(let ponto of this.estudante.pontosParada)
+        // {
+        //   if(ponto.trajeto.tipo === 'IDA')
+        //   {
+        //     this.pontoIda = ponto;
+        //   }
+        //   else
+        //   {
+        //     this.pontoVolta = ponto;
+        //   }
+        // }
         this.endereco = this.estudante.endereco;
         this.instituicaoEnsino = this.estudante.curso.instituicaoEnsino.nome;
         this.curso = this.estudante.curso.nome;

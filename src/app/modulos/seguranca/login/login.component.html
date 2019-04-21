@@ -31,8 +31,7 @@
       </mat-form-field>
 
       <button mat-raised-button id="botao-login" type="submit" color="accent" class="spacer-field"
-          [disabled]="!loginForm.valid"
-          (click)="login();">ENTRAR</button> <!-- height: 45px -->
+          (click)="loginForm.valid ? login() : loginForm.markAsTouched()">ENTRAR</button> <!-- height: 45px -->
 
       <a mat-button class="spacer-field" *ngIf="false"
           style="color: white; width: 200px; margin: 20px auto 0px auto;"> Esqueci minha senha </a>

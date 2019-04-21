@@ -145,15 +145,17 @@
     [chegada]="chegada">
 </app-dados-trajeto>
 
-<div *ngIf="markers.length >= 2" style="text-align: center; margin-top: 20px;">
+<div *ngIf="markers.length >= 2" style="text-align: center; margin: 20px 0;">
   <button mat-stroked-button color="primary" type="button"
       style="margin: 0px 10px" (click)="gerarTrajeto()">
     {{rotaVisivel ? 'EDITAR PONTOS' : 'GERAR TRAJETO'}}
   </button>
 </div>
 
+<mat-divider style="margin: 0px 10px;"></mat-divider>
+
 <div *ngIf="markers.length >= 1" class="mat-typography"
-    style="margin-top: 20px; margin-left: 24px; margin-right: 24px;">
+    style="margin: 20px 24px 20px 24px">
   <mat-list dense>
     <h3 mat-subheader>Pontos de parada</h3>
     <mat-list-item *ngFor="let m of markers; let i = index; last as ultimo">
@@ -165,6 +167,8 @@
     </mat-list-item>
   </mat-list>
 </div>
+
+<mat-divider style="margin: 0px 10px;"></mat-divider>
 
 <mat-dialog-actions align="end" style="margin: 15px 0px;">
   <button type="button" mat-stroked-button mat-dialog-close (click)="rotaVisivel = false"

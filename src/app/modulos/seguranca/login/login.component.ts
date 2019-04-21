@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       private errorHandlerService: ErrorHandlerService, public storageDataService: StorageDataService,
       private estudanteService: EstudanteService, private adminService: AdminService, private jwtHelper: JwtHelperService,
       private routingService: RoutingService, private uploadService: UploadService, private dialog: MatDialog,
-      private activatedRoute: ActivatedRoute, private motoristaService: MotoristaService)
+      private activatedRoute: ActivatedRoute, private motoristaService: MotoristaService, private snackBar: MatSnackBar)
   {
     this.createForm();
   }
@@ -175,6 +175,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
       campoNumeroCelular: [null, [Validators.required]],
       campoSenha: [null, Validators.required],
     });
+  }
+
+  exibirMsgErro(msg: string)
+  {
+    this.snackBar.open(msg, '', {panelClass: ['snack-bar-error'], duration: 4000});
   }
 }
 

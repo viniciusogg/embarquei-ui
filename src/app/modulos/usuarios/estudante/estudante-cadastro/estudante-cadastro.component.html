@@ -167,13 +167,13 @@
 
         <div class="div-botoes-navegacao accent-normal">
           <button mat-raised-button matStepperNext color="accent" class="botao-next"
-              [disabled]="thirdFormGroup.invalid" (click)="buscarPontosParada()"> CONTINUAR </button>
+              [disabled]="thirdFormGroup.invalid"> CONTINUAR </button>
           <button mat-stroked-button matStepperPrevious class="botao-cancelar"> VOLTAR </button>
         </div>
       </form>
     </mat-step>
 
-    <mat-step [stepControl]="fourthFormGroup">
+    <mat-step [stepControl]="fourthFormGroup" *ngIf="false">
       <form [formGroup]="fourthFormGroup">
         <mat-card class="card-step">
           <mat-card-header>

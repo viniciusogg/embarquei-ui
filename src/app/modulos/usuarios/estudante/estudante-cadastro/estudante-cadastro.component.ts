@@ -122,7 +122,7 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
     estudante.comprovanteMatricula = this.criarComprovanteMatricula();
     estudante.curso = this.criarCurso();
     estudante.horariosSemanaisEstudante = this.criarHorarioSemanalEstudante();
-    estudante.pontosParada = this.criarPontoParada();
+    // estudante.pontosParada = this.criarPontoParada();
 
     return estudante;
   }
@@ -208,7 +208,6 @@ export class EstudanteCadastroComponent implements OnInit, AfterViewInit, OnDest
       {id: this.fourthFormGroup.get('campoPontoIda').value},
       {id: this.fourthFormGroup.get('campoPontoVolta').value}
     ];
-
     return pontosParada;
   }
 

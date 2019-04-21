@@ -59,6 +59,8 @@ export class PontoParada {
 
 export class Trajeto {
   id: string;
+  descricao: string;
+  ativado: boolean;
   tipo: TIPO_TRAJETO
   pontosParada?: Array<PontoParada>;
   horarioTrajeto?: HorarioTrajeto;
@@ -67,7 +69,6 @@ export class Trajeto {
 
 export class Rota {
   id: string;
-  nome: string;
   trajetos: Array<Trajeto>;
   instituicoesEnsino: Array<InstituicaoEnsino>;
   cidade: Cidade;

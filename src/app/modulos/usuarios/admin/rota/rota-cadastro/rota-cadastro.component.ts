@@ -104,7 +104,9 @@ export class RotaCadastroComponent implements OnInit
   private criarFormulario()
   {
     this.rotaForm = this.formBuilder.group({
-      campoNomeRota: [null, Validators.required],
+      // campoNomeRota: [null, Validators.required],
+      campoDescricaoTrajetoIda : ['', Validators.required],
+      campoDescricaoTrajetoVolta: ['', Validators.required],
       campoHorarioPartidaIda: ['', [Validators.required, Validators.minLength(5), ValidadorHora.validateHour, Validators.maxLength(5)]],
       campoHorarioPartidaVolta: ['', [Validators.required, Validators.minLength(5), ValidadorHora.validateHour, Validators.maxLength(5)]],
       campoInstituicao: [null]
@@ -134,9 +136,10 @@ export class RotaCadastroComponent implements OnInit
   private configurarFormulario(rota: Rota)
   {
     this.rotaForm.setValue({
-      campoNomeRota: rota.nome,
-      campoHorarioPartidaIda: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA)[0].horarioTrajeto.partida,
-      campoHorarioPartidaVolta: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA)[0].horarioTrajeto.partida,
+      campoDescricaoTrajetoIda: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA && trajeto.ativado)[0].descricao,
+      campoDescricaoTrajetoVolta: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA && trajeto.ativado)[0].descricao,
+      campoHorarioPartidaIda: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA && trajeto.ativado)[0].horarioTrajeto.partida,
+      campoHorarioPartidaVolta: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA && trajeto.ativado)[0].horarioTrajeto.partida,
       campoInstituicao: rota.instituicoesEnsino[0],
     });
   }
@@ -256,12 +259,14 @@ export class RotaCadastroComponent implements OnInit
     if (trajeto.tipo === TIPO_TRAJETO.IDA)
     {
       this.trajetoIda = trajeto;
+      this.trajetoIda.horarioTrajeto.id = trajeto.horarioTrajeto.id;
       this.trajetoIda.horarioTrajeto.partida = this.rotaForm.get('campoHorarioPartidaIda').value;
       this.trajetoIda.horarioTrajeto.chegada = trajeto.horarioTrajeto.chegada;
     }
     else if (trajeto.tipo === TIPO_TRAJETO.VOLTA)
     {
       this.trajetoVolta = trajeto;
+      this.trajetoVolta.horarioTrajeto.id = trajeto.horarioTrajeto.id;
       this.trajetoVolta.horarioTrajeto.partida = this.rotaForm.get('campoHorarioPartidaVolta').value;
       this.trajetoVolta.horarioTrajeto.chegada = trajeto.horarioTrajeto.chegada;
     }
@@ -277,7 +282,7 @@ export class RotaCadastroComponent implements OnInit
 
     const rota = new Rota();
     rota.cidade = usuarioLogado.endereco.cidade;
-    rota.nome = this.rotaForm.get('campoNomeRota').value;
+    // rota.nome = this.rotaForm.get('campoNomeRota').value;
     rota.instituicoesEnsino = this.dataSourceInstituicoes.data;
     rota.trajetos = trajetos;
 
@@ -323,7 +328,7 @@ export class RotaCadastroComponent implements OnInit
   abrirAjuda(tipoAjuda: string)
   {
     this.dialog.open(AjudaRotaDialogComponent, {
-      height: tipoAjuda === 'trajetoIda' || tipoAjuda === 'trajetoVolta' ? '50%' : '90%', 
+      height: tipoAjuda === 'trajetoIda' || tipoAjuda === 'trajetoVolta' ? '70%' : '90%', 
       width: '99%',
       data: {
         tipoAjuda: tipoAjuda,
@@ -332,7 +337,7 @@ export class RotaCadastroComponent implements OnInit
   }
 
   atualizarHorario(velhoHorarioPartidaTrajeto, velhoHorarioChegadaTrajeto, 
-      novoHorarioPartidaTrajeto, quantidadePontosParada, trajeto: Trajeto)
+      novoHorarioPartidaTrajeto, trajeto: Trajeto)
   {
     if (velhoHorarioPartidaTrajeto && novoHorarioPartidaTrajeto)
     {
@@ -340,17 +345,14 @@ export class RotaCadastroComponent implements OnInit
       {
         let segundosVelhoHorarioPartida: number = ManipuladorTempo.converterTempoTotalTrajetoParaSegundos(velhoHorarioPartidaTrajeto);
         let segundosVelhoHorarioChegada: number = ManipuladorTempo.converterTempoTotalTrajetoParaSegundos(velhoHorarioChegadaTrajeto);
-        let segundosNovoHorarioPartida: number = ManipuladorTempo.converterTempoTotalTrajetoParaSegundos(novoHorarioPartidaTrajeto);
         let novoHorarioChegada: string;
 
-        if (segundosNovoHorarioPartida > segundosVelhoHorarioPartida)
-        {
-          novoHorarioChegada = ManipuladorTempo.formatarTempoTotalTrajeto(Math.abs(Number(JSON.parse(JSON.stringify(segundosVelhoHorarioChegada))).valueOf() + Math.abs(segundosVelhoHorarioPartida - segundosNovoHorarioPartida)), quantidadePontosParada);
-        }
-        else// if (segundosNovoHorarioPartida < segundosVelhoHorarioPartida)
-        {
-          novoHorarioChegada = ManipuladorTempo.formatarTempoTotalTrajeto(Math.abs(Number(JSON.parse(JSON.stringify(segundosVelhoHorarioChegada))).valueOf() - Math.abs(segundosVelhoHorarioPartida - segundosNovoHorarioPartida)), quantidadePontosParada);
-        }
+        let tempoTotalTrajeto: number = Math.abs(Number(JSON.parse(JSON.stringify(segundosVelhoHorarioPartida))).valueOf() - Number(JSON.parse(JSON.stringify(segundosVelhoHorarioChegada))).valueOf());
+
+        let tempoTotalTrajetoFormatado = ManipuladorTempo.formatarHorarioTrajeto(tempoTotalTrajeto);
+
+        novoHorarioChegada = ManipuladorTempo.calcularHoraChegada(novoHorarioPartidaTrajeto, tempoTotalTrajetoFormatado);
+
         trajeto.horarioTrajeto.partida = novoHorarioPartidaTrajeto;
         trajeto.horarioTrajeto.chegada = novoHorarioChegada;
       }
@@ -369,7 +371,7 @@ export class MapaDialogComponent implements OnInit
   form: FormGroup;
   ajudaVisivel = false;
   tipoTrajeto = '';
-  trajeto: Trajeto;
+  // trajeto: Trajeto;
 
   // Dados agregados do trajeto
   tempoTotalTrajeto: string;
@@ -519,7 +521,7 @@ export class MapaDialogComponent implements OnInit
         {
           this.pontosParadaAtualizados.splice(i, 1);
         }
-      }console.log(this.pontosParadaAtualizados);
+      }
       // ATUALIZANDO MARCADORES
       for (let i = 0, cont = 1; i < this.pontosParadaAtualizados.length; i++, cont++)
       {
@@ -608,7 +610,7 @@ export class MapaDialogComponent implements OnInit
     }
     // ATUALIZANDO PONTOS
     this.pontosParadaAtualizados = event.request.waypoints; 
-    console.log(event.request.waypoints);
+    // console.log(event.request.waypoints);
 
     // ATUALIZA DISTANCIA, TEMPO DE VIAGEM E HORA DE CHEGADA
     this.atualizarInformacoesTrajeto(event);
@@ -630,7 +632,7 @@ export class MapaDialogComponent implements OnInit
     }
     const quilometros = metros / 1000;
 
-    this.tempoTotalTrajeto = ManipuladorTempo.formatarTempoTotalTrajeto(segundos, this.markers.length);
+    this.tempoTotalTrajeto = ManipuladorTempo.formatarHorarioTrajeto(ManipuladorTempo.incrementarTempoTotalTrajeto(this.markers.length, segundos));
     this.distancia = Number.parseFloat(quilometros.toFixed(1));
     this.chegada = ManipuladorTempo.calcularHoraChegada(this.partida, this.tempoTotalTrajeto);
   }
@@ -703,7 +705,12 @@ export class MapaDialogComponent implements OnInit
   salvar()
   {
     let trajeto: Trajeto = this.criarInstanciaTrajeto();
-
+    
+    if (this.data.trajeto)
+    {
+      trajeto.id = this.data.trajeto.id;
+      trajeto.horarioTrajeto.id = this.data.trajeto.horarioTrajeto.id;
+    }
     const pontosParada: PontoParada[] = [];
 
     let origem: PontoParada = this.criarInstanciaOrigem();
@@ -711,7 +718,7 @@ export class MapaDialogComponent implements OnInit
     pontosParada.push(origem);
 
     try
-    {console.log(this.pontosParadaAtualizados);
+    {
       // adicionando pontos de parada intermediários
       for (let i=0, j=1, ordem=2; i < this.pontosParadaAtualizados.length; i++, ordem++)
       {
@@ -747,7 +754,8 @@ export class MapaDialogComponent implements OnInit
     {
       console.log(erro);
       const snackBarRef = this.snackBar
-        .open('Ops, um erro ocorreu, aperte RECARREGAR e se necessário, refaça os ajustes.', 
+        .open('Ops, um erro ocorreu. Talvez você tenha adicionado muitos ajustes ao trajeto. ' +
+            'Aperte RECARREGAR e se necessário, refaça apenas os ajustes essenciais.', 
             'RECARREGAR', {panelClass: ['snack-bar-error'], duration: 60000}
       );
       snackBarRef.onAction().subscribe(() => {
@@ -849,15 +857,17 @@ export class AjudaRotaDialogComponent extends AjudaDialog
     {
       this.textoTitulo = 'Trajeto de ida'
 
-      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> ADICIONAR PONTOS </strong> para cadastrar os pontos de parada ' +
-        'onde os alunos deverão <strong>esperar</strong> o veículo estudantil, na viagem de <strong>ida</strong> para a instituição de ensino. </p>');
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> VER MAPA </strong> para visualizar ou editar os pontos de parada ' +
+        'onde os alunos deverão <strong>esperar</strong> o veículo estudantil, na viagem de <strong>ida</strong> para a instituição de ensino. </p> ' + 
+        '<p> Aperte <strong> TROCAR </strong> para substituir o trajeto de ida atual por outro previamente cadastrado nesta rota. </p>');
     }
     else if (this.tipoAjuda === 'trajetoVolta')
     {
       this.textoTitulo = 'Trajeto de volta';
 
-      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> ADICIONAR PONTOS </strong> para cadastrar os pontos de parada ' + 
-        'onde os alunos poderão <strong>descer</strong> quando o veículo estudantil <strong>voltar</strong> ao município de origem. </p>');
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> VER MAPA </strong> para visualizar ou editar os pontos de parada ' + 
+        'onde os alunos poderão <strong>descer</strong> quando o veículo estudantil <strong>voltar</strong> ao município de origem. </p> ' +
+        '<p> Aperte <strong> TROCAR </strong> para substituir o trajeto de volta atual por outro previamente cadastrado nesta rota. </p>');
     }
   }
 }
