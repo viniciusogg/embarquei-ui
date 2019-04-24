@@ -17,33 +17,40 @@ $info-window-primary: mat-palette($mat-gray, 800);
 $info-window-accent: mat-palette($mat-gray, 900);
 $info-window-theme: mat-light-theme($info-window-primary, $info-window-accent, $default-warn);
 
-@include angular-material-theme($dark-theme);
 
-// $dark-accent:  mat-palette($mat-yellow, 700);
-// $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-warn);
-// .accent-dark {
-//   @include angular-material-theme($accent-dark-theme);
-// }
-
-// .accent-normal {
-//   @include angular-material-theme($default-theme);
-// }
-
-div.agm-info-window-content {
-  @include angular-material-theme($info-window-theme);
-}
-
-.info-window-theme {
-  @include angular-material-theme($info-window-theme);
-}
-
+// LIGHT-THEME
+@include angular-material-theme($default-theme);
+$dark-accent:  mat-palette($mat-yellow, 700);
+$accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-warn);
 .accent-dark {
-  @include angular-material-theme($dark-theme);
+  @include angular-material-theme($accent-dark-theme);
 }
 
 .accent-normal {
-  @include angular-material-theme($dark-theme);
+  @include angular-material-theme($default-theme);
 }
+  
+  
+  
+// DARK-THEME
+// @include angular-material-theme($dark-theme);
+// div.agm-info-window-content {
+//   @include angular-material-theme($info-window-theme);
+// }
+
+// .info-window-theme {
+//   @include angular-material-theme($info-window-theme);
+// }
+
+// .accent-dark {
+//   @include angular-material-theme($dark-theme);
+// }
+
+// .accent-normal {
+//   @include angular-material-theme($dark-theme);
+// }
+
+
 
 .container {
   display: block;
@@ -165,6 +172,19 @@ mat-list#listaPresenca > mat-list-item > div {
 
 #tabGroupRotaAdmin > div.mat-tab-body-wrapper {
   margin-top: 48px;
+}
+
+mat-accordion#accordion-trajetos-ida > mat-expansion-panel > mat-expansion-panel-header > span.mat-content > mat-panel-title > mat-chip-list > div.mat-chip-list-wrapper {
+  height: 64px !important;
+}
+
+
+mat-accordion#accordion-trajetos-volta > mat-expansion-panel > mat-expansion-panel-header > span.mat-content > mat-panel-title > mat-chip-list > div.mat-chip-list-wrapper {
+  height: 64px !important;
+}
+
+mat-accordion#accordion-trajetos-listagem > mat-expansion-panel > mat-expansion-panel-header > span.mat-content > mat-panel-title > mat-chip-list > div.mat-chip-list-wrapper {
+  height: 64px !important;  
 }
 /*--------------------- ROTA ADMIN --------------------*/
 

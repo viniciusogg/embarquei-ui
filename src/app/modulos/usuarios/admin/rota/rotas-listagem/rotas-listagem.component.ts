@@ -17,7 +17,7 @@ export class RotasListagemComponent implements OnInit
   @ViewChild('sort') sort: MatSort;
 
   dataSourceRotas: MatTableDataSource<Rota> = new MatTableDataSource();
-  displayedColumns = ['instituicoes', 'nome', 'acoes']; // 'status',
+  displayedColumns = ['instituicoes', 'cidadeDestino', 'acoes']; // 'status',
 
   fab = false;
 
@@ -36,7 +36,7 @@ export class RotasListagemComponent implements OnInit
       }
       else 
       {
-        this.displayedColumns = ['instituicoes', 'nome', 'acoes'];
+        this.displayedColumns = ['instituicoes', 'cidadeDestino', 'acoes'];
         this.fab = false;
       }
     });

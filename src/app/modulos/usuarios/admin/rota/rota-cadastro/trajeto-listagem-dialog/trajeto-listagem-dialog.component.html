@@ -1,0 +1,71 @@
+<div  class="accent-dark" style="display: flex; justify-content: space-between;">
+	<h1 mat-dialog-title cdkFocusInitial>
+		{{tipo === 'IDA' ? 'Trajetos de ida' : 'Trajetos de volta'}}
+	</h1>
+
+	<!-- <button style="margin: 0 24px" mat-icon-button color="accent">
+		<mat-icon>help</mat-icon>
+	</button> -->
+</div>
+
+<mat-accordion *ngIf="trajetos?.length > 0" id="accordion-trajetos-listagem">
+  <ng-container *ngFor="let trajeto of trajetos">
+    <mat-expansion-panel *ngIf="trajeto.id" #expansionPanel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span *ngIf="!expansionPanel.expanded && !trajeto.ativado">
+            {{trajeto.descricao | slice:0:53}}{{trajeto.descricao?.length > 53 ? '...' : '' }}
+          </span>
+
+          <mat-chip-list *ngIf="expansionPanel.expanded || trajeto.ativado">
+            <mat-chip [color]="trajeto.ativado ? 'accent' : ''" [selected]="trajeto.ativado"
+                (click)="!trajeto.ativado ? atualizarTrajetoEscolhido(trajeto) : true">  
+              {{ trajeto.ativado ? 'Escolhido' : 'Escolher' }} 
+            </mat-chip>
+          </mat-chip-list>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div>
+        <div>
+          <span class="mat-body-strong"><strong> Descrição </strong></span>
+          <br/>
+          <span class="mat-body">{{trajeto.descricao}}</span>
+        </div>
+        
+        <mat-divider style="margin: 10px 0"></mat-divider>
+
+        <div>
+          <span class="mat-body-strong"><strong> Horário de partida </strong></span>
+          <br/>
+          <span class="mat-body">{{trajeto.horarioTrajeto.partida}}</span>
+        </div>
+
+        <mat-divider style="margin: 10px 0"></mat-divider>
+
+        <mat-list style="flex: 1" dense *ngIf="trajeto.pontosParada.length > 0">
+          <h3 mat-subheader>Pontos de parada</h3>
+          <mat-list-item *ngFor="let ponto of trajeto.pontosParada; last as ultimo;" 
+              [style.display]="ponto?.nome !== '-' ? 'unset' : 'none'">
+            <span> 
+              {{ ponto?.nome }} 
+            </span>
+            <mat-divider inset="true" *ngIf="!ultimo"></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
+  </ng-container>
+</mat-accordion>
+
+<div style="text-align: center;" *ngIf="!trajetos?.length > 0">
+  <p class="mat-body">Não existem trajetos cadastrados.</p>
+
+  <button mat-button> CADASTRAR AGORA </button>
+</div>
+
+<mat-dialog-actions align="end" style="margin: 15px 0px;">
+	<button type="button" mat-stroked-button mat-dialog-close>
+		VOLTAR
+	</button>
+</mat-dialog-actions>

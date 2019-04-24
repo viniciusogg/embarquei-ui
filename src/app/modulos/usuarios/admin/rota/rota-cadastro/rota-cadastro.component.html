@@ -1,37 +1,24 @@
-<!-- <div class="container"> -->
-<mat-tab-group mat-stretch-tabs id="tabGroupRotaAdmin"
-    backgroundColor="primary">
+<mat-tab-group mat-stretch-tabs id="tabGroupRotaAdmin" backgroundColor="primary" 
+     color="accent"> <!-- (selectedTabChange)="atualizarAbaResumo($event)" -->
   <mat-tab label="RESUMO"> 
     <div class="container">
       <form [formGroup]="rotaForm" autocomplete="off">
-        <mat-card class="espacamento-card" *ngIf="false">
-          <mat-card-content class="accent-dark" [class.form-container]="isMobile ? true : false">
-            <mat-form-field appearance="outline" class="spacer-field" style="margin-bottom: 20px;" 
-                [style.width]="isMobile ? '100%' : '80%'">
-              <mat-label>Nome da rota</mat-label>
-              <input id="campoNomeRota" matInput required formControlName="campoNomeRota" 
-                  placeholder="Digite um nome que identifique a rota">
-      
-              <mat-hint>
-                Dicas: Rota alternativa - acesso ao INSS interditado, Rota principal etc.
-              </mat-hint>
-      
-              <mat-error *ngIf="rotaForm.get('campoNomeRota').hasError('required')">
-                O nome da rota é obrigatório
-              </mat-error>
-            </mat-form-field>
-          </mat-card-content>
-        </mat-card>
-    
+
+        <div style="text-align: center; margin-bottom: 5px;">
+          <button *ngIf="trajetoIda !== undefined" mat-button type="button" 
+              color="primary" style="border-radius: 100px;" (click)="abrirDialogTrajetos('IDA')">
+            <mat-icon style="padding-bottom: 2px;">cached</mat-icon>
+            TROCAR TRAJETO DE IDA
+          </button>
+        </div>
+
         <mat-card class="espacamento-card">
           <mat-card-header>
-            <mat-card-title> Trajeto de ida </mat-card-title>
+            <mat-card-title> Trajeto de ida escolhido </mat-card-title>
           </mat-card-header>
     
-          <mat-card-content class="margem-superior-formulario accent-dark" 
-              [class.form-container]="isMobile ? true : false">
-    
-            <mat-form-field appearance="outline" [style.width]="isMobile ? '100%' : '268px'">
+          <mat-card-content class="margem-superior-formulario accent-dark form-container">
+            <mat-form-field appearance="outline">
               <mat-label>Descrição</mat-label>
               <textarea id="campoDescricaoTrajetoIda" cdkTextareaAutosize matInput 
                   placeholder="Detalhes/observações do trajeto" 
@@ -47,12 +34,12 @@
                 e instituição de ensino C
               </mat-hint>
     
-              <mat-error *ngIf="rotaForm.get('campoDescricaoTrajetoIda').hasError('required')">
+              <mat-error *ngIf="rotaForm.get('campoDescricaoTrajetoIda')?.hasError('required')">
                 A descrição é obrigatória
               </mat-error>
             </mat-form-field>
     
-            <mat-form-field appearance="outline" class="espacador-form-rota" [style.width]="isMobile ? '100%' : '268px'">
+            <mat-form-field appearance="outline" class="espacador-form-rota">
               <mat-label>Hora</mat-label>
               <input id="campoHorarioPartidaIda" matInput placeholder="hh:mm" 
                   formControlName="campoHorarioPartidaIda" required
@@ -66,19 +53,19 @@
                 Horário que o veículo começa a recolher os alunos nos pontos do município de origem.
               </mat-hint>
     
-              <mat-error *ngIf="rotaForm.get('campoHorarioPartidaIda').hasError('minlength') || 
-                  rotaForm.get('campoHorarioPartidaIda').hasError('maxlength') || 
-                  rotaForm.get('campoHorarioPartidaIda').hasError('invalidHour') && 
-                  !rotaForm.get('campoHorarioPartidaIda').hasError('required')">
+              <mat-error *ngIf="rotaForm.get('campoHorarioPartidaIda')?.hasError('minlength') || 
+                  rotaForm.get('campoHorarioPartidaIda')?.hasError('maxlength') || 
+                  rotaForm.get('campoHorarioPartidaIda')?.hasError('invalidHour') && 
+                  !rotaForm.get('campoHorarioPartidaIda')?.hasError('required')">
                 A hora informada não é válida. Exemplo de hora válida: 08:05
               </mat-error>
     
-              <mat-error *ngIf="rotaForm.get('campoHorarioPartidaIda').hasError('required')">
+              <mat-error *ngIf="rotaForm.get('campoHorarioPartidaIda')?.hasError('required')">
                 A hora é obrigatória
               </mat-error>
             </mat-form-field>
     
-            <mat-divider inset="true"></mat-divider>
+            <mat-divider [inset]="true"></mat-divider>
     
             <div class="accent-dark">
               <button mat-icon-button style="float: right;" color="accent"
@@ -89,17 +76,19 @@
     
             <div style="display: flex; justify-content: space-evenly; margin-bottom: 40px;"> 
               <button type="button" color="primary" mat-stroked-button 
-                  (click)="!rotaForm.get('campoHorarioPartidaIda').invalid ? abrirMapa('IDA') : 
-                    rotaForm.get('campoHorarioPartidaIda').hasError('required') ? 
+                  (click)="!rotaForm.get('campoHorarioPartidaIda')?.invalid 
+                    && !rotaForm.get('campoDescricaoTrajetoIda')?.invalid ? 
+                    (trajetoIda ? abrirMapa('IDA') : abrirDialogTrajetos('IDA')) :
+                    rotaForm.get('campoHorarioPartidaIda')?.hasError('required') ? 
                     exibirMsgErro('Você esqueceu de preencher a hora do trajeto de ida.') : 
+                    rotaForm.get('campoDescricaoTrajetoIda')?.hasError('required') ?
+                    exibirMsgErro('Você esqueceu de preencher a descrição do trajeto de ida.') : 
                     exibirMsgErro('Preencha a hora do trajeto de ida corretamente.')">
-                {{trajetoIda ? 'VER MAPA' : 'ADICIONAR PONTOS'}}
-              </button>
-    
-              <button mat-stroked-button type="button" color="primary">TROCAR</button>
+                {{trajetoIda ? 'ABRIR MAPA' : 'ADICIONAR PONTOS'}}
+              </button>    
             </div>
     
-            <mat-divider inset="true"></mat-divider>
+            <mat-divider [inset]="true"></mat-divider>
     
             <mat-list dense *ngIf="trajetoIda !== undefined">
               <h3 mat-subheader>Pontos de parada</h3>
@@ -115,15 +104,23 @@
           </mat-card-content>
         </mat-card>
     
+        <mat-divider style="margin: 30px 0" [inset]="true"></mat-divider>
+
+        <div style="text-align: center; margin-bottom: 5px;">
+          <button *ngIf="trajetoVolta !== undefined" mat-button type="button" 
+              color="primary" style="border-radius: 100px;" (click)="abrirDialogTrajetos('VOLTA')">
+            <mat-icon style="padding-bottom: 2px;">cached</mat-icon>
+            TROCAR TRAJETO DE VOLTA
+          </button>
+        </div>
+
         <mat-card class="espacamento-card">
           <mat-card-header>
-            <mat-card-title> Trajeto de volta </mat-card-title>
+            <mat-card-title> Trajeto de volta escolhido</mat-card-title>
           </mat-card-header>
           
-          <mat-card-content class="margem-superior-formulario accent-dark" 
-              [class.form-container]="isMobile ? true : false">
-    
-            <mat-form-field appearance="outline" [style.width]="isMobile ? '100%' : '268px'">
+          <mat-card-content class="margem-superior-formulario accent-dark form-container">
+            <mat-form-field appearance="outline">
               <mat-label>Descrição</mat-label>
               <textarea id="campoDescricaoTrajetoVolta" cdkTextareaAutosize matInput placeholder="Detalhes/observações do trajeto" 
                   formControlName="campoDescricaoTrajetoVolta" cdkAutosizeMinRows="2" 
@@ -134,12 +131,12 @@
                 ponto Correios.
               </mat-hint>
     
-              <mat-error *ngIf="rotaForm.get('campoDescricaoTrajetoVolta').hasError('required')">
+              <mat-error *ngIf="rotaForm.get('campoDescricaoTrajetoVolta')?.hasError('required')">
                 A descrição é obrigatória
               </mat-error>
             </mat-form-field>
     
-            <mat-form-field appearance="outline" class="espacador-form-rota" [style.width]="isMobile ? '100%' : '268px'">
+            <mat-form-field appearance="outline" class="espacador-form-rota">
               <mat-label>Hora</mat-label>
               <input id="campoHorarioPartidaVolta" matInput placeholder="hh:mm" 
                   formControlName="campoHorarioPartidaVolta" required
@@ -154,19 +151,19 @@
                 para voltar ao município de origem.
               </mat-hint>
     
-              <mat-error *ngIf="rotaForm.get('campoHorarioPartidaVolta').hasError('minlength') || 
-                  rotaForm.get('campoHorarioPartidaVolta').hasError('maxlength') || 
-                  rotaForm.get('campoHorarioPartidaVolta').hasError('invalidHour') && 
-                  !rotaForm.get('campoHorarioPartidaVolta').hasError('required')">
+              <mat-error *ngIf="rotaForm.get('campoHorarioPartidaVolta')?.hasError('minlength') || 
+                  rotaForm.get('campoHorarioPartidaVolta')?.hasError('maxlength') || 
+                  rotaForm.get('campoHorarioPartidaVolta')?.hasError('invalidHour') && 
+                  !rotaForm.get('campoHorarioPartidaVolta')?.hasError('required')">
                 A hora informada não é válida. Exemplo de hora válida: 14:25
               </mat-error>
     
-              <mat-error *ngIf="rotaForm.get('campoHorarioPartidaVolta').hasError('required')">
+              <mat-error *ngIf="rotaForm.get('campoHorarioPartidaVolta')?.hasError('required')">
                 A hora é obrigatória
               </mat-error>
             </mat-form-field>
     
-            <mat-divider inset="true"></mat-divider>
+            <mat-divider [inset]="true"></mat-divider>
     
             <div class="accent-dark" >
               <button mat-icon-button style="float: right;" color="accent"
@@ -177,19 +174,20 @@
     
             <div style="display: flex; justify-content: space-evenly; margin-bottom: 40px;">
               <button type="button" color="primary" mat-stroked-button
-                  (click)="!rotaForm.get('campoHorarioPartidaVolta').invalid ? 
+                  (click)="!rotaForm.get('campoHorarioPartidaVolta')?.invalid 
+                    && !rotaForm.get('campoDescricaoTrajetoVolta')?.invalid ? 
                     (trajetoIda === undefined ? 
-                    exibirMsgErro('Informe o trajeto de ida primeiro') : abrirMapa('VOLTA')) : 
-                    rotaForm.get('campoHorarioPartidaVolta').hasError('required') ?
+                    exibirMsgErro('Informe o trajeto de ida primeiro') : (trajetoVolta ? abrirMapa('VOLTA') : abrirDialogTrajetos('VOLTA'))) : 
+                    rotaForm.get('campoHorarioPartidaVolta')?.hasError('required') ?
                     exibirMsgErro('Você esqueceu de preencher a hora do trajeto de volta') : 
+                    rotaForm.get('campoDescricaoTrajetoVolta')?.hasError('required') ?
+                    exibirMsgErro('Você esqueceu de preencher a descrição do trajeto de volta.') : 
                     exibirMsgErro('Preencha a hora do trajeto de volta corretamente.')">
-                {{trajetoVolta ? 'VER MAPA' : 'ADICIONAR PONTOS'}}
-              </button>
-    
-              <button mat-stroked-button type="button" color="primary">TROCAR</button>
+                {{trajetoVolta ? 'ABRIR MAPA' : 'ADICIONAR TRAJETO'}}
+              </button> 
             </div>
     
-            <mat-divider inset="true"></mat-divider>
+            <mat-divider [inset]="true"></mat-divider>
     
             <mat-list dense *ngIf="trajetoVolta !== undefined">
               <h3 mat-subheader>Pontos de parada</h3>
@@ -277,18 +275,272 @@
   </mat-tab>
 
   <mat-tab label="TRAJETOS">
-    <div class="container">
-      <div class="div-botao-flutuante">
-        <button mat-fab *ngIf="true" class="mat-elevation-z8" color="accent" 
-            (click)="true"> <!-- fab -->
-          <mat-icon>add</mat-icon>
-        </button>
-  
-        <button *ngIf="false" class="mat-elevation-z8 extended-fab" mat-raised-button color="accent"
-            (click)="true">  <!-- !fab -->
-          CADASTRAR 
-        </button>
+    <form [formGroup]="trajetoForm" autocomplete="off">
+      <div class="container">
+
+        <h3 class="mat-h3">Trajetos de ida</h3>
+
+        <mat-accordion id="accordion-trajetos-ida">
+          <mat-expansion-panel *ngFor="let trajeto of trajetosIda" #expansionPanel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span *ngIf="!expansionPanel.expanded && !trajeto.ativado">
+                  {{trajeto.descricao | slice:0:53}}{{trajeto.descricao?.length > 53 ? '...' : '' }}
+                </span>
+
+                <mat-chip-list *ngIf="expansionPanel.expanded || trajeto.ativado 
+                      || trajeto.descricao === undefined || trajeto.descricao === ''">
+                  <mat-chip [color]="trajeto.ativado ? 'accent' : ''" [selected]="trajeto.ativado"
+                      (click)="!trajeto.ativado ? atualizarTrajetoEscolhido(trajeto) : true"
+                      *ngIf="trajeto.pontosParada.length > 0"> 
+                    {{ trajeto.ativado ? (mobileQuery.matches ? 'Escolhi...' : 'Escolhido') : 'Escolher' }} 
+                  </mat-chip>
+                  <mat-chip (click)="trajeto.pontosParada.length > 0 ? salvarTrajeto(trajeto) : 
+                      exibirMsgErro('Adicione os pontos de parada antes de salvar.')"
+                      *ngIf="trajetoForm.get(trajeto.nomeCampo)?.dirty
+                        || trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.dirty">
+                    Salvar
+                  </mat-chip>
+                  <mat-chip color="warn" selected *ngIf="!trajeto.ativado"
+                      (click)="excluirTrajeto(trajeto)" >
+                    Excluir
+                  </mat-chip>
+                </mat-chip-list>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="form-container accent-dark">
+              <mat-form-field appearance="outline">
+                <mat-label>Descrição</mat-label>
+                <textarea cdkTextareaAutosize matInput
+                    placeholder="Detalhes/observações do trajeto"
+                    [formControlName]="trajeto.nomeCampo" required cdkAutosizeMinRows="2" 
+                    cdkAutosizeMaxRows="5"
+                    (keyup)="trajeto.descricao = trajetoForm.get(trajeto.nomeCampo).value;">
+                </textarea>
+      
+                <mat-hint>
+                  Dicas: Trajeto de ida alternativo para rua temporariamente interditada que dá acesso ao 
+                  ponto INSS. Trajeto de ida principal da instituição de ensino A, instituição de ensino B
+                  e instituição de ensino C.
+                  <!-- 
+                    Trajeto de ida alternativo devido á interdição parcial da rua que dá acesso ao ponto INSS
+                  -->
+                </mat-hint>
+      
+                <mat-error *ngIf="trajetoForm.get(trajeto.nomeCampo)?.hasError('required')">
+                  A descrição é obrigatória
+                </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" class="espacador-form-rota">
+                <mat-label>Hora</mat-label>
+                <input [id]="trajeto.horarioTrajeto.nomeCampo" matInput placeholder="hh:mm" 
+                    [formControlName]="trajeto.horarioTrajeto.nomeCampo" required
+                    [textMask]="{mask: mascaraHora, guide: false}"
+                    (blur)="atualizarHorario(trajeto.horarioTrajeto.partida, 
+                      trajeto.horarioTrajeto.chegada, 
+                      trajetoForm.get(trajeto.horarioTrajeto.nomeCampo).value, 
+                      trajeto)"
+                    (keyup)="trajeto.horarioTrajeto.partida = 
+                      trajetoForm.get(trajeto.horarioTrajeto.nomeCampo).value;">
+      
+                <mat-hint>
+                  Horário que o veículo começa a recolher os alunos nos pontos do município de origem.
+                </mat-hint>
+      
+                <mat-error *ngIf="trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('minlength') || 
+                    trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('maxlength') || 
+                    trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('invalidHour') && 
+                    !trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('required')">
+                  A hora informada não é válida. Exemplo de hora válida: 08:05
+                </mat-error>
+      
+                <mat-error *ngIf="rotaForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('required')">
+                  A hora é obrigatória
+                </mat-error>
+              </mat-form-field>
+      
+              <mat-divider></mat-divider>
+      
+              <div class="accent-dark">
+                <button mat-icon-button style="float: right;" color="accent"
+                    (click)="abrirAjuda('trajetoIda')" type="button">
+                  <mat-icon>help</mat-icon>
+                </button>
+              </div>
+      
+              <div style="display: flex; justify-content: space-evenly; margin-bottom: 40px;"> 
+                <button type="button" color="primary" mat-stroked-button 
+                    (click)="!trajetoForm.get(trajeto.horarioTrajeto?.nomeCampo)?.invalid 
+                      && !trajetoForm.get(trajeto.nomeCampo)?.invalid ? 
+                      abrirMapa(trajeto) : 
+                      trajetoForm.get(trajeto.horarioTrajeto?.nomeCampo)?.hasError('required') ? 
+                      exibirMsgErro('Você esqueceu de preencher a hora do trajeto de ida.') : 
+                      trajetoForm.get(trajeto?.nomeCampo)?.hasError('required') ?
+                      exibirMsgErro('Você esqueceu de preencher a descrição do trajeto de ida') :
+                      exibirMsgErro('Preencha a hora do trajeto de ida corretamente.')">
+                  ABRIR MAPA
+                </button>    
+              </div>
+      
+              <mat-divider></mat-divider>
+      
+              <mat-list dense *ngIf="trajeto.pontosParada.length > 0">
+                <h3 mat-subheader>Pontos de parada</h3>
+                <mat-list-item *ngFor="let ponto of trajeto.pontosParada; last as ultimo"
+                    [style.display]="ponto?.nome !== '-' ? 'unset' : 'none'">
+                  <span *ngIf="ponto?.nome !== '-'"> 
+                    {{ ponto?.nome }} 
+                  </span>
+                  <mat-divider inset="true" *ngIf="!ultimo"></mat-divider>
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <div style="text-align: center; margin: 5px 0px 50px 0;">
+          <button mat-button type="button" style="border-radius: 100px"
+              (click)="adicionarTrajeto('IDA')" color="primary">
+            <mat-icon style="padding-bottom: 2px;">add</mat-icon>
+            NOVO TRAJETO DE IDA
+          </button>
+        </div>
+
+        <mat-divider style="margin: 30px 0px"></mat-divider>
+
+        <h3 class="mat-h3">Trajetos de volta</h3>
+
+        <mat-accordion id="accordion-trajetos-volta">
+          <mat-expansion-panel *ngFor="let trajeto of trajetosVolta" #expansionPanel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span *ngIf="!expansionPanel.expanded && !trajeto.ativado">
+                  {{trajeto.descricao | slice:0:53}}{{trajeto.descricao?.length > 53 ? '...' : '' }}
+                </span>
+
+                <mat-chip-list *ngIf="expansionPanel.expanded || trajeto.ativado 
+                      || trajeto.descricao === undefined || trajeto.descricao === ''">
+                  <mat-chip [color]="trajeto.ativado ? 'accent' : ''" [selected]="trajeto.ativado"
+                      (click)="!trajeto.ativado ? atualizarTrajetoEscolhido(trajeto) : true"
+                      *ngIf="trajeto.pontosParada.length > 0"> 
+                    {{ trajeto.ativado ? (mobileQuery.matches ? 'Escolhi...' : 'Escolhido') : 'Escolher' }} 
+                  </mat-chip>
+                  <mat-chip *ngIf="trajetoForm.get(trajeto.nomeCampo)?.dirty 
+                        || trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.dirty"
+                      (click)="trajeto.pontosParada.length > 0 ? salvarTrajeto(trajeto) : 
+                        exibirMsgErro('Adicione os pontos de parada antes de salvar.')"> <!-- selected -->
+                    Salvar
+                  </mat-chip>
+                  <mat-chip color="warn" (click)="excluirTrajeto(trajeto)" 
+                      selected *ngIf="!trajeto.ativado">
+                    Excluir
+                  </mat-chip>
+                </mat-chip-list>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+        
+            <div class="form-container accent-dark">
+              <mat-form-field appearance="outline">
+                <mat-label>Descrição</mat-label>
+                <textarea cdkTextareaAutosize matInput required
+                    placeholder="Detalhes/observações do trajeto" 
+                    cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"
+                    [formControlName]="trajeto.nomeCampo"
+                    (keyup)="trajeto.descricao = trajetoForm.get(trajeto.nomeCampo).value;">
+                </textarea>
+      
+                <mat-hint>
+                  Dicas: Trajeto de volta alternativo para rua temporariamente interditada que dá acesso ao 
+                  ponto Correios.
+                </mat-hint>
+
+                <!-- 
+                  Trajeto de volta alternativo devido interdição total da rua velha para comemorações do São João
+                -->
+      
+                <mat-error *ngIf="trajetoForm.get(trajeto.nomeCampo)?.hasError('required')">
+                  A descrição é obrigatória
+                </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" class="espacador-form-rota">
+                <mat-label>Hora</mat-label>
+                <input matInput placeholder="hh:mm" required
+                    [textMask]="{mask: mascaraHora, guide: false}"
+                    [formControlName]="trajeto.horarioTrajeto.nomeCampo" 
+                    (blur)="atualizarHorario(trajeto.horarioTrajeto.partida, 
+                      trajeto.horarioTrajeto.chegada, 
+                      trajetoForm.get(trajeto.horarioTrajeto.nomeCampo).value, 
+                      trajeto)"
+                    (keyup)="trajeto.horarioTrajeto.partida = 
+                      trajetoForm.get(trajeto.horarioTrajeto.nomeCampo).value;">
+      
+                <mat-hint>
+                  Horário que o veículo começa a recolher os alunos nas instituições
+                  para voltar ao município de origem.
+                </mat-hint>
+      
+                <mat-error *ngIf="trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('minlength') || 
+                    trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('maxlength') || 
+                    trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('invalidHour') && 
+                    !trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('required')">
+                  A hora informada não é válida. Exemplo de hora válida: 14:25
+                </mat-error>
+      
+                <mat-error *ngIf="trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('required')">
+                  A hora é obrigatória
+                </mat-error>
+              </mat-form-field>
+      
+              <mat-divider></mat-divider>
+      
+              <div class="accent-dark" style="width: 100%">
+                <button mat-icon-button style="float: right;" color="accent"
+                    (click)="abrirAjuda('verMapaIda')" type="button">
+                  <mat-icon>help</mat-icon>
+                </button>
+              </div>
+      
+              <div style="display: flex; justify-content: space-evenly; margin-bottom: 40px;">
+                <button type="button" color="primary" mat-stroked-button 
+                    (click)="!trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.invalid 
+                      && !trajetoForm.get(trajeto.nomeCampo)?.invalid ? 
+                      abrirMapa(trajeto) : 
+                      (trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.hasError('required') ?
+                      exibirMsgErro('Você esqueceu de preencher a hora do trajeto de volta') : 
+                      trajetoForm.get(trajeto.nomeCampo)?.hasError('required') ?
+                      exibirMsgErro('Você esqueceu de preencher a descrição do trajeto de volta.') : 
+                      exibirMsgErro('Preencha a hora do trajeto de volta corretamente.'))">
+                  ABRIR MAPA
+                </button>    
+              </div>
+      
+              <mat-divider></mat-divider>
+      
+              <mat-list dense *ngIf="trajeto.pontosParada.length > 0">
+                <h3 mat-subheader>Pontos de parada</h3>
+                <mat-list-item *ngFor="let ponto of trajeto.pontosParada; last as ultimo;" 
+                    [style.display]="ponto?.nome !== '-' ? 'unset' : 'none'">
+                  <span> 
+                    {{ ponto?.nome }} 
+                  </span>
+                  <mat-divider inset="true" *ngIf="!ultimo"></mat-divider>
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <div style="text-align: center; margin: 5px 0px 50px 0;">
+          <button mat-button type="button" style="border-radius: 100px"
+              (click)="adicionarTrajeto('VOLTA')" color="primary">
+            <mat-icon style="padding-bottom: 2px;">add</mat-icon>
+            NOVO TRAJETO DE VOLTA
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
   </mat-tab>
 </mat-tab-group>

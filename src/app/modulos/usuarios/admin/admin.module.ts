@@ -23,6 +23,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { EstudantesListagemComponent } from './estudante/estudantes-listagem/estudantes-listagem.component';
 import { EstudanteDetalhesComponent } from './estudante/estudante-detalhes/estudante-detalhes.component';
@@ -30,8 +31,9 @@ import { MotoristaCadastroComponent } from './motorista/motorista-cadastro/motor
 import { MotoristasListagemComponent } from './motorista/motoristas-listagem/motoristas-listagem.component';
 import { VeiculosListagemComponent } from './veiculo/veiculos-listagem/veiculos-listagem.component';
 import { VeiculoCadastroComponent } from './veiculo/veiculo-cadastro/veiculo-cadastro.component';
-import { RotaCadastroComponent, MapaDialogComponent, AjudaRotaDialogComponent } from './rota/rota-cadastro/rota-cadastro.component';
 import { RotasListagemComponent } from './rota/rotas-listagem/rotas-listagem.component';
+import { RotaCadastroComponent, MapaDialogComponent, AjudaRotaDialogComponent, TrajetoListagemDialogComponent, 
+  ConfirmacaoExclusaoTrajetoDialogComponent } from './rota/rota-cadastro/rota-cadastro.component';
 
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from '@agm/core';
@@ -65,6 +67,7 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
     TextFieldModule,
     MatChipsModule,
     MatTabsModule,
+    MatExpansionModule,
 
     TextMaskModule,
     AgmCoreModule,
@@ -82,11 +85,15 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
     MapaDialogComponent,
     AjudaRotaDialogComponent,
     RotasListagemComponent,
+    TrajetoListagemDialogComponent,
+    ConfirmacaoExclusaoTrajetoDialogComponent
   ],
   providers:[],
   entryComponents: [
     MapaDialogComponent,
-    AjudaRotaDialogComponent
+    AjudaRotaDialogComponent,
+    TrajetoListagemDialogComponent,
+    ConfirmacaoExclusaoTrajetoDialogComponent
   ], // DIALOGS AQUI
 })
 export class AdminModule { }

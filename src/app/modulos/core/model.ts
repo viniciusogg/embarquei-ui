@@ -65,6 +65,7 @@ export class Trajeto {
   pontosParada?: Array<PontoParada>;
   horarioTrajeto?: HorarioTrajeto;
   rota?: Rota;
+  nomeCampo?: string;
 }
 
 export class Rota {
@@ -78,6 +79,7 @@ export class HorarioTrajeto {
   id: string;
   partida: any; // datetime=HH:mm
   chegada: any; // datetime=HH:mm
+  nomeCampo?: string;
 }
 
 export class Curso {
