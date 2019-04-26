@@ -145,14 +145,14 @@
     [chegada]="chegada">
 </app-dados-trajeto>
 
-<div *ngIf="markers.length >= 2" style="text-align: center; margin: 20px 0;">
+<div *ngIf="markers.length >= 2 && !apenasVisualizacao" style="text-align: center; margin: 20px 0;">
   <button mat-stroked-button color="primary" type="button"
       style="margin: 0px 10px" (click)="gerarTrajeto()">
     {{rotaVisivel ? 'EDITAR PONTOS' : 'GERAR TRAJETO'}}
   </button>
 </div>
 
-<mat-divider style="margin: 0px 10px;"></mat-divider>
+<mat-divider *ngIf="!apenasVisualizacao" style="margin: 0px 10px;"></mat-divider>
 
 <div *ngIf="markers.length >= 1" class="mat-typography"
     style="margin: 20px 24px 20px 24px">
@@ -173,10 +173,10 @@
 <mat-dialog-actions align="end" style="margin: 15px 0px;">
   <button type="button" mat-stroked-button mat-dialog-close (click)="rotaVisivel = false"
       style="margin-right: 10px"> 
-    CANCELAR 
+    {{ apenasVisualizacao ? 'VOLTAR' : 'CANCELAR' }} 
   </button>
 
-  <button mat-flat-button color="accent" *ngIf="rotaVisivel"
+  <button mat-flat-button color="accent" *ngIf="rotaVisivel && !apenasVisualizacao"
       style="margin-right: 10px" (click)="salvar()">
     SALVAR
   </button>

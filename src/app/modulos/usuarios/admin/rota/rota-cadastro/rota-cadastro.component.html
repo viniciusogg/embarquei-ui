@@ -5,7 +5,7 @@
       <form [formGroup]="rotaForm" autocomplete="off">
 
         <div style="text-align: center; margin-bottom: 5px;">
-          <button *ngIf="trajetoIda !== undefined" mat-button type="button" 
+          <button *ngIf="trajetoIda !== undefined && trajetoIda?.id !== undefined" mat-button type="button" 
               color="primary" style="border-radius: 100px;" (click)="abrirDialogTrajetos('IDA')">
             <mat-icon style="padding-bottom: 2px;">cached</mat-icon>
             TROCAR TRAJETO DE IDA
@@ -18,13 +18,16 @@
           </mat-card-header>
     
           <mat-card-content class="margem-superior-formulario accent-dark form-container">
-            <mat-form-field appearance="outline">
+            <mat-form-field [appearance]="trajetoIda !== undefined 
+                  && trajetoIda?.id !== undefined ? 'standard' : 'outline'">
               <mat-label>Descrição</mat-label>
               <textarea id="campoDescricaoTrajetoIda" cdkTextareaAutosize matInput 
-                  placeholder="Detalhes/observações do trajeto" 
-                  formControlName="campoDescricaoTrajetoIda" required cdkAutosizeMinRows="2" 
+                  placeholder="Detalhes/observações do trajeto"
+                  formControlName="campoDescricaoTrajetoIda" required 
+                  [cdkAutosizeMinRows]="trajetoIda?.descricao.length > 49 
+                    && trajetoIda !== undefined ? 1 : 2" 
                   [value]="rotaForm.get('campoDescricaoTrajetoIda').value ? 
-                      rotaForm.get('campoDescricaoTrajetoIda').value : ''"
+                    rotaForm.get('campoDescricaoTrajetoIda').value : ''"
                   cdkAutosizeMaxRows="5">
               </textarea>
     
@@ -39,10 +42,13 @@
               </mat-error>
             </mat-form-field>
     
-            <mat-form-field appearance="outline" class="espacador-form-rota">
+            <mat-form-field [appearance]="trajetoIda !== undefined 
+                  && trajetoIda?.id !== undefined ? 'standard' : 'outline'" 
+                class="espacador-form-rota">
               <mat-label>Hora</mat-label>
               <input id="campoHorarioPartidaIda" matInput placeholder="hh:mm" 
-                  formControlName="campoHorarioPartidaIda" required
+                  formControlName="campoHorarioPartidaIda" required 
+                  [disabled]="trajetoIda !== undefined"
                   [textMask]="{mask: mascaraHora, guide: false}"
                   (blur)="atualizarHorario(trajetoIda?.horarioTrajeto.partida, 
                       trajetoIda?.horarioTrajeto.chegada, 
@@ -69,7 +75,8 @@
     
             <div class="accent-dark">
               <button mat-icon-button style="float: right;" color="accent"
-                  (click)="abrirAjuda('trajetoIda')" type="button">
+                  (click)="trajetoVolta !== undefined ? abrirAjuda('verTrajetoIda') : 
+                      abrirAjuda('trajetoIda')" type="button">
                 <mat-icon>help</mat-icon>
               </button>
             </div>
@@ -77,14 +84,13 @@
             <div style="display: flex; justify-content: space-evenly; margin-bottom: 40px;"> 
               <button type="button" color="primary" mat-stroked-button 
                   (click)="!rotaForm.get('campoHorarioPartidaIda')?.invalid 
-                    && !rotaForm.get('campoDescricaoTrajetoIda')?.invalid ? 
-                    (trajetoIda ? abrirMapa('IDA') : abrirDialogTrajetos('IDA')) :
+                    && !rotaForm.get('campoDescricaoTrajetoIda')?.invalid ? abrirMapa('IDA') :
                     rotaForm.get('campoHorarioPartidaIda')?.hasError('required') ? 
                     exibirMsgErro('Você esqueceu de preencher a hora do trajeto de ida.') : 
                     rotaForm.get('campoDescricaoTrajetoIda')?.hasError('required') ?
                     exibirMsgErro('Você esqueceu de preencher a descrição do trajeto de ida.') : 
                     exibirMsgErro('Preencha a hora do trajeto de ida corretamente.')">
-                {{trajetoIda ? 'ABRIR MAPA' : 'ADICIONAR PONTOS'}}
+                {{trajetoIda ? 'VER MAPA' : 'EDITAR MAPA'}}
               </button>    
             </div>
     
@@ -107,7 +113,7 @@
         <mat-divider style="margin: 30px 0" [inset]="true"></mat-divider>
 
         <div style="text-align: center; margin-bottom: 5px;">
-          <button *ngIf="trajetoVolta !== undefined" mat-button type="button" 
+          <button *ngIf="trajetoVolta !== undefined && trajetoVolta?.id !== undefined" mat-button type="button" 
               color="primary" style="border-radius: 100px;" (click)="abrirDialogTrajetos('VOLTA')">
             <mat-icon style="padding-bottom: 2px;">cached</mat-icon>
             TROCAR TRAJETO DE VOLTA
@@ -120,10 +126,15 @@
           </mat-card-header>
           
           <mat-card-content class="margem-superior-formulario accent-dark form-container">
-            <mat-form-field appearance="outline">
+            <mat-form-field [appearance]="trajetoVolta !== undefined 
+                && trajetoVolta?.id !== undefined ? 'standard' : 'outline'">
               <mat-label>Descrição</mat-label>
-              <textarea id="campoDescricaoTrajetoVolta" cdkTextareaAutosize matInput placeholder="Detalhes/observações do trajeto" 
-                  formControlName="campoDescricaoTrajetoVolta" cdkAutosizeMinRows="2" 
+              <textarea id="campoDescricaoTrajetoVolta" cdkTextareaAutosize matInput 
+                  placeholder="Detalhes/observações do trajeto" 
+                  [disabled]="trajetoVolta !== undefined"
+                  formControlName="campoDescricaoTrajetoVolta" 
+                  [cdkAutosizeMinRows]="trajetoVolta?.descricao.length > 49 
+                    && trajetoVolta.descricao !== undefined ? 1 : 2"
                   cdkAutosizeMaxRows="5" required></textarea>
     
               <mat-hint>
@@ -136,11 +147,14 @@
               </mat-error>
             </mat-form-field>
     
-            <mat-form-field appearance="outline" class="espacador-form-rota">
+            <mat-form-field [appearance]="trajetoVolta !== undefined 
+                  && trajetoVolta?.id !== undefined ? 'standard' : 'outline'" 
+                class="espacador-form-rota">
               <mat-label>Hora</mat-label>
               <input id="campoHorarioPartidaVolta" matInput placeholder="hh:mm" 
                   formControlName="campoHorarioPartidaVolta" required
                   [textMask]="{mask: mascaraHora, guide: false}"
+                  [disabled]="trajetoVolta !== undefined"
                   (blur)="atualizarHorario(trajetoVolta?.horarioTrajeto.partida, 
                       trajetoVolta?.horarioTrajeto.chegada, 
                       rotaForm.get('campoHorarioPartidaVolta').value, 
@@ -167,7 +181,8 @@
     
             <div class="accent-dark" >
               <button mat-icon-button style="float: right;" color="accent"
-                  (click)="abrirAjuda('trajetoVolta')" type="button">
+                  (click)="trajetoVolta !== undefined ? abrirAjuda('verTrajetoVolta') : 
+                    abrirAjuda('trajetoVolta')" type="button">
                 <mat-icon>help</mat-icon>
               </button>
             </div>
@@ -177,13 +192,13 @@
                   (click)="!rotaForm.get('campoHorarioPartidaVolta')?.invalid 
                     && !rotaForm.get('campoDescricaoTrajetoVolta')?.invalid ? 
                     (trajetoIda === undefined ? 
-                    exibirMsgErro('Informe o trajeto de ida primeiro') : (trajetoVolta ? abrirMapa('VOLTA') : abrirDialogTrajetos('VOLTA'))) : 
+                    exibirMsgErro('Informe o trajeto de ida primeiro') : abrirMapa('VOLTA')) : 
                     rotaForm.get('campoHorarioPartidaVolta')?.hasError('required') ?
                     exibirMsgErro('Você esqueceu de preencher a hora do trajeto de volta') : 
                     rotaForm.get('campoDescricaoTrajetoVolta')?.hasError('required') ?
                     exibirMsgErro('Você esqueceu de preencher a descrição do trajeto de volta.') : 
                     exibirMsgErro('Preencha a hora do trajeto de volta corretamente.')">
-                {{trajetoVolta ? 'ABRIR MAPA' : 'ADICIONAR TRAJETO'}}
+                {{trajetoVolta ? 'VER MAPA' : 'EDITAR MAPA'}}
               </button> 
             </div>
     
@@ -202,6 +217,8 @@
           </mat-card-content>
         </mat-card>
     
+        <mat-divider style="margin: 30px 0" [inset]="true"></mat-divider>
+
         <mat-card class="espacamento-card">
           <mat-card-header>
             <mat-card-title> Instituições de ensino </mat-card-title>
@@ -210,13 +227,16 @@
           <mat-card-content style="display: flex; flex-wrap: wrap;" class="accent-dark margem-superior-formulario"> <!-- margem-superior-formulario -->
             <p>
               Adicione uma ou mais intituições de ensino que serão o destino desta rota. 
-              Para fazer isto, escolha uma instituição abaixo e aperte o botão <strong>+</strong>
+              Para fazer isto, escolha uma instituição abaixo e aperte o botão <strong>+</strong>.
+              Quando terminar de adicionar as instituições desejadas, aperte o botão atualizar.
+              Será possível adicionar apenas instituições que ainda não estão associadas à alguma 
+              rota deste município.
             </p>
             
             <mat-form-field appearance="outline"> <!-- class="spacer-field" -->
               <mat-label>Instituição de ensino</mat-label>
               <mat-select formControlName="campoInstituicao" [(value)]="instituicaoEnsino" 
-                  [disabled]="desabilitarCampoBotaoInstituicoes" required>
+                  [disabled]="desabilitarCampoBotaoInstituicoes">
                 <mat-option *ngFor="let instituicao of instituicoesEnsino" [value]="instituicao">
                   {{instituicao.nome}}
                 </mat-option>
@@ -256,19 +276,21 @@
               <span>Não existem dados para exibição</span>
             </div>
           </mat-card-content>
+
+
         </mat-card>
     
-        <div class="div-botoes-acao accent-normal">
+        <div class="div-botoes-acao accent-normal" >
           <a mat-stroked-button class="botao-cancelar" [routerLink]="['/rotas']">{{ rota ? 'VOLTAR' : 'CANCELAR'}}</a>
           
           <button mat-raised-button color="accent" 
-              (click)="dataSourceInstituicoes.data.length === 0 ? exibirMsgErro('Adicione pelo menos uma instituição') : 
+              (click)=" 
                 (trajetoIda === undefined || trajetoIda.pontosParada.length === 0 ? exibirMsgErro('Adicione os pontos de parada do trajeto de ida.') : 
                 (trajetoVolta === undefined || trajetoVolta.pontosParada.length === 0 ? exibirMsgErro('Adicione os pontos de parada do trajeto de volta.') : 
                 (rotaForm.invalid ? exibirMsgErro('Alguns campos estão inválidos, corrija - os e tente salvar novamente.') : 
                 (rota ? atualizar() : salvar()))))">
             {{rota ? 'ATUALIZAR' : 'SALVAR'}}
-          </button>
+          </button> <!-- dataSourceInstituicoes.data.length === 0 ? exibirMsgErro('Adicione pelo menos uma instituição') : -->
         </div>
       </form>
     </div>
@@ -292,11 +314,11 @@
                       || trajeto.descricao === undefined || trajeto.descricao === ''">
                   <mat-chip [color]="trajeto.ativado ? 'accent' : ''" [selected]="trajeto.ativado"
                       (click)="!trajeto.ativado ? atualizarTrajetoEscolhido(trajeto) : true"
-                      *ngIf="trajeto.pontosParada.length > 0"> 
+                      *ngIf="trajeto.pontosParada.length > 0 && trajeto.id !== undefined"> 
                     {{ trajeto.ativado ? (mobileQuery.matches ? 'Escolhi...' : 'Escolhido') : 'Escolher' }} 
                   </mat-chip>
                   <mat-chip (click)="trajeto.pontosParada.length > 0 ? salvarTrajeto(trajeto) : 
-                      exibirMsgErro('Adicione os pontos de parada antes de salvar.')"
+                        exibirMsgErro('Adicione os pontos de parada antes de salvar.')"
                       *ngIf="trajetoForm.get(trajeto.nomeCampo)?.dirty
                         || trajetoForm.get(trajeto.horarioTrajeto.nomeCampo)?.dirty">
                     Salvar
@@ -380,7 +402,7 @@
                       trajetoForm.get(trajeto?.nomeCampo)?.hasError('required') ?
                       exibirMsgErro('Você esqueceu de preencher a descrição do trajeto de ida') :
                       exibirMsgErro('Preencha a hora do trajeto de ida corretamente.')">
-                  ABRIR MAPA
+                  EDITAR MAPA
                 </button>    
               </div>
       
@@ -424,7 +446,7 @@
                       || trajeto.descricao === undefined || trajeto.descricao === ''">
                   <mat-chip [color]="trajeto.ativado ? 'accent' : ''" [selected]="trajeto.ativado"
                       (click)="!trajeto.ativado ? atualizarTrajetoEscolhido(trajeto) : true"
-                      *ngIf="trajeto.pontosParada.length > 0"> 
+                      *ngIf="trajeto.pontosParada.length > 0 && trajeto.id !== undefined"> 
                     {{ trajeto.ativado ? (mobileQuery.matches ? 'Escolhi...' : 'Escolhido') : 'Escolher' }} 
                   </mat-chip>
                   <mat-chip *ngIf="trajetoForm.get(trajeto.nomeCampo)?.dirty 
@@ -498,7 +520,7 @@
       
               <div class="accent-dark" style="width: 100%">
                 <button mat-icon-button style="float: right;" color="accent"
-                    (click)="abrirAjuda('verMapaIda')" type="button">
+                    (click)="abrirAjuda('trajetoVolta')" type="button">
                   <mat-icon>help</mat-icon>
                 </button>
               </div>
@@ -513,7 +535,7 @@
                       trajetoForm.get(trajeto.nomeCampo)?.hasError('required') ?
                       exibirMsgErro('Você esqueceu de preencher a descrição do trajeto de volta.') : 
                       exibirMsgErro('Preencha a hora do trajeto de volta corretamente.'))">
-                  ABRIR MAPA
+                  EDITAR MAPA
                 </button>    
               </div>
       

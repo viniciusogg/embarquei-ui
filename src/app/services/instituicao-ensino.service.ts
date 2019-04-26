@@ -59,12 +59,12 @@ export class InstituicaoEnsinoService {
       }),
       withCredentials: true
     };
-
     return this.adminService.getById(localStorage.getItem('idUsuarioLogado'))
       .then(usuario => {
         return this.httpClient.get(`${this.instituicaoUrl}/semMotorista/${usuario.endereco.cidade.id}`, httpOptions)
           .toPromise()
-          .then(response => {
+          .then(response => 
+          {
             return response;
           });
       });
@@ -79,12 +79,31 @@ export class InstituicaoEnsinoService {
       }),
       withCredentials: true
     };
-
     return this.adminService.getById(localStorage.getItem('idUsuarioLogado'))
       .then(usuario => {
         return this.httpClient.get(`${this.instituicaoUrl}/semVeiculo/${usuario.endereco.cidade.id}`, httpOptions)
           .toPromise()
-          .then(response => {
+          .then(response => 
+          {
+            return response;
+          });
+      });
+  }
+
+  getSemRotaAssociado(): Promise<any>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      withCredentials: true
+    };
+    return this.adminService.getById(localStorage.getItem('idUsuarioLogado'))
+      .then(usuario => {
+        return this.httpClient.get(`${this.instituicaoUrl}/semRota/${usuario.endereco.cidade.id}`, httpOptions)
+          .toPromise()
+          .then(response => 
+          {
             return response;
           });
       });

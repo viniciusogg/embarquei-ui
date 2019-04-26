@@ -83,6 +83,30 @@ export class TrajetoService {
       });
   }
 
+  atualizarStatus(trajeto: Trajeto, rota: Rota)
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+      }),
+      withCredentials: true
+    }
+    const novaRota: Rota = JSON.parse(JSON.stringify(rota));
+
+    novaRota.trajetos = null;
+    trajeto.rota = novaRota;    
+
+    const body: any = JSON.stringify(trajeto);
+
+    return this.httpClient.put(`${this.trajetoUrl}/ativado/${trajeto.id}`, body, httpOptions)
+      .toPromise()
+      .then(response => 
+      {
+        return response as Trajeto;
+      });
+  }
+
   remover(idTrajeto): Promise<any>
   {
     const httpOptions = {

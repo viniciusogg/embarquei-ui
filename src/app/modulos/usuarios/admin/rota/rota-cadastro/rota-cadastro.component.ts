@@ -143,6 +143,7 @@ export class RotaCadastroComponent implements OnInit
         this.trajetoVolta.pontosParada = this.ordenarPontos(this.trajetoVolta.pontosParada);
 
         this.instituicaoEnsino = this.rota.instituicoesEnsino[0];
+        
         this.configurarFormulario(this.rota);
 
         this.dataSourceInstituicoes.data = this.rota.instituicoesEnsino;
@@ -159,11 +160,15 @@ export class RotaCadastroComponent implements OnInit
       campoHorarioPartidaVolta: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA && trajeto.ativado)[0].horarioTrajeto.partida,
       campoInstituicao: rota.instituicoesEnsino[0],
     });
+    this.rotaForm.get('campoDescricaoTrajetoIda').disable();
+    this.rotaForm.get('campoDescricaoTrajetoVolta').disable();
+    this.rotaForm.get('campoHorarioPartidaIda').disable();
+    this.rotaForm.get('campoHorarioPartidaVolta').disable();
   }
 
   buscarInstituicoesEnsino()
   {
-    this.instituicaoEnsinoService.getAll()
+    this.instituicaoEnsinoService.getSemRotaAssociado()
       .then(response => {
         if (!(response) || response.length === 0)
         {
@@ -225,9 +230,8 @@ export class RotaCadastroComponent implements OnInit
   {
     const usuarioLogado = this.storageDataService.usuarioLogado;
    
-    if (trajeto.id) // LISTAGEM DE TRAJETOS
+    if (trajeto.nomeCampo || trajeto.id) // LISTAGEM DE TRAJETOS
     {
-      // console.log(trajeto);
       let horaPartida: any = this.trajetoForm.get(trajeto.horarioTrajeto.nomeCampo).value;
           
       // SE O TRAJETO É DE IDA, PEGAR GEOLOCALIZAÇÃO DA CIDADE DO ADMIN, SENÃO, PEGAR A GEOLOCALIZAÇÃO 
@@ -251,26 +255,18 @@ export class RotaCadastroComponent implements OnInit
       });
       dialogRef.afterClosed().toPromise()
         .then(result =>
-        {//console.log(result);
+        {
           if (result)
           {
-            // this.adicionarHorariosTrajeto(result);
-
-            // if (result.tipo === 'IDA')
-            // {
-            //   this.trajetoIda = result;
-            // }
-            // else
-            // {
-            //   this.trajetoVolta = result;
-            // }
-            // trajeto.horarioTrajeto.id = result.horarioTrajeto.id;
             trajeto.horarioTrajeto.partida = result.horarioTrajeto.partida;
             trajeto.horarioTrajeto.chegada = result.horarioTrajeto.chegada;
             trajeto.pontosParada = result.pontosParada;
+
+            // ATIVANDO O BOTÃO SALVAR NA PARTE SUPERIOR DO EXPANSION PANEL
+            this.trajetoForm.get(trajeto.nomeCampo).markAsDirty();
           }
         });
-      }
+    }
     else
     {
       let novoTrajeto: Trajeto;
@@ -285,10 +281,10 @@ export class RotaCadastroComponent implements OnInit
           this.trajetoIda.pontosParada[this.trajetoIda.pontosParada.length - 1].geolocalizacao;
   
       if (this.rota)
-      {
+      {//console.log('existe rota');
         novoTrajeto = trajeto === TIPO_TRAJETO.IDA ? 
-            this.rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA && trajeto.ativado)[0] :
-            this.rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA && trajeto.ativado)[0];
+            this.trajetosIda.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA && trajeto.ativado)[0] :
+            this.trajetosVolta.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA && trajeto.ativado)[0];
       }
       const dialogRef = this.dialog.open(MapaDialogComponent, {
         height: '95%',
@@ -300,7 +296,9 @@ export class RotaCadastroComponent implements OnInit
           tipoTrajeto: trajeto,
           trajeto: novoTrajeto,
           horaPartida: horaPartida,
-          geolocalizacao: geolocalizacao
+          geolocalizacao: geolocalizacao,
+          apenasVisualizacao: trajeto === TIPO_TRAJETO.IDA && this.trajetoIda !== undefined ? 
+            true : (this.trajetoVolta !== undefined ? true : false)
         }
       });
       dialogRef.afterClosed().toPromise()
@@ -373,8 +371,10 @@ export class RotaCadastroComponent implements OnInit
       const trajetos: Trajeto[] = new Array<Trajeto>();
 
       this.trajetoIda.descricao = this.rotaForm.get('campoDescricaoTrajetoIda').value;
+      this.trajetoIda.ativado = true;
 
       this.trajetoVolta.descricao = this.rotaForm.get('campoDescricaoTrajetoVolta').value;
+      this.trajetoVolta.ativado = true;
 
       trajetos.push(this.trajetoIda);
       trajetos.push(this.trajetoVolta);
@@ -411,6 +411,17 @@ export class RotaCadastroComponent implements OnInit
         this.snackBar.open('Atualizada com sucesso', '', { duration: 3500 });
 
         this.rota = response;
+
+        // ATUALIZANDO TRAJETO IDA
+        let trajetosIda = new Array<Trajeto>();
+        
+        for (let trajeto of this.rota.trajetos)
+        {
+          if (trajeto.tipo === TIPO_TRAJETO.IDA)
+          {
+            trajetosIda.push()
+          }
+        }
       })
       .catch(erro => this.errorHandlerService.handle(erro))
   }
@@ -592,6 +603,16 @@ export class RotaCadastroComponent implements OnInit
         })
         .catch(erro => this.errorHandlerService.handle(erro));
     }
+    if (trajeto.ativado && trajeto.tipo === TIPO_TRAJETO.IDA)
+    {
+      this.rotaForm.get('campoDescricaoTrajetoIda').setValue(trajeto.descricao);
+      this.rotaForm.get('campoHorarioPartidaIda').setValue(trajeto.horarioTrajeto.partida);
+    }
+    else if (trajeto.ativado && trajeto.tipo === TIPO_TRAJETO.VOLTA)
+    {
+      this.rotaForm.get('campoDescricaoTrajetoVolta').setValue(trajeto.descricao);
+      this.rotaForm.get('campoHorarioPartidaVolta').setValue(trajeto.horarioTrajeto.partida);
+    }
     this.trajetoForm.get(trajeto.nomeCampo).markAsPristine();
     this.trajetoForm.get(trajeto.horarioTrajeto.nomeCampo).markAsPristine();
   }
@@ -610,11 +631,7 @@ export class RotaCadastroComponent implements OnInit
 
           this.trajetoIda = trajeto;
 
-          this.rotaForm.get('campoDescricaoTrajetoIda').setValue(trajeto.descricao);
-          this.rotaForm.get('campoHorarioPartidaIda').setValue(trajeto.horarioTrajeto.partida);
-
-          this.salvarTrajeto(t);
-          this.salvarTrajeto(trajeto);
+          this.configurarNovoStatus(t, trajeto);
 
           return;
         }
@@ -632,16 +649,63 @@ export class RotaCadastroComponent implements OnInit
 
           this.trajetoVolta = trajeto;
 
-          this.rotaForm.get('campoDescricaoTrajetoVolta').setValue(trajeto.descricao);
-          this.rotaForm.get('campoHorarioPartidaVolta').setValue(trajeto.horarioTrajeto.partida);
-
-          this.salvarTrajeto(t);
-          this.salvarTrajeto(trajeto);
-
+          this.configurarNovoStatus(t, trajeto);
+          
           return;
         }
       }
     }
+  }
+
+  private configurarNovoStatus(velhoTrajetoEscolhido: Trajeto, novoTrajetoEscolhido: Trajeto)
+  {
+    this.trajetoService.atualizarStatus(velhoTrajetoEscolhido, this.rota)
+      .then(response => 
+      {
+        // SETAR TRAJETO ANTIGO COM A RESPONSE
+        velhoTrajetoEscolhido.ativado = response.ativado;
+        velhoTrajetoEscolhido.descricao = response.descricao;
+        velhoTrajetoEscolhido.horarioTrajeto.id = response.horarioTrajeto.id;
+        velhoTrajetoEscolhido.horarioTrajeto.partida = response.horarioTrajeto.partida;
+        velhoTrajetoEscolhido.horarioTrajeto.chegada = response.horarioTrajeto.chegada;
+        velhoTrajetoEscolhido.id = response.id;
+        velhoTrajetoEscolhido.pontosParada = response.pontosParada;
+        velhoTrajetoEscolhido.rota = response.rota;
+        velhoTrajetoEscolhido.tipo = response.tipo;
+      })
+      .then(() => {
+        this.trajetoService.atualizarStatus(novoTrajetoEscolhido, this.rota)
+          .then(response => 
+          {
+            novoTrajetoEscolhido.ativado = response.ativado;
+            novoTrajetoEscolhido.descricao = response.descricao;
+            novoTrajetoEscolhido.horarioTrajeto.id = response.horarioTrajeto.id;
+            novoTrajetoEscolhido.horarioTrajeto.partida = response.horarioTrajeto.partida;
+            novoTrajetoEscolhido.horarioTrajeto.chegada = response.horarioTrajeto.chegada;
+            novoTrajetoEscolhido.id = response.id;
+            novoTrajetoEscolhido.pontosParada = response.pontosParada;
+            novoTrajetoEscolhido.rota = response.rota;
+            novoTrajetoEscolhido.tipo = response.tipo;
+          })
+        })
+      .then(() => 
+      { // Sumindo
+        this.trajetoForm.get(novoTrajetoEscolhido.nomeCampo).markAsPristine();
+        this.trajetoForm.get(novoTrajetoEscolhido.horarioTrajeto.nomeCampo).markAsPristine();
+
+        if (novoTrajetoEscolhido.tipo === TIPO_TRAJETO.IDA)
+        {
+          this.rotaForm.get('campoDescricaoTrajetoIda').setValue(novoTrajetoEscolhido.descricao);
+          this.rotaForm.get('campoHorarioPartidaIda').setValue(novoTrajetoEscolhido.horarioTrajeto.partida);
+        }
+        else
+        {
+          this.rotaForm.get('campoDescricaoTrajetoVolta').setValue(novoTrajetoEscolhido.descricao);
+          this.rotaForm.get('campoHorarioPartidaVolta').setValue(novoTrajetoEscolhido.horarioTrajeto.partida);
+        }
+        this.snackBar.open('Atualizado com sucesso', '', {duration: 3500})
+      })
+      .catch(erro => this.errorHandlerService.handle(erro));
   }
 
   excluirTrajeto(trajeto: Trajeto)
@@ -703,6 +767,7 @@ export class MapaDialogComponent implements OnInit
   form: FormGroup;
   ajudaVisivel = false;
   tipoTrajeto = '';
+  apenasVisualizacao = false;
   // trajeto: Trajeto;
 
   // Dados agregados do trajeto
@@ -749,6 +814,7 @@ export class MapaDialogComponent implements OnInit
     this.geolocalizacaoMapa.lat = new Number(this.geolocalizacaoMapa.lat).valueOf();
     this.geolocalizacaoMapa.lng = new Number(this.geolocalizacaoMapa.lng).valueOf();
     this.partida = this.data.horaPartida;
+    this.apenasVisualizacao = this.data.apenasVisualizacao;
 
     const departureTime = moment(moment(new Date()).add(1, 'days').format('L').toString() + ' ' + this.partida, 'DD/MM/YYYY HH:mm:ss').toDate();
     
@@ -761,7 +827,7 @@ export class MapaDialogComponent implements OnInit
       trafficModel: "pessimistic"
     }
     if (this.data.trajeto)
-    {//console.log(this.data.trajeto);
+    {
       this.carregarTrajeto();
     }
   }
@@ -967,7 +1033,8 @@ export class MapaDialogComponent implements OnInit
   private criarInstanciaTrajeto(): Trajeto
   {
     const trajeto = new Trajeto();
-    trajeto.tipo = [TIPO_TRAJETO.IDA, TIPO_TRAJETO.VOLTA].filter(tipo => tipo === this.tipoTrajeto)[0];
+    trajeto.tipo = [TIPO_TRAJETO.IDA, TIPO_TRAJETO.VOLTA]
+        .filter(tipo => tipo === this.tipoTrajeto)[0];
     
     const horarioTrajeto = new HorarioTrajeto();
     horarioTrajeto.partida = this.partida;
@@ -1056,6 +1123,7 @@ export class MapaDialogComponent implements OnInit
       for (let i=0, j=1, ordem=2; i < this.pontosParadaAtualizados.length; i++, ordem++)
       {
         let pontoParada = new PontoParada();
+        
         pontoParada.geolocalizacao = new Geolocalizacao();
 
         // Não é um ponto de parada
@@ -1109,7 +1177,10 @@ export class MapaDialogComponent implements OnInit
   private carregarTrajeto()
   {
     const pontosParada: PontoParada[] = JSON.parse(JSON.stringify(this.data.trajeto.pontosParada));
-        
+    
+    // ORDENANDO PONTOS PELA ORDEM
+    pontosParada.sort((n1, n2) => n1.ordem - n2.ordem);
+
     const destino: PontoParada = pontosParada.pop(); 
     const origem: PontoParada = pontosParada.shift();
 
@@ -1190,28 +1261,28 @@ export class AjudaRotaDialogComponent extends AjudaDialog
     {
       this.textoTitulo = 'Trajeto de ida'
 
-      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> ABRIR MAPA </strong> para adicionar ou editar os pontos de parada ' +
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> EDITAR MAPA </strong> para adicionar ou editar os pontos de parada ' +
         'onde os alunos deverão <strong>esperar</strong> o veículo estudantil, na viagem de <strong>ida</strong> para a instituição de ensino. </p> ');
     }
     else if (this.tipoAjuda === 'trajetoVolta')
     {
       this.textoTitulo = 'Trajeto de volta';
 
-      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> ABRIR MAPA </strong> para adicionar ou editar os pontos de parada ' + 
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> EDITAR MAPA </strong> para adicionar ou editar os pontos de parada ' + 
         'onde os alunos poderão <strong>descer</strong> quando o veículo estudantil <strong>voltar</strong> ao município de origem. </p> ');
     }
-    else if (this.tipoAjuda === 'verMapaIda')
+    else if (this.tipoAjuda === 'verTrajetoIda')
     {
       this.textoTitulo = 'Trajeto de ida';
 
-      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> ABRIR MAPA </strong> para adicionar ou editar os pontos de parada ' +
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> VER MAPA </strong> para visualizar os pontos de parada ' +
         'onde os alunos deverão <strong>esperar</strong> o veículo estudantil, na viagem de <strong>ida</strong> para a instituição de ensino. </p> ');
     }
-    else if (this.tipoAjuda === 'verMapaIda')
+    else if (this.tipoAjuda === 'verTrajetoVolta')
     {
       this.textoTitulo = 'Trajeto de volta';
 
-      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> ABRIR MAPA </strong> para adicionar ou editar os pontos de parada ' + 
+      this.textoAjuda = this.sanitizer.bypassSecurityTrustHtml('<p> Aperte <strong> VER MAPA </strong> para visualizar os pontos de parada ' + 
         'onde os alunos poderão <strong>descer</strong> quando o veículo estudantil <strong>voltar</strong> ao município de origem. </p> ');
     }
   }
