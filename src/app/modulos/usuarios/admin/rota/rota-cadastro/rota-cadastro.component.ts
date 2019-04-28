@@ -158,7 +158,7 @@ export class RotaCadastroComponent implements OnInit
       campoDescricaoTrajetoVolta: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA && trajeto.ativado)[0].descricao,
       campoHorarioPartidaIda: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.IDA && trajeto.ativado)[0].horarioTrajeto.partida,
       campoHorarioPartidaVolta: rota.trajetos.filter(trajeto => trajeto.tipo === TIPO_TRAJETO.VOLTA && trajeto.ativado)[0].horarioTrajeto.partida,
-      campoInstituicao: rota.instituicoesEnsino[0],
+      campoInstituicao: '' //rota.instituicoesEnsino ? rota.instituicoesEnsino[0] : null,
     });
     this.rotaForm.get('campoDescricaoTrajetoIda').disable();
     this.rotaForm.get('campoDescricaoTrajetoVolta').disable();
@@ -788,16 +788,8 @@ export class MapaDialogComponent implements OnInit
   origemRota: any = {};  // lat, lng
   destinoRota: any = {}; // lat, lng
 
-  renderOptions: any = {
-    draggable: true,
-    suppressInfoWindows: true,
-    markerOptions: {
-      icon: {
-        url: '/assets/icons/map-marker-final.png'
-      }
-    }
-  }
   optimizeWaypoints = false;
+  renderOptions: any;
   transitOptions: any;
   drivingOptions: any;
 
@@ -818,6 +810,15 @@ export class MapaDialogComponent implements OnInit
 
     const departureTime = moment(moment(new Date()).add(1, 'days').format('L').toString() + ' ' + this.partida, 'DD/MM/YYYY HH:mm:ss').toDate();
     
+    this.renderOptions = {
+      draggable: !this.apenasVisualizacao,
+      suppressInfoWindows: true,
+      markerOptions: {
+        icon: {
+          url: '/assets/icons/map-marker-final.png'
+        }
+      }
+    }
     this.transitOptions = {
       departureTime: departureTime,
       modes: ['BUS']

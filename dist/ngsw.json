@@ -1,0 +1,133 @@
+{
+  "configVersion": 1,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "/index.html",
+        "/main.ad1464e24ebf7bfa43e8.js",
+        "/polyfills.7f2534fe85bb73b342af.js",
+        "/runtime.b57bf819d5bdce77f1c7.js",
+        "/styles.6c28d43a460911b1a4cd.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "/assets/256px.png",
+        "/assets/800px.png",
+        "/assets/account-circle.png",
+        "/assets/bombeiros-logotipo.png",
+        "/assets/bus-dark.png",
+        "/assets/bus-light.png",
+        "/assets/checkin.jpg",
+        "/assets/checkin2.jpg",
+        "/assets/doge.jpg",
+        "/assets/icon2.png",
+        "/assets/icon3.png",
+        "/assets/icons/Icon-1024x1024.png",
+        "/assets/icons/Icon-128x128.png",
+        "/assets/icons/Icon-144x144.png",
+        "/assets/icons/Icon-152x152.png",
+        "/assets/icons/Icon-192x192.png",
+        "/assets/icons/Icon-512x512.png",
+        "/assets/icons/Icon-72x72.png",
+        "/assets/icons/Icon-96x96.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icone-marcador.png",
+        "/assets/icons/map-marker-final.png",
+        "/assets/phone.png",
+        "/assets/policia-militar-logotipo.png",
+        "/assets/road.jpg",
+        "/assets/road10.jpg",
+        "/assets/road11.jpg",
+        "/assets/road2.jpg",
+        "/assets/road3.jpg",
+        "/assets/road4.jpg",
+        "/assets/road5.jpg",
+        "/assets/road6.jpg",
+        "/assets/road7.jpg",
+        "/assets/road8.jpg",
+        "/assets/road9.jpg",
+        "/assets/samu-logotipo.png",
+        "/assets/samu.jpg",
+        "/assets/veiculo.jpg",
+        "/assets/veiculo2.jpg",
+        "/assets/veiculo3.jpg"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/256px.png": "2aadd8966dad1fef56721106c53859ca288e7f75",
+    "/assets/800px.png": "27bc53223855be5562b72863414e9b02d75a4093",
+    "/assets/account-circle.png": "cbb86b2a775da96170e204350ebea2da317537f5",
+    "/assets/bombeiros-logotipo.png": "3bfabdfa2fc39756f94144ce1f95197b450bcca5",
+    "/assets/bus-dark.png": "aee6a6fe4bb5d3f6db327be791cec101ad79e0cc",
+    "/assets/bus-light.png": "d185d72ff55c2ce8b861a62a81f07da21ac716c9",
+    "/assets/checkin.jpg": "ea5f77e4501f24c0eeacb566d254df958907cf64",
+    "/assets/checkin2.jpg": "272fb15c1428ba70d9c430a995412b820ce36046",
+    "/assets/doge.jpg": "c9e2c0e420b699e818d341ad8e5aab8f3d6a661e",
+    "/assets/icon2.png": "6c2d8f8eecb33beef42a8b4a46f2c103fec81352",
+    "/assets/icon3.png": "501a4ce7745d8dd6be422b58b3e6487740a56986",
+    "/assets/icons/Icon-1024x1024.png": "19d05cccefa64877662c4045759cc432023bfce8",
+    "/assets/icons/Icon-128x128.png": "e1aa41e050b2af2ddbf2daaf51c5cb0e8a02a975",
+    "/assets/icons/Icon-144x144.png": "df8a208dd322056824229fe746a26850ec963a60",
+    "/assets/icons/Icon-152x152.png": "ee72d6430523256558376fe0eef93d9519b43e9d",
+    "/assets/icons/Icon-192x192.png": "a7e46e8ac5294ccacb533136f38cb85f5f19d0da",
+    "/assets/icons/Icon-512x512.png": "48d5c9e46a2d0b5fbebf8e36ccc72317ee87244b",
+    "/assets/icons/Icon-72x72.png": "728d1601f6f7abddf2fa2cc6b50f8d078d95ecc5",
+    "/assets/icons/Icon-96x96.png": "3cf53c7e7231c4ef0f2d0f8522e004dc069cf9e0",
+    "/assets/icons/icon-384x384.png": "96caaffcf3db47b747e9af5a95d55e38d9f6c532",
+    "/assets/icons/icone-marcador.png": "b7da776d789d7f2928891ed9ab3d188b61346b8f",
+    "/assets/icons/map-marker-final.png": "92fc8fb852dca16a23627041ea0596247835639b",
+    "/assets/phone.png": "bfcb5d1b93b55eda84ebb73597fab14c8bdb9007",
+    "/assets/policia-militar-logotipo.png": "a84b0ab8712e4974a35bc9b3283443e9b515049c",
+    "/assets/road.jpg": "11b10ce617b57402bafb388e7dbe0755b0b0b3a4",
+    "/assets/road10.jpg": "5862e5c08b6651737e5f565bf6b2d3b3fdbbfbc8",
+    "/assets/road11.jpg": "e57b980678b600cf23c6cf0f25aa3e2310b7ee68",
+    "/assets/road2.jpg": "8456d7f9a2896630f1eab5af816829e16c10419e",
+    "/assets/road3.jpg": "398fbc41415b920a3ad380bdc47a01f243351d8e",
+    "/assets/road4.jpg": "0245f8a1b572b4ee4c600a5414e657c102bbe31a",
+    "/assets/road5.jpg": "2cbe7043ec9a62cad73f90f93c621f52e5af576a",
+    "/assets/road6.jpg": "236f67737da8ade3c8eed67298da9c50dc4ea20b",
+    "/assets/road7.jpg": "ea156eacd0558f37a05d53ae6c4b06ca5229b899",
+    "/assets/road8.jpg": "7e53d2ed49295b25b85782004759fc5e08b0393f",
+    "/assets/road9.jpg": "06e6a2b633154da1355545014be686368b331e2b",
+    "/assets/samu-logotipo.png": "5a514ae31177200e38cf4fd791cd39f4a6f719d8",
+    "/assets/samu.jpg": "79370ceca6c51e5d03f10bb54af98e7466a344b9",
+    "/assets/veiculo.jpg": "897202dea8e9d791ee150ae2f19f549159f90609",
+    "/assets/veiculo2.jpg": "829a3d4fe4a6f02627c2844ed746136687e4ca43",
+    "/assets/veiculo3.jpg": "68ffb8ab65acabe7823d28d72cc56eeca8798e20",
+    "/index.html": "a7141c3f07f5046a8495b29092899bdda4d2a770",
+    "/main.ad1464e24ebf7bfa43e8.js": "d3ce39eec42593d46fdadd6c508d2f2cb7c0f33c",
+    "/polyfills.7f2534fe85bb73b342af.js": "ce68d153e9b9b6d26b625069c0ee99ae09c6f255",
+    "/runtime.b57bf819d5bdce77f1c7.js": "b62956c2192bfe5516d6374e753773901ed50ec5",
+    "/styles.6c28d43a460911b1a4cd.css": "86035ab9fb837668df4561dae9910bad6555d6d8"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}

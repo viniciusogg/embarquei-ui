@@ -1,21 +1,24 @@
 <div class="container">
   <mat-card matRipple [matRippleDisabled]="textoCheckin === 'Carregando...'" 
       class="espacamento-card card-clicavel background-checkin" 
-      (click)="textoCheckin !== 'Carregando...' ? redirecionar('/checkin') : false">
+      (click)="textoCheckin !== 'Carregando...' && textoCheckin !== 'Indisponível' ? 
+        redirecionar('/checkin') : false">
     <p class="mat-subheading-1 fonte-card-dashboard"> Check-in </p>
     <p class="mat-headline fonte-card-dashboard"> {{textoCheckin}} </p> 
   </mat-card>
 
   <mat-card class="espacamento-card card-clicavel background-veiculo"
       matRipple [matRippleDisabled]="textoVeiculo === 'Carregando...'"
-      (click)="textoVeiculo !== 'Carregando...' ? redirecionar('/detalhesVeiculo/'+veiculoTransporte?.id) : false">
+      (click)="textoVeiculo !== 'Carregando...' && textoVeiculo !== 'Indisponível' ? 
+        redirecionar('/detalhesVeiculo/'+veiculoTransporte?.id) : false">
     <p class="mat-subheading-1 fonte-card-dashboard"> Veículo </p>
     <p class="mat-headline fonte-card-dashboard"> {{textoVeiculo}} </p>
   </mat-card>
 
   <mat-card class="espacamento-card card-clicavel background-rota"
-      matRipple [matRippleDisabled]="textoVeiculo === 'Carregando...'"
-      (click)="textoVeiculo !== 'Carregando...' ? redirecionar('/rota') : false">
+      matRipple [matRippleDisabled]="descricaoIda === 'Carregando...'"
+      (click)="descricaoIda !== 'Carregando...' && descricaoIda !== 'Indisponível' ? 
+        redirecionar('/rota') : false">
     <p class="mat-subheading-1 fonte-card-dashboard"> Rota </p>
     <p class="fonte-card-dashboard mat-body-strong"> 
       <strong> Ida: </strong>

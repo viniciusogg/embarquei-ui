@@ -58,10 +58,10 @@
   </ng-container>
 </mat-accordion>
 
-<div style="text-align: center;" *ngIf="!trajetos?.length > 0">
+<div style="text-align: center;" *ngIf="1 > trajetos?.length">
   <p class="mat-body">Não existem trajetos cadastrados.</p>
 
-  <button mat-button> CADASTRAR AGORA </button>
+  <button *ngIf="false" mat-button> CADASTRAR AGORA </button>
 </div>
 
 <mat-dialog-actions align="end" style="margin: 15px 0px;">

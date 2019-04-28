@@ -24,7 +24,7 @@
               <textarea id="campoDescricaoTrajetoIda" cdkTextareaAutosize matInput 
                   placeholder="Detalhes/observações do trajeto"
                   formControlName="campoDescricaoTrajetoIda" required 
-                  [cdkAutosizeMinRows]="trajetoIda?.descricao.length > 49 
+                  [cdkAutosizeMinRows]="trajetoIda?.descricao?.length > 49 
                     && trajetoIda !== undefined ? 1 : 2" 
                   [value]="rotaForm.get('campoDescricaoTrajetoIda').value ? 
                     rotaForm.get('campoDescricaoTrajetoIda').value : ''"
@@ -133,7 +133,7 @@
                   placeholder="Detalhes/observações do trajeto" 
                   [disabled]="trajetoVolta !== undefined"
                   formControlName="campoDescricaoTrajetoVolta" 
-                  [cdkAutosizeMinRows]="trajetoVolta?.descricao.length > 49 
+                  [cdkAutosizeMinRows]="trajetoVolta?.descricao?.length > 49 
                     && trajetoVolta.descricao !== undefined ? 1 : 2"
                   cdkAutosizeMaxRows="5" required></textarea>
     
@@ -423,11 +423,13 @@
         </mat-accordion>
 
         <div style="text-align: center; margin: 5px 0px 50px 0;">
-          <button mat-button type="button" style="border-radius: 100px"
+          <button *ngIf="trajetosIda !== undefined" mat-button type="button" style="border-radius: 100px"
               (click)="adicionarTrajeto('IDA')" color="primary">
             <mat-icon style="padding-bottom: 2px;">add</mat-icon>
             NOVO TRAJETO DE IDA
           </button>
+
+          <p *ngIf="trajetosIda === undefined"  class="mat-body">Ainda não existem trajetos de ida para esta rota</p>
         </div>
 
         <mat-divider style="margin: 30px 0px"></mat-divider>
@@ -556,11 +558,13 @@
         </mat-accordion>
 
         <div style="text-align: center; margin: 5px 0px 50px 0;">
-          <button mat-button type="button" style="border-radius: 100px"
+          <button *ngIf="trajetosVolta !== undefined" mat-button type="button" style="border-radius: 100px"
               (click)="adicionarTrajeto('VOLTA')" color="primary">
             <mat-icon style="padding-bottom: 2px;">add</mat-icon>
             NOVO TRAJETO DE VOLTA
           </button>
+
+          <p *ngIf="trajetosVolta === undefined"  class="mat-body">Ainda não existem trajetos de volta para esta rota</p>
         </div>
       </div>
     </form>

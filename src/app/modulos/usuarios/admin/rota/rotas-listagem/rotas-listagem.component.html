@@ -16,7 +16,7 @@
         <ng-container matColumnDef="cidadeDestino">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Cidade destino </th>
           <td mat-cell *matCellDef="let element">
-            {{element?.instituicoesEnsino[0].endereco.cidade.nome}}
+            {{element?.instituicoesEnsino[0]?.endereco.cidade.nome}}
           </td>
         </ng-container>
 
@@ -38,7 +38,7 @@
       </table>
 
       <div style="text-align: center; margin-top: 10px;"
-          *ngIf="dataSourceVeiculos?.data?.length === 0">
+          *ngIf="dataSourceRotas?.data?.length === 0">
         <span>Não existem dados para exibição</span>
       </div>
     </div>
