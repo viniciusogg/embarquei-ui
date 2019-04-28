@@ -14,7 +14,7 @@ export class ListagemSosComponent implements OnInit {
 
   sos: any = [
     {
-      url: 'assets/samu-logotipo.png',
+      url: 'assets/samu.jpg',
       nome: 'Samu',
       numero: '192'
     },

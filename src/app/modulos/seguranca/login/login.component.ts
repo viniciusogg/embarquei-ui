@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       }
       else if (tipoUsuarioLogado === 'mot')
       {
-        this.router.navigate(['/painelControle']);
+        this.router.navigate(['/listasPresenca']);
       }
     }
     this.storageDataService.promptEvent;
@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         });
       }
       return true
-    }, 10000);
+    }, 2500);
 
     // setTimeout(function(){this.abrirDialogInstalacao()}, 25000);
   }
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
                 .then(usuario => {
                   estudante = usuario;
                   this.storageDataService.usuarioLogado = usuario;
-                  localStorage.setItem('isUsuarioAtivo', usuario.ativo);
+                  localStorage.setItem('isUsuarioAtivo', usuario.ativo+'');
                   this.routingService.configurarRotas(localStorage.getItem('tipoUsuarioLogado'));
                 })
                 .then(() => {
@@ -133,19 +133,22 @@ export class LoginComponent implements OnInit, AfterViewInit {
             else if (tipoRetornado.tipo === 'mot')
             {
               this.motoristaService.getById(localStorage.getItem('idUsuarioLogado'))
-                .then(usuario => {
+                .then(usuario => 
+                {
                   this.storageDataService.usuarioLogado = usuario;
-                  localStorage.setItem('isUsuarioAtivo', usuario.ativo);
+                  localStorage.setItem('isUsuarioAtivo', usuario.ativo+'');
                   this.routingService.configurarRotas(localStorage.getItem('tipoUsuarioLogado'));
                 })
                 .then(() => {
                   if (!this.storageDataService.usuarioLogado.ativo)
                   {
-                    this.router.navigate(['/primeiroAcessoMotorista']);
+                    // this.router.navigate(['/primeiroAcessoMotorista']);
+                    this.router.navigate(['/listasPresenca']);
                   }
                   else
                   {
-                    this.router.navigate(['/painelControle']);
+                    this.router.navigate(['/listasPresenca']);
+                    // this.router.navigate(['/painelControle']);
                   }
                 })
                 .catch(erro => this.errorHandlerService.handle(erro));

@@ -22,12 +22,12 @@ import { AjudaDialog } from '../../comum/ajuda-dialog/ajuda-dialog';
   templateUrl: './checkin.component.html',
   styleUrls: ['./checkin.component.css']
 })
-export class CheckinComponent implements OnInit, AfterViewInit {
-
+export class CheckinComponent implements OnInit, AfterViewInit 
+{
   mobileQuery: MediaQueryList;
 
   checkin: any;
-  listaPresenca: ListaPresenca;
+  listasPresenca: ListaPresenca[];
 
   totalPresencasConfirmadas = 0;
   quantidadeAguardandoSaida = 0;
@@ -86,7 +86,8 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         {
           // EXIBIÇÃO PADRÃO DOS ELEMENTOS (INICIO) e atualização do checkin para presença não confirmada
           this.atualizarCheckin(this.criarInstanciaCheckin(this.checkin.id, STATUS_CHECKIN.AGUARDANDO_CONFIRMACAO))
-            .then((response) => {
+            .then((response) => 
+            {
               if (response)
               {
                 this.alterarElementosParaAguardandoConfirmacao();
@@ -206,51 +207,58 @@ export class CheckinComponent implements OnInit, AfterViewInit {
   {
     if (event.tab.textLabel === 'listaPresenca')
     {
-      this.listaPresencaService.getById(this.checkin.listaPresencaId)
-        .then((response) => {
-          this.listaPresenca = response;
+      const estudanteLogado: Estudante = this.storageDataService.usuarioLogado as Estudante;
+
+      this.listaPresencaService.filtrarPorInstituicaoRota(estudanteLogado.curso.instituicaoEnsino.id)
+        .then((response) => 
+        {
+          this.listasPresenca = response;
         })
-        .then(() => {
-          for(let checkin of this.listaPresenca.checkins)
+        .then(() => 
+        {
+          for (let listaPresenca of this.listasPresenca)
           {
-            this.uploadService.getFile(checkin.estudante.foto.caminhoSistemaArquivos)
-              .toPromise()
-              .then((response) => {
-                checkin.estudante.linkFoto = response;
-              });
+            for(let checkin of listaPresenca.checkins)
+            {
+              this.uploadService.getFile(checkin.estudante.foto.caminhoSistemaArquivos)
+                .toPromise()
+                .then((response) => 
+                {
+                  checkin.estudante.linkFoto = response;
+                });
+            }
+            // this.gerarDadosResumoViagem(listaPresenca);
           }
-          this.gerarDadosResumoViagem(this.listaPresenca);
+          this.gerarDadosResumoViagem(this.listasPresenca);
         })
         .catch(erro => this.errorHandlerService.handle(erro));
     }
   }
 
-  private gerarDadosResumoViagem(listaPresenca: ListaPresenca)
+  private gerarDadosResumoViagem(listasPresenca: ListaPresenca[])
   {
     this.totalPresencasConfirmadas = 0;
     this.quantidadeAguardandoSaida = 0;
     this.quantidadeEmAula = 0;
-
-    for (let checkin of listaPresenca.checkins) 
+    
+    for (let listaPresenca of listasPresenca)
     {
-      const dataUltimaAtualizacao = moment(checkin.dataUltimaAtualizacao, 'DD/MM/YYYY');
-      const dataAtual = moment(new Date().toLocaleDateString(), 'DD/MM/YYYY');
-
-      if (checkin.status === STATUS_CHECKIN.EMBARCOU 
-        && dataUltimaAtualizacao.isSame(dataAtual))
+      for (let checkin of listaPresenca.checkins) 
       {
-        this.totalPresencasConfirmadas += 1;
-        this.quantidadeAguardandoSaida += 1;
-      } // checkin.status === STATUS_CHECKIN.CONFIRMADO ||
-      else if (checkin.status === STATUS_CHECKIN.CONFIRMADO && dataUltimaAtualizacao.isSame(dataAtual))
-      {
-        this.totalPresencasConfirmadas +=1;
+        const dataUltimaAtualizacao = moment(checkin.dataUltimaAtualizacao, 'DD/MM/YYYY');
+        const dataAtual = moment(new Date().toLocaleDateString(), 'DD/MM/YYYY');
+  
+        if (checkin.status === STATUS_CHECKIN.EMBARCOU 
+          && dataUltimaAtualizacao.isSame(dataAtual))
+        {
+          this.totalPresencasConfirmadas += 1;
+          this.quantidadeAguardandoSaida += 1;
+        }
+        else if (checkin.status === STATUS_CHECKIN.CONFIRMADO && dataUltimaAtualizacao.isSame(dataAtual))
+        {
+          this.totalPresencasConfirmadas +=1;
+        }
       }
-      // else if (checkin.status === STATUS_CHECKIN.EMBARCOU && 
-      //   dataUltimaAtualizacao.isSame(dataAtual))
-      // {
-      //   this.quantidadeAguardandoSaida += 1;
-      // }
     }
     this.quantidadeEmAula = this.totalPresencasConfirmadas - this.quantidadeAguardandoSaida;
   }

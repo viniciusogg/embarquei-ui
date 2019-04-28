@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StorageDataService } from './../../../../services/storage-data.service';
 import { CheckinService } from './../../../../services/checkin.service';
-import { Checkin, VeiculoTransporte, Rota, Motorista, Estudante, STATUS_CHECKIN } from './../../../../modulos/core/model';
+import { Checkin, VeiculoTransporte, Rota, Motorista, Estudante, STATUS_CHECKIN, TIPO_TRAJETO, PontoParada } from './../../../../modulos/core/model';
 import { ErrorHandlerService } from './../../../../modulos/core/error-handler.service';
 import { VeiculoTransporteService } from './../../../../services/veiculo-transporte.service';
 import { RotaService } from './../../../../services/rota.service';
@@ -14,17 +14,19 @@ import * as moment from 'moment';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
-
+export class DashboardComponent implements OnInit 
+{
   checkin: Checkin;
   veiculoTransporte: VeiculoTransporte;
   rota: Rota;
   motorista: Motorista;
 
+  textoRota = 'Carregando...';
   textoCheckin = 'Carregando...';
   textoVeiculo = 'Carregando...';
-  textoRota = 'Carregando...';
   textoCondutor = 'Carregando...';
+  descricaoIda = 'Carregando...';
+  descricaoVolta = 'Carregando...';
 
   constructor(private storageDataService: StorageDataService, private router: Router, 
       private checkinService: CheckinService, private errorHandlerService: ErrorHandlerService,
@@ -53,13 +55,10 @@ export class DashboardComponent implements OnInit {
       //     }
       //   })
       //   .catch(erro => this.errorHandlerService.handle(erro));
-
-      this.textoRota = 'Nomde da rota';
-
       this.getCheckin();
       this.getVeiculo(idInstituicao, idCidade);
       this.getMotorista(idInstituicao, idCidade);
-      // this.getRota(idInstituicao, idCidade);
+      this.getRota(idInstituicao, idCidade);
     }, 3000);
 
     setTimeout(() => {
@@ -130,19 +129,64 @@ export class DashboardComponent implements OnInit {
 
   getRota(idInstituicao, idCidade)
   {
-    // this.rotaService.filtrarPorInstituicaoCidade(idInstituicao, idCidade)
-    //   .then((response) => 
-    //   {
-    //     if (!response.id)
-    //     {
-    //       this.textoRota = 'Indisponível';
-    //     }
-    //     else 
-    //     {
-    //       this.textoRota = response.nome;
-    //     }
-    //   })
-    //   .catch(erro => this.errorHandlerService.handle(erro));
+    this.rotaService.filtrarPorInstituicaoCidade(idInstituicao, idCidade)
+      .then((response) => 
+      {
+        if (!response.id)
+        {
+          this.descricaoIda = 'Indisponível';
+          this.descricaoVolta = 'Indisponível';
+        }
+        else 
+        {
+          let pontosIda: PontoParada[];
+          let pontosVolta: PontoParada[];
+          
+          for (let trajeto of response.trajetos)
+          {
+            if (trajeto.ativado && trajeto.tipo === TIPO_TRAJETO.IDA)
+            {
+              trajeto.pontosParada.sort((n1, n2) => n1.ordem - n2.ordem);
+
+              pontosIda = trajeto.pontosParada;
+            }
+          }
+          for (let trajeto of response.trajetos)
+          {
+            if (trajeto.ativado && trajeto.tipo === TIPO_TRAJETO.VOLTA)
+            {
+              trajeto.pontosParada.sort((n1, n2) => n1.ordem - n2.ordem);
+
+              pontosVolta = trajeto.pontosParada;
+            }
+          }
+          if (pontosIda.length > 0)
+          {
+            this.descricaoIda = '';
+
+            for (let ponto of pontosIda)
+            {
+              if (ponto.nome !== '-')
+              {
+                this.descricaoIda += ponto.nome + ', ';
+              }
+            }
+          }
+          if (pontosVolta.length > 0)
+          {
+            this.descricaoVolta = '';
+
+            for (let ponto of pontosVolta)
+            {
+              if (ponto.nome !== '-')
+              {
+                this.descricaoVolta += ponto.nome + ', ';
+              }
+            }
+          }
+        }
+      })
+      .catch(erro => this.errorHandlerService.handle(erro));
   }
 
   getMotorista(idInstituicao, idCidade)

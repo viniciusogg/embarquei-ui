@@ -1,0 +1,78 @@
+<mat-tab-group mat-stretch-tabs id="tabGroupRotaEstudante" 
+    color="accent" (selectedTabChange)="carregarTrajetoVolta($event)"
+    backgroundColor="primary">
+
+  <mat-tab label="trajetoIda">
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">arrow_upward</mat-icon>
+      <span style="margin-left: 5px">IDA</span>
+    </ng-template>
+
+    <agm-map [latitude]="geolocalizacaoMapa?.lat"
+        [longitude]="geolocalizacaoMapa?.lng" [zoom]="zoom"
+        [disableDefaultUI]="false">
+
+      <agm-direction [origin]="origemTrajetoIda" [optimizeWaypoints]="optimizeWaypoints"
+          [waypoints]="pontosParadaIda" [destination]="destinoTrajetoIda"
+          [renderOptions]="renderOptions" [drivingOptions]="drivingOptionsIda"
+          (onChange)="gerarDadosTrajetoIda($event)">
+      </agm-direction>
+    </agm-map>
+
+    <app-dados-trajeto [distancia]="distanciaIda" 
+        [tempoTotalTrajeto]="tempoTotalTrajetoIda" 
+        [partida]="partidaIda" [chegada]="chegadaIda">
+    </app-dados-trajeto>
+
+    <mat-list dense style="margin: 0px 20px 100px">
+      <h3 mat-subheader>Pontos de parada</h3>
+      <ng-container *ngFor="let ponto of trajetoIda?.pontosParada; let i = index; last as ultimo">
+        <mat-list-item *ngIf="ponto.nome !== '-'">
+          <span> 
+            <!-- <strong class="mat-body-2"> 
+              {{ponto.nome !== '-' ? i+1 : i-1}} 
+            </strong>  -->
+            {{ ponto.nome }} 
+          </span>
+          <mat-divider inset="true" *ngIf="!ultimo"></mat-divider>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </mat-tab>
+
+  <mat-tab label="trajetoVolta">
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">arrow_downward</mat-icon>
+      <span style="margin-left: 5px">VOLTA</span>
+    </ng-template>
+
+    <agm-map [latitude]="geolocalizacaoMapa?.lat" [longitude]="geolocalizacaoMapa?.lng"
+        [zoom]="15" [disableDefaultUI]="false" *ngIf="trajetoVoltaVisivel">
+
+      <agm-direction [origin]="origemTrajetoVolta" [optimizeWaypoints]="optimizeWaypoints"
+          [waypoints]="pontosParadaVolta" [destination]="destinoTrajetoVolta"
+          [renderOptions]="renderOptions" [drivingOptions]="drivingOptionsIda"
+          (onChange)="gerarDadosTrajetoVolta($event)">
+      </agm-direction>
+    </agm-map>
+
+    <app-dados-trajeto [distancia]="distanciaVolta" [tempoTotalTrajeto]="tempoTotalTrajetoVolta" 
+        [partida]="partidaVolta" [chegada]="chegadaVolta">
+    </app-dados-trajeto>
+
+    <mat-list dense style="margin: 0px 20px 100px">
+      <h3 mat-subheader>Pontos de parada</h3>
+      <ng-container *ngFor="let ponto of trajetoVolta?.pontosParada; let i = index; last as ultimo">
+        <mat-list-item *ngIf="ponto.nome !== '-'">
+          <span> 
+            <!-- <strong class="mat-body-2"> 
+              {{ponto.nome !== '-' ? i+1 : i-1}} 
+            </strong>  -->
+            {{ ponto.nome }} 
+          </span>
+          <mat-divider inset="true" *ngIf="!ultimo"></mat-divider>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </mat-tab>
+</mat-tab-group>

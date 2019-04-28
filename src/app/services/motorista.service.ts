@@ -97,7 +97,7 @@ export class MotoristaService {
       });
   }
 
-  getById(id): Promise<any>
+  getById(id): Promise<Motorista>
   {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -105,7 +105,6 @@ export class MotoristaService {
       }),
       withCredentials: true
     };
-
     return this.httpClient.get(`${this.motoristaEndpoint}/${id}`, httpOptions)
       .toPromise()
       .then(response => 
@@ -113,7 +112,6 @@ export class MotoristaService {
         const motorista = response as Motorista;
 
         return motorista;
-      })
-      .catch(erro => this.errorHandlerService.handle(erro));
+      });
   }
 }

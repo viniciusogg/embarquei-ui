@@ -84,30 +84,28 @@ export class MenuComponent implements OnInit, AfterViewInit
   }
 
   opcoesMenuLateralAdmin = [
-    {label: 'Início (em breve)', icone: 'home', url: '/', id: 'botaoInicio'},
+    // {label: 'Início (em breve)', icone: 'home', url: '/', id: 'botaoInicio'},
     {label: 'Estudantes', icone: 'school', url: '/estudantes', id: 'botaoEstudantes'},
     {label: 'Motoristas', icone: 'people', url: '/motoristas', id: 'botaoCondutores'},
     {label: 'Rotas', icone: 'place', url: '/rotas', id: 'botaoRotas'},
     {label: 'Veículos Estudantis', icone: 'directions_bus', url: '/veiculos', id: 'botaoVeículosEstudantis'},
-    {label: 'Notificações (em breve)', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
-    {label: 'Renovação de cadastro (em breve)', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
+    // {label: 'Notificações (em breve)', icone: 'notifications', url: '/', id: 'botaoNotificacoes'},
+    // {label: 'Renovação de cadastro (em breve)', icone: 'refresh', url: '/', id: 'botaoRenovacao'},
   ];
 
   opcoesMenuLateralEmAnalise = [];
 
   opcoesMenuLateralEstudante = [
     {label: 'Início', icone: 'home', url: '/resumoDiario', id: 'botaoInicio'},
-    // {label: 'Check-in', icone: 'check_circle', url: '/checkin', id: 'botaoCheckin'}, // beenhere
-    {label: 'Perfil', icone: 'account_circle', url: '/estudantes', id: 'botaoEstudantes'},
-    {label: 'Notificações', icone: 'notifications', url: '/notificacoes', id: 'botaoNotificacoes'},
-    // {label: 'Rotas', icone: 'place', url: '/', id: 'botaoRotas'},
-    // {label: 'Veículos de transporte', icone: 'directions_bus', url: '/', id: 'botaoVeiculos'},
-    {label: 'Renovação de cadastro', icone: 'refresh', url: '/renovacaoCadastro', id: 'botaoRenovacao'},
-    {label: 'SOS', icone: 'error_outline', url: '/sos', id: 'botaoCheckin'},
+    // {label: 'Perfil', icone: 'account_circle', url: '/', id: 'botaoPerfil'},
+    // {label: 'Notificações', icone: 'notifications', url: '/notificacoes', id: 'botaoNotificacoes'},
+    // {label: 'Renovação de cadastro', icone: 'refresh', url: '/renovacaoCadastro', id: 'botaoRenovacao'},
+    {label: 'SOS', icone: 'error_outline', url: '/sos', id: 'botaoSos'},
   ];
 
   opcoesMenuLateralMotorista = [
-    {label: 'Início', icone: 'home', url: '/painelControle', id: 'botaoPainelControle'}
+    // {label: 'Início', icone: 'home', url: '/painelControle', id: 'botaoPainelControle'},
+    {label: 'Listas de presença', icone: 'list', url: '/listasPresenca', id: 'botaoListas'}
   ];
 
   opcoesMenuLateralSuper = [

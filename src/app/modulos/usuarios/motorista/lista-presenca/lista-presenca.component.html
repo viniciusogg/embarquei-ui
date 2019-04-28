@@ -1,0 +1,129 @@
+<div class="container accent-dark">
+  <mat-card *ngIf="false" style="margin: 10px 0">
+    <mat-card-content class="espacamento-card-content">
+      <form [formGroup]="instituicaoForm" autocomplete="off">
+        <div class="form-container">
+
+          <p class="mat-body">Escolha uma instituição para visualizar a lista de estudantes.</p>
+
+          <mat-form-field appearance="outline" class="spacer-field">
+            <mat-label> Instituição de ensino </mat-label>
+            <mat-select formControlName="campoInstituicaoEnsino" id="campoInstituicaoEnsino"
+                required>
+              <mat-option *ngFor="let instituicaoEnsino of instituicoesEnsino"
+                  [value]="instituicaoEnsino">
+                  <!-- (keyup)="alterarListaPresenca(instituicaoForm.get('campoInstituicaoEnsino').value)"
+                  (click)="alterarListaPresenca(instituicaoForm.get('campoInstituicaoEnsino').value)"> -->
+                {{instituicaoEnsino.nome}}
+              </mat-option>
+            </mat-select>
+    
+            <mat-error *ngIf="instituicaoForm.get('campoInstituicaoEnsino').hasError('required')">
+              A instituição de ensino é obrigatória
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="totalPresencasConfirmadas !== 0">
+    <mat-card-header>
+      <mat-card-title>Resumo</mat-card-title>
+    </mat-card-header>
+
+    <div style="min-height: 20px; margin: 15px 0; display: flex; justify-content: space-between;">
+      <span style="font-size: 15px; color: gray;" [ngPlural]="totalPresencasConfirmadas" class="margem-texto-resumo-viagem">
+        <ng-template ngPluralCase="1">{{totalPresencasConfirmadas}} estudante confirmou presença hoje</ng-template>
+        <ng-template ngPluralCase="2">{{totalPresencasConfirmadas}} estudantes confirmaram presença hoje</ng-template>              
+        <ng-template ngPluralCase="few">{{totalPresencasConfirmadas}} estudantes confirmaram presença hoje</ng-template>              
+        <ng-template ngPluralCase="many">{{totalPresencasConfirmadas}} estudantes confirmaram presença hoje</ng-template>
+      </span>
+
+      <button mat-icon-button color="accent" (click)="abrirAjuda('totalPresencasConfirmadas')">
+        <mat-icon>help</mat-icon> 
+      </button>
+    </div>
+
+    <div class="padding-divisor" *ngIf="quantidadeAguardandoSaida != 0">
+      <mat-divider [inset]="true"></mat-divider>
+    </div>
+
+    <div style="min-height: 20px; margin: 15px 0; display: flex; justify-content: space-between;"
+        *ngIf="quantidadeAguardandoSaida !== 0">
+      <span style="font-size: 15px; color: gray;" [ngPlural]="quantidadeAguardandoSaida" class="margem-texto-resumo-viagem">
+        <ng-template ngPluralCase="1">{{quantidadeAguardandoSaida}} estudante aguardando a saída do veículo</ng-template>
+        <ng-template ngPluralCase="2">{{quantidadeAguardandoSaida}} estudantes aguardando a saída do veículo</ng-template>              
+        <ng-template ngPluralCase="few">{{quantidadeAguardandoSaida}} estudantes aguardando a saída do veículo</ng-template>              
+        <ng-template ngPluralCase="many">{{quantidadeAguardandoSaida}} estudantes aguardando a saída do veículo</ng-template>
+      </span>
+
+      <button mat-icon-button color="accent" (click)="abrirAjuda('quantidadeAguardandoSaida')">
+        <mat-icon>help</mat-icon> 
+      </button>
+    </div>
+
+    <div class="padding-divisor" *ngIf="quantidadeAguardandoSaida != 0">
+      <mat-divider [inset]="true"></mat-divider>
+    </div>
+
+    <div style="min-height: 20px; margin: 15px 0; display: flex; justify-content: space-between;" 
+        *ngIf="quantidadeAguardandoSaida !== 0">
+      <span style="font-size: 15px; color: gray;" [ngPlural]="quantidadeEmAula" class="margem-texto-resumo-viagem">
+        <ng-template ngPluralCase="0">Nenhum estudante está em aula, o veículo já pode voltar para o município</ng-template>
+        <ng-template ngPluralCase="1">{{quantidadeEmAula}} estudante ainda está em aula</ng-template>
+        <ng-template ngPluralCase="2">{{quantidadeEmAula}} estudantes ainda estão em aula</ng-template>                
+        <ng-template ngPluralCase="few">{{quantidadeEmAula}} estudantes ainda estão em aula</ng-template>
+        <ng-template ngPluralCase="many">{{quantidadeEmAula}} estudantes ainda estão em aula</ng-template>
+      </span>
+
+      <button mat-icon-button color="accent" (click)="abrirAjuda('quantidadeEmAula')">
+        <mat-icon>help</mat-icon> 
+      </button>
+    </div>
+  </mat-card>
+
+  <mat-card style="margin: 10px 0">
+    <mat-card-header style="margin-bottom: 20px">
+      <mat-card-title>Estudantes</mat-card-title>
+    </mat-card-header>
+
+    <mat-list *ngFor="let lista of listasPresenca">
+      <h3 mat-subheader style="padding-bottom: 0px;">{{lista.instituicaoEnsino.nome}}</h3>
+      <p class="mat-small" style="padding: 0 16px; margin-top: 0px">
+        Partindo de {{lista.cidade.nome}} às <strong> {{lista.horarioPartidaMunicipioOrigem}}h </strong>
+        <!-- Trajeto inicia em {{lista.cidade.nome}} a partir das -->
+        <!-- Recolhimento dos alunos em {{lista.cidade.nome}} a partir das -->
+        <!-- Início do trajeto em {{lista.cidade.nome}} às -->
+        <!-- Partida do município de origem -->
+        <!-- Recolhe os estudantes no município de origem às -->
+        <!-- Recolhe os alunos em {{lista.cidade.nome}} às -->
+        <!-- Partindo de Sertânia às  -->
+        <!-- Inicia o recolhimento dos alunos em Sertania a partir das 19:00 -->
+      </p> 
+      <ng-container *ngIf="lista.horarioAtivo">
+        <mat-list-item *ngFor="let checkin of lista?.checkins; last as last">
+          <img matListAvatar [src]="checkin?.estudante?.linkFoto === undefined || checkin?.estudante?.linkFoto === null ? 'assets/account-circle.png' : checkin?.estudante?.linkFoto" 
+              style="width:60px; height: 60px; border-radius: 100px">
+          <h4 mat-line> {{checkin?.estudante?.nome}} {{checkin?.estudante?.sobrenome}} </h4>
+          <p mat-line [class.status-aguardando-volta]="formatarStatusCheckin(checkin) !== 'AGUARDANDO_CONFIRMACAO' ? 
+              (checkin.status === 'EMBARCOU' ? true : false) : false"
+              [class.status-presenca-confirmada]="formatarStatusCheckin(checkin) !== 'AGUARDANDO_CONFIRMACAO' ? 
+              (checkin.status === 'CONFIRMADO' ? true : false) : false"> 
+            {{ formatarStatusCheckin(checkin) === 'AGUARDANDO_CONFIRMACAO' ? 'Não confirmou presença' : 
+            (checkin.status === 'CONFIRMADO' ? (quantidadeAguardandoSaida > 0 ? 'Em aula' : 'Presença confirmada') : 
+            (checkin.status === 'EMBARCOU' ? 'Aguardando viagem de volta' : 'Não confirmou presença') ) }} 
+          </p>
+          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+        </mat-list-item>
+      </ng-container>
+      <ng-container *ngIf="!lista.horarioAtivo">
+        <p class="mat-body">
+          Seu horário de trabalho para esta instituição foi concluído hoje, 
+          volte amanhã para visualizar quais estudantes desta instituição confirmaram presença.
+        </p>
+      </ng-container>
+      <mat-divider style="margin: 20px 0px" [inset]="true"></mat-divider>
+    </mat-list>
+  </mat-card>
+</div>

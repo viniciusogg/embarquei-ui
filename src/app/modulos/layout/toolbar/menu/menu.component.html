@@ -29,9 +29,10 @@
       <a matLine>{{opcao.label}}</a>
     </mat-list-item>
 
-    <mat-divider style="margin: 8px 0;"></mat-divider>
+    <mat-divider style="margin: 8px 0;" *ngIf="storageDataService?.usuarioLogado?.ativo"></mat-divider>
 
-    <mat-list-item id="botaoFeedback" (click)="redirecionar('/feedback')">
+    <mat-list-item *ngIf="storageDataService?.usuarioLogado?.ativo"
+        id="botaoFeedback" (click)="redirecionar('/feedback')">
       <mat-icon mat-list-icon>feedback</mat-icon>
       <a matLine>Feedback</a>
     </mat-list-item>

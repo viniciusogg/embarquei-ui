@@ -27,8 +27,41 @@ export class ListaPresencaService {
 
     return this.httpClient.get(`${this.listaPresencaUrl}/${id}`, httpOptions)
       .toPromise()
-      .then((response) => {
+      .then((response) => 
+      {
         return response as ListaPresenca;
+      });
+  }
+
+  filtrarPorInstituicaoMotorista(idMotorista): Promise<ListaPresenca[]>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      withCredentials: true
+    };
+    return this.httpClient.get(`${this.listaPresencaUrl}/filtrarPorMotorista/${idMotorista}`, httpOptions)
+      .toPromise()
+      .then((response) => 
+      {
+        return response as ListaPresenca[];
+      });
+  }
+
+  filtrarPorInstituicaoRota(idInstituicao): Promise<ListaPresenca[]>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      withCredentials: true
+    };
+    return this.httpClient.get(`${this.listaPresencaUrl}/filtrarPorInstituicaoRota/${idInstituicao}`, httpOptions)
+      .toPromise()
+      .then((response) => 
+      {
+        return response as ListaPresenca[];
       });
   }
 }

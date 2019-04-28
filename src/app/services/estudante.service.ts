@@ -5,8 +5,8 @@ import { environment } from '../../environments/environment';
 import { Estudante } from '../modulos/core/model';
 
 @Injectable()
-export class EstudanteService {
-
+export class EstudanteService 
+{
   estudantesUrl: string;
 
   constructor(private httpClient: HttpClient,
@@ -25,7 +25,6 @@ export class EstudanteService {
       }),
       withCredentials: true
     };
-
     const body = JSON.stringify(estudante);
 
     return this.httpClient.post(this.estudantesUrl, body, httpOptions)
@@ -37,7 +36,7 @@ export class EstudanteService {
       });
   }
 
-  getById(id): Promise<any>
+  getById(id): Promise<Estudante>
   {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -45,15 +44,13 @@ export class EstudanteService {
       }),
       withCredentials: true
     };
-
     return this.httpClient.get(`${this.estudantesUrl}/${id}`, httpOptions)
       .toPromise()
       .then(response => {
         const estudante = response as Estudante;
 
         return estudante;
-      })
-      .catch(erro => console.log(erro));
+      });
   }
 
   atualizar(id, dados): Promise<any>
@@ -65,7 +62,6 @@ export class EstudanteService {
       }),
       withCredentials: true
     };
-
     const body = JSON.stringify(dados);
 
     return this.httpClient.put(`${this.estudantesUrl}/${id}`, body, httpOptions)

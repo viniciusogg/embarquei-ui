@@ -195,7 +195,7 @@ export class AuthService {
 
   interceptarRequisicao()
   {
-    console.log('Interceptou...');
+    // console.log('Interceptou...');
 
     const token = localStorage.getItem('embarquei-token');
 

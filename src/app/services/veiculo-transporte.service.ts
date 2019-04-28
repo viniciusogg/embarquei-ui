@@ -67,7 +67,6 @@ export class VeiculoTransporteService
       }),
       withCredentials: true
     };
-
     return this.adminService.getById(localStorage.getItem('idUsuarioLogado'))
       .then(usuario => 
       {

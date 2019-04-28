@@ -1,4 +1,4 @@
-<mat-tab-group mat-stretch-tabs id="tabGroupSOS"
+<mat-tab-group *ngIf="false" mat-stretch-tabs id="tabGroupSOS"
     color="accent" backgroundColor="primary">
   <mat-tab label="telefones">
     <ng-template mat-tab-label>
@@ -18,7 +18,7 @@
 
             <span style="flex: 1 1 auto;"></span>
       
-            <button mat-icon-button>
+            <button mat-icon-button *ngIf="false">
               <mat-icon>local_phone</mat-icon> 
             </button>
 
@@ -38,3 +38,26 @@
   </mat-tab>
   
 </mat-tab-group> 
+
+<div class="container">
+  <mat-card>
+    <mat-list>
+      <mat-list-item *ngFor="let item of sos; last as ultimo">
+        <img matListAvatar [src]="item.url">
+        <h3 matLine> {{item.nome}} </h3>
+        <p matLine>
+          <span> {{item.numero}} </span>
+        </p>
+
+        <span style="flex: 1 1 auto;"></span>
+  
+        <button mat-icon-button *ngIf="false">
+          <mat-icon>local_phone</mat-icon> 
+        </button>
+
+        <mat-divider [inset]="true" *ngIf="!ultimo"></mat-divider>
+
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+</div>

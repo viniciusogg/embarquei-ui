@@ -120,6 +120,8 @@ export class ListaPresenca {
   checkins: Array<Checkin>;
   instituicaoEnsino: InstituicaoEnsino;
   cidade: Cidade;
+  horarioAtivo?: boolean;
+  horarioPartidaMunicipioOrigem?: string;
 }
 
 export class Notificacao {

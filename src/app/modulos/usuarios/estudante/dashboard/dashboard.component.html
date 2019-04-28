@@ -1,23 +1,33 @@
 <div class="container">
-  <mat-card class="espacamento-card card-clicavel background-checkin" 
-      (click)="redirecionar('/checkin')">
+  <mat-card matRipple [matRippleDisabled]="textoCheckin === 'Carregando...'" 
+      class="espacamento-card card-clicavel background-checkin" 
+      (click)="textoCheckin !== 'Carregando...' ? redirecionar('/checkin') : false">
     <p class="mat-subheading-1 fonte-card-dashboard"> Check-in </p>
     <p class="mat-headline fonte-card-dashboard"> {{textoCheckin}} </p> 
   </mat-card>
 
   <mat-card class="espacamento-card card-clicavel background-veiculo"
-      (click)="redirecionar('/detalhesVeiculo/'+veiculoTransporte?.id)">
+      matRipple [matRippleDisabled]="textoVeiculo === 'Carregando...'"
+      (click)="textoVeiculo !== 'Carregando...' ? redirecionar('/detalhesVeiculo/'+veiculoTransporte?.id) : false">
     <p class="mat-subheading-1 fonte-card-dashboard"> Veículo </p>
     <p class="mat-headline fonte-card-dashboard"> {{textoVeiculo}} </p>
   </mat-card>
 
-  <mat-card class="espacamento-card card-clicavel background-rota">
+  <mat-card class="espacamento-card card-clicavel background-rota"
+      matRipple [matRippleDisabled]="textoVeiculo === 'Carregando...'"
+      (click)="textoVeiculo !== 'Carregando...' ? redirecionar('/rota') : false">
     <p class="mat-subheading-1 fonte-card-dashboard"> Rota </p>
-    <p class="mat-headline fonte-card-dashboard"> {{textoRota}} </p>
+    <p class="fonte-card-dashboard mat-body-strong"> 
+      <strong> Ida: </strong>
+      <span class="mat-body"> {{descricaoIda | slice:0:33}}{{descricaoIda?.length > 33 ? '...' : '' }} </span>
+      <br/>
+      <strong>Volta: </strong>      
+      <span class="mat-body"> {{descricaoVolta | slice:0:33}}{{descricaoVolta?.length > 33 ? '...' : '' }} </span>
+    </p>
   </mat-card>
 
   <mat-card class="espacamento-card card-clicavel background-condutor">
-    <p class="mat-subheading-1 fonte-card-dashboard"> Condutor </p>
+    <p class="mat-subheading-1 fonte-card-dashboard"> Motorista </p>
     <p class="mat-headline fonte-card-dashboard"> {{textoCondutor}} </p>
   </mat-card>
 </div>

@@ -24,6 +24,8 @@ import { ListagemSosComponent } from '../modulos/usuarios/estudante/listagem-sos
 import { DetalhesVeiculoComponent } from '../modulos/usuarios/estudante/detalhes-veiculo/detalhes-veiculo.component';
 import { RotaCadastroComponent } from '../modulos/usuarios/admin/rota/rota-cadastro/rota-cadastro.component';
 import { RotasListagemComponent } from '../modulos/usuarios/admin/rota/rotas-listagem/rotas-listagem.component';
+import { RotaComponent } from '../modulos/usuarios/estudante/rota/rota/rota.component';
+import { ListaPresencaComponent } from '../modulos/usuarios/motorista/lista-presenca/lista-presenca.component';
 
 @Injectable({
   providedIn: 'root'
@@ -102,6 +104,12 @@ export class RoutingService {
       canActivate: [AuthGuard],
       data: { tiposUsuariosPermitidos: ['est'] }
     },
+    {
+      path: 'rota',
+      component: RotaComponent,
+      canActivate: [AuthGuard],
+      data: { tiposUsuariosPermitidos: ['est', 'mot']  }
+    }
 
     // {
     //   path: 'emAnalise',
@@ -201,11 +209,17 @@ export class RoutingService {
 
   rotasMotorista = [
     {
-      path: 'painelControle',
-      component: PainelControleComponent,
+      path: 'listasPresenca',
+      component: ListaPresencaComponent,
       canActivate: [AuthGuard],
       data: { tiposUsuariosPermitidos: ['mot'] }
-    }
+    },
+    // {
+    //   path: 'painelControle',
+    //   component: PainelControleComponent,
+    //   canActivate: [AuthGuard],
+    //   data: { tiposUsuariosPermitidos: ['mot'] }
+    // },
   ];
 
   rotaEmAnalise = [

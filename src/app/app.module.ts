@@ -44,6 +44,8 @@ import { RenovacaoCadastroComponent } from './modulos/usuarios/estudante/renovac
 import { DetalhesVeiculoComponent } from './modulos/usuarios/estudante/detalhes-veiculo/detalhes-veiculo.component';
 import { RotaCadastroComponent } from './modulos/usuarios/admin/rota/rota-cadastro/rota-cadastro.component';
 import { RotasListagemComponent } from './modulos/usuarios/admin/rota/rotas-listagem/rotas-listagem.component';
+import { RotaComponent } from './modulos/usuarios/estudante/rota/rota/rota.component';
+import { ListaPresencaComponent } from './modulos/usuarios/motorista/lista-presenca/lista-presenca.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +99,7 @@ import { RotasListagemComponent } from './modulos/usuarios/admin/rota/rotas-list
     ListagemSosComponent,
     ListagemNotificacoesComponent,
     DetalhesVeiculoComponent,
+    RotaComponent,
 
     // admin
     EstudantesListagemComponent,
@@ -110,6 +113,7 @@ import { RotasListagemComponent } from './modulos/usuarios/admin/rota/rotas-list
 
     // motorista
     PainelControleComponent,
+    ListaPresencaComponent,
 
     // comum
     FeedbackComponent,

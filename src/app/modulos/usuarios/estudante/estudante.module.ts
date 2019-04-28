@@ -18,6 +18,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatRippleModule } from '@angular/material/core';
+
+
+import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
+import { ShareModule } from '../comum/share.module';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EstudanteCadastroComponent } from './estudante-cadastro/estudante-cadastro.component';
@@ -27,6 +33,8 @@ import { DetalhesVeiculoComponent } from './detalhes-veiculo/detalhes-veiculo.co
 import { ListagemNotificacoesComponent } from './listagem-notificacoes/listagem-notificacoes.component';
 import { ListagemSosComponent } from './listagem-sos/listagem-sos.component';
 import { RenovacaoCadastroComponent } from './renovacao-cadastro/renovacao-cadastro.component';
+import { RotaComponent } from './rota/rota/rota.component';
+
 
 @NgModule({
   imports: [
@@ -35,6 +43,8 @@ import { RenovacaoCadastroComponent } from './renovacao-cadastro/renovacao-cadas
 
     ReactiveFormsModule,
     FormsModule,
+
+    ShareModule,
 
     MatStepperModule,
     MatInputModule,
@@ -49,7 +59,11 @@ import { RenovacaoCadastroComponent } from './renovacao-cadastro/renovacao-cadas
     MatDialogModule,
     MatListModule,
     MatDividerModule,
-    MatChipsModule
+    MatChipsModule,
+    MatRippleModule,
+    
+    AgmCoreModule,
+    AgmDirectionModule
   ],
   declarations: [
     DashboardComponent,
@@ -61,7 +75,8 @@ import { RenovacaoCadastroComponent } from './renovacao-cadastro/renovacao-cadas
     RenovacaoCadastroComponent,
     AjudaCheckinDialogComponent,
     LembreteDialogComponent,
-    EmAnaliseComponent
+    EmAnaliseComponent,
+    RotaComponent
   ],
   entryComponents: [
     AjudaCheckinDialogComponent,

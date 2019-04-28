@@ -76,17 +76,23 @@ export class AppComponent implements OnInit {
         let motorista: Motorista;
 
         this.motoristaService.getById(localStorage.getItem('idUsuarioLogado'))
-          .then(response => {
+          .then(response => 
+          {
             motorista = response;
+
             this.storageDataService.setUsuarioLogado(response);
           })
           .then(() => {
-            this.uploadService.getFile(motorista.foto.caminhoSistemaArquivos)
-              .toPromise()
-              .then((response) => {
-                this.storageDataService.usuarioLogado.linkFoto = response;
-              })
-              .catch(erro => console.log(erro));
+            if (motorista.foto)
+            {
+              this.uploadService.getFile(motorista.foto.caminhoSistemaArquivos)
+                .toPromise()
+                .then((response) => 
+                {
+                  this.storageDataService.usuarioLogado.linkFoto = response;
+                })
+                .catch(erro => console.log(erro));
+            }
           })
           .catch(erro => console.log(erro));
       }

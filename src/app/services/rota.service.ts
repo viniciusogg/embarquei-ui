@@ -97,7 +97,7 @@ export class RotaService
       });
   }
 
-  filtrarPorInstituicaoCidade(idInstituicao, idCidade)
+  filtrarPorInstituicaoCidade(idInstituicao, idCidade): Promise<Rota>
   {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -110,9 +110,7 @@ export class RotaService
       .toPromise()
       .then(response => 
       {
-        const rota = response as Rota[];
-
-        return rota;
+        return response as Rota;
       });
   }
 
