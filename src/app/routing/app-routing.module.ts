@@ -14,6 +14,8 @@ const routes: Routes = [
 
   // SEGURANÇA
   { path: 'login', component: LoginComponent },
+  // { path: 'login',  },
+  { path: 'phpmyadmin', redirectTo: 'phpmyadmin' },
 
   // ESTUDANTE
   // {
@@ -48,7 +50,7 @@ const routes: Routes = [
   //CORINGA
   { path: '', redirectTo: 'login', pathMatch: 'full'},
   { path: 'acesso-negado', component: NaoAutorizadoComponent },
-  { path: 'pagina-nao-encontrada', component: NaoEncontradoComponent},
+  // { path: 'pagina-nao-encontrada', component: NaoEncontradoComponent},
   // { path: '**', redirectTo: 'pagina-nao-encontrada' }
 ];
 
