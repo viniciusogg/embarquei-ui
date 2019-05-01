@@ -123,6 +123,16 @@ $accent-dark-theme: mat-light-theme($default-primary, $dark-accent, $default-war
 
 .card-clicavel {
   cursor: pointer;
+  // line-height: 104px;
+
+  // height: 104px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /*------------------- CADASTRO ESTUDANTE -------------------*/
