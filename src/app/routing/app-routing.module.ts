@@ -14,50 +14,19 @@ const routes: Routes = [
 
   // SEGURANÇA
   { path: 'login', component: LoginComponent },
-  // { path: 'login',  },
-  { path: 'phpmyadmin', redirectTo: 'phpmyadmin' },
-
-  // ESTUDANTE
-  // {
-  //   path: 'resumoDiario',
-  //   component: DashboardComponent,
-  //   canActivate: [AuthGuard],
-  //   data: { tiposUsuariosPermitidos: ['est'] }
-  // },
-  // {
-  //   path: 'cadastro/estudante',
-  //   component: EstudanteCadastroComponent
-  // },
-  // {
-  //   path: 'checkin',
-  //   component: CheckinComponent,
-  //   canActivate: [AuthGuard],
-  //   data: { tiposUsuariosPermitidos: ['est'] }
-  // },
-  // {
-  //   path: 'emAnalise',
-  //   component: EmAnaliseComponent
-  // },
-
-  // ADMIN
-  // {
-  //   path: 'estudantes',
-  //   component: EstudantesPesquisaComponent,
-  //   canActivate: [AuthGuard],
-  //   data: { tiposUsuariosPermitidos: ['admin'] }
-  //  },
 
   //CORINGA
   { path: '', redirectTo: 'login', pathMatch: 'full'},
   { path: 'acesso-negado', component: NaoAutorizadoComponent },
   { path: 'pagina-nao-encontrada', component: NaoEncontradoComponent},
-  // { path: '**', redirectTo: 'pagina-nao-encontrada' }
 ];
 
 @NgModule({
 
   imports: [
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { 
+      scrollPositionRestoration: 'top',
+    }),
   ],
   exports: [RouterModule]
 })

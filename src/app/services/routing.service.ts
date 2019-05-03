@@ -32,7 +32,8 @@ import { ListaPresencaComponent } from '../modulos/usuarios/motorista/lista-pres
 })
 export class RoutingService {
 
-  constructor(private router: Router, private storageDataService: StorageDataService) {}
+  constructor(private router: Router, private storageDataService: StorageDataService) 
+  {}
 
   configurarRotas(tipoUsuarioLogado)
   {
